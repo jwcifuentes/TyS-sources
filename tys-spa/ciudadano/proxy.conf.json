@@ -1,0 +1,7 @@
+{
+  "/rotulador/*": {
+    "target": "/http://172.20.22.212:9083",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

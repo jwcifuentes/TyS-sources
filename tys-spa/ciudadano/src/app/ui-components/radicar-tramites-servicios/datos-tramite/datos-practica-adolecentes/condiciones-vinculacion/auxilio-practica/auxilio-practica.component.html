@@ -1,0 +1,88 @@
+<p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+            legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.AUXILIO_PRACTICA.FIELD_SET' | translate}}"
+            [toggleable]="true">
+  <form [formGroup]="form">
+    <!--formaEntrega-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="formaEntrega">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.AUXILIO_PRACTICA.FORMA_ENTREGA' |translate}}
+        </label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="formaEntregaOptions$ | async | dropdownItem" filter="true" id="formaEntrega"
+                      formControlName="formaEntrega" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                      [autoWidth]="false"
+                      (onBlur)="listenForBlurEvents(['formaEntrega'])"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_DOCUMENTO' | translate}}">
+          </p-dropdown>
+          <div class="ui-message ui-messages-error" *ngIf="validations['formaEntrega']">
+            {{ validations['formaEntrega'] | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--cual-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" *ngIf="showOtro">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="cual"
+               title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_SEGUNDO_APELLIDO' | translate}}">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.AUXILIO_PRACTICA.CUAL'| translate}}
+        </label>
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="cual" (keypress)="this.restrictAlphaNames($event)"
+                   maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                   formControlName="cual" (blur)="listenForBlurEvents(['cual'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_SEGUNDO_APELLIDO' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['cual']">
+              {{ validations['cual'] | translate }}
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--lugar-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="lugar"
+               title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_SEGUNDO_APELLIDO' | translate}}">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.AUXILIO_PRACTICA.LUGAR'| translate}}
+        </label>
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="lugar" (keypress)="this.restrictAlphaNames($event)"
+                   maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                   formControlName="lugar" (blur)="listenForBlurEvents(['lugar'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_SEGUNDO_APELLIDO' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['lugar']">
+              {{ validations['lugar'] | translate }}
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--periodicidadRconocimiento-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="periodicidadReconocimiento">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.AUXILIO_PRACTICA.PERIODICIDAD' |translate}}
+        </label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="periodicidadReconocimientoOptions$ | async | dropdownItem" filter="true" id="periodicidadReconocimiento"
+                      formControlName="periodicidadReconocimiento" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                      [autoWidth]="false"
+                      (onBlur)="listenForBlurEvents(['periodicidadReconocimiento'])"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_DOCUMENTO' | translate}}">
+          </p-dropdown>
+          <div class="ui-message ui-messages-error" *ngIf="validations['periodicidadReconocimiento']">
+            {{ validations['periodicidadReconocimiento'] | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</p-fieldset>

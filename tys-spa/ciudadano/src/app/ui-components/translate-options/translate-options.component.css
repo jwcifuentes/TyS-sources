@@ -1,0 +1,37 @@
+.lang-content {
+    align-content: right;
+    padding:5px 10px;
+    float: right;
+    width: 10%;
+    display: inline-block;
+}
+
+.ul-lang {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.li-lang .lang-selector{
+  padding: 12px;
+  text-decoration: none;
+  cursor: pointer;  
+  pointer-events: auto;
+}
+
+
+.li-lang {
+  float: right;
+}
+
+.img-flag {
+    max-width: 20px;
+    height: 20px;
+}
+
+.breadcrumb-content {
+    width: 90%;
+    display: inline-block;
+    padding-top:0px; 
+  }

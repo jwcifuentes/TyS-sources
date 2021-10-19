@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="JSONGenerico" targetNamespace="http://soaint.com/Servicios/Utilitario/wsdl/JSONGenerico" 
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://soaint.com/Servicios/Utilitario/wsdl/JSONGenerico"
+xmlns:obj="http://soaint.com/Servicios/Utilitario/xsd/JSONGenerico"
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="JSONGenericoBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="JSONGenericoBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import namespace="http://soaint.com/Servicios/Utilitario/xsd/JSONGenerico" schemaLocation="JSONGenerico.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  
+  <wsdl:message name="MensajeEntrada">
+    <wsdl:part element="obj:MensajeEntrada" name="input"/>
+  </wsdl:message>
+  <wsdl:message name="MensajeSalida">
+    <wsdl:part element="obj:MensajeSalida" name="output"/>
+  </wsdl:message>
+  
+  <wsdl:portType name="JSONGenericoPortType">
+    <wsdl:operation name="ejecutar">
+      <wsdl:input message="tns:MensajeEntrada" name="ejecutarRq"/>
+      <wsdl:output message="tns:MensajeSalida" name="ejecutarRs"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="JSONGenericoBinding" type="tns:JSONGenericoPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ejecutar">
+      <soap:operation soapAction="http://soaint.com/Servicios/Negocio/Administracion/wsdl/JSONGenerico/insertarPpdDocumento"/>
+      <wsdl:input name="ejecutarRq">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ejecutarRs">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+	
+  </wsdl:binding>
+  <wsdl:service name="JSONGenericoService">
+    <wsdl:port binding="tns:JSONGenericoBinding" name="JSONGenericoSOAP">
+      <soap:address location="http://:/JSONGenericoService/JSONGenericoPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

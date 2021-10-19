@@ -1,0 +1,50 @@
+<section id="content">
+  <div class="inner">
+
+    <br/>
+    <h2>Modulo Administración Trámites </h2>
+    <br>
+    <p-growl [(value)]="model.msgs" life="6000"></p-growl>
+    <div align="center">
+      <form [formGroup]="model.complexForm">
+        <table style="width:80%;" cellspacing="10" cellpadding="10">
+          <tr>
+            <td class="column_label"><span class="form-label">TIPO TRAMITE</span></td>
+            <td class="column_input md-dropdownfield">
+              <input type="text" class="large-input" pInputText [formControl]="model.complexForm.controls['tramite']"/>
+              <div class="ui-message ui-messages-error"
+                   *ngIf="isInvalid('tramite')">
+                {{ getErrorMessage('tramite') }}
+              </div>
+            </td>
+            <td class="column_button">
+              <button pButton type="button" label="Agregar" class="ui-button-info" (click)="crearTramite()"></button>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <br/>
+      <br/>
+      <p-dataTable [value]="model.tramites" [style]="{'width':'90%'}" [rows]="10" [paginator]="true" [pageLinks]="3">
+        <p-column field="nombre" header="Tipo Tramite" [style]="{'width':'80%'}"></p-column>
+        <p-column header="Estado" [style]="{'width':'10%', 'text-align':'center'}">
+          <ng-template pTemplate="body" let-tramite="rowData">
+            <img *ngIf="tramite.estado" alt="Activo"
+                 title="Trámite Activo"
+                 class="custom-icons done-button"/>
+            <img *ngIf="!tramite.estado" alt="Inactivo"
+                 title="Trámite Inativo"
+                 class="custom-icons delete-button"/>
+          </ng-template>
+        </p-column>
+        <p-column header="Acciones" [style]="{'width':'10%', 'text-align':'center'}">
+          <ng-template pTemplate="body" let-tramite="rowData">
+            <button type="button" pButton icon="fa-search" class="ui-button-info custom-button-info"
+                    (click)="verDetalles(tramite)"></button>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>
+    <span #spacer1></span>
+  </div>
+</section>

@@ -1,0 +1,100 @@
+<p-growl [value]="msgs"></p-growl>
+
+
+<p-dialog header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.VERIFICACION' | translate}}" [(visible)]="showRecaptcha" modal="modal" width="370" [responsive]="true"
+          (close)="goToModuleSelection()">
+
+  <div style="display: flex; justify-content: center; width: 100%">
+    <form #captchaProtectedForm="ngForm">
+      <re-captcha required siteKey="6Lc5NT8UAAAAAJi4k0_UcgjJLe5aa1XimmvSfwEg"
+                  (resolved)="radicarTramite()">
+      </re-captcha>
+    </form>
+  </div>
+
+</p-dialog>
+
+<p-steps [model]="items" styleClass="steps-custom" [(activeIndex)]="activeIndex" [readonly]="false"
+  [attr.step1-valid]="isValidDatosTramite()"
+  [attr.step2-valid]="isValidDatosRemitente()"
+  [attr.step3-valid]="isValidDatosDocumentosTramite()"
+></p-steps>
+
+<section id="content">
+  <div class="inner">
+    <div>
+      <app-datos-tramite #datosTramite [sharedData]="sharedData" [ngClass]="{'hidden':activeIndex != 0}"></app-datos-tramite>
+      <app-datos-remitente #datosRemitente [sharedData]="sharedData" [ngClass]="{'hidden':activeIndex != 1}"
+                           [tipoTramiteControl]="datosTramite.form.get('tipoTramite')">
+      </app-datos-remitente>
+      <app-documentos-tramite #datosDocumentosTramite [sharedData]="sharedData" [ngClass]="{'hidden':activeIndex != 2}"
+                              [tipoTramiteControl]="datosTramite.form.get('tipoTramite')">
+      </app-documentos-tramite>
+    </div>
+    <div style="text-align: right">
+      <button pButton type="button" [label]="'GENERALES.BUTTONS.CANCELAR' | translate" (click)="goToModuleSelection()"
+              style="width: auto; margin-left: 12px; margin-bottom: 10px" title="Está seguro de cancelar la información se perderá." >
+      </button>
+      <button pButton type="button" label="{{'GENERALES.BUTTONS.ATRAS' | translate}}" *ngIf="activeIndex !== 0"
+              style="width: auto; margin-left: 12px; margin-bottom: 10px" (click)="previousStep()" title="Está seguro de regresar la información ya fue ingresada.">
+      </button>
+      <button pButton type="button" label="{{'GENERALES.BUTTONS.CONTINUAR' | translate}}" *ngIf="activeIndex !== 2"
+              style="width: auto; margin-left: 12px; margin-bottom: 10px" (click)="nextStep()" title="Está seguro de la información ingresada.">
+      </button>
+      <button pButton type="button" label="{{'GENERALES.BUTTONS.RADICAR' | translate}}" class="ui-button ui-button-danger" *ngIf="activeIndex == 2"
+              style="width: auto; margin-left: 12px; margin-bottom: 10px" (click)="showRadicarConfirm = true">
+      </button>
+      <!--<button pButton type="button" label="{{'GENERALES.BUTTONS.RADICAR' | translate}}" class="ui-button ui-button-danger" *ngIf="activeIndex == 2"
+              style="width: auto; margin-left: 12px; margin-bottom: 10px" (click)="radicarTramite()">
+      </button>-->
+    </div>
+  </div>
+</section>
+
+<p-dialog header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.MENSAJES.TRAMITE_REGISTRADO' | translate}}" [contentStyle]="{'overflow':'visible'}" *ngIf="tramites"
+          [(visible)]="showSuccessUpdateDialog" [width]="800" modal="modal" [responsive]="true">
+  <div class="ui-g ui-fluid table-dialog">
+    <p [innerHTML]="'FORMS.RADICAR_TRAMITES_SERVICIOS.MENSAJES.TRAMITE_REGISTRADO_EXITO' | translate: {'nombreTramite':nombreTramite}"></p>
+    <div class="ui-g-4 thead">
+      <label style="display: block">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DEPENDENCIA' | translate}}</label>
+    </div>
+    <div class="ui-g-4 thead">
+      <label style="display: block">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.NM_RADICADO' | translate}}</label>
+    </div>
+    <div class="ui-g-4 thead">
+      <label style="display: block">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.COD_SEGURIDAD' | translate}}</label>
+    </div>
+
+    <div class="ui-g-12 ui-fluid" *ngFor="let tramite of tramites">
+      <div class="ui-g-4 td"> {{tramite?.nombreDireccion}}</div>
+      <div class="ui-g-4 td"> {{tramite?.numeroRadicado}}</div>
+      <div class="ui-g-4 td"> {{tramite?.codigoSeguridad}}</div>
+    </div>
+
+    <p>
+        <b>{{'FORMS.RADICAR_TRAMITES_SERVICIOS.NOTA' | translate}}</b> {{'FORMS.RADICAR_TRAMITES_SERVICIOS.INFO_ENVIADA_CORREO_ELECT' | translate}}
+    </p>
+
+  </div>
+  <p-footer>
+    <button pButton type="button" class="ui-button-info" label="{{'GENERALES.BUTTONS.ACEPTAR' | translate}}" (click)="goToModuleSelection();"
+            style="width: auto; margin-left: 12px; margin-bottom: 10px">
+    </button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Confirmar radicación de trámite" [width]="480" [(visible)]="showRadicarConfirm">
+  <div class="ui-g ui-fluid table-dialog">
+    <div class="ui-g-12 thead">
+      <label>{{'FORMS.RADICAR_TRAMITES_SERVICIOS.SEGURO_RADICAR_TRAMITE' | translate}}</label>
+    </div>
+    <p-footer>
+      <button pButton type="button" class="ui-button-info" label="{{'GENERALES.DECISION.SI' | translate}}" (click)="showRadicarConfirm = false; recaptchaSolicitudRadicar();"
+              style="width: auto; margin-right: 12px; margin-bottom: 10px; float: right; padding: 0 1em">
+      </button>
+      <button pButton type="button" class="ui-button-info" label="{{'GENERALES.DECISION.NO' | translate}}" (click)="showRadicarConfirm = false"
+              style="width: auto; margin-right: 12px; margin-bottom: 10px; float: right; padding: 0 1em">
+      </button>
+    </p-footer>
+  </div>
+</p-dialog>

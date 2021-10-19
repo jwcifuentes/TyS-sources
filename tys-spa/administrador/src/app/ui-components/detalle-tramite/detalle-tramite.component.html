@@ -1,0 +1,636 @@
+<p-growl [(value)]="model.msgs" life="6000"></p-growl>
+
+<section id="content">
+  <div class="inner">
+
+    <br/>
+    <br/>
+    <br/>
+    <h2>Modulo Administración Trámites </h2>
+
+    <button pButton type="button"
+            [label]="(model.tramite.permiteActualizacion ? 'Des' : 'H') + 'abilitar'"
+            class="ui-button-info button-for-panel" (click)="cambiarEstado()"
+            style="float: right; width: 10em !important">
+    </button>
+
+    <form [formGroup]="model.complexForm">
+      <table style="width:85%;" cellspacing="10" cellpadding="10">
+        <tr>
+          <td class="column_label">
+            <span class="lb">TIPO TRAMITE</span>
+          </td>
+          <td class="column_input">
+            <label class="large-input">{{model.tramite.nombre}}</label>
+          </td>
+        </tr>
+      </table>
+
+      <br/>
+
+      <div class="ui-g ui-fluid">
+
+        <!--tipoDocumento-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="tipoDocumento">TIPO DOCUMENTO QUE SE EMITE</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="model.listTipoDocEmiteItem"
+                          id="tipoDocumento"
+                          formControlName="tipoDocumento"
+                          placeholder="SELECCIONE UNA OPCION"
+                          [autoWidth]="false"
+              >
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="isInvalid('tipoDocumento')">
+                {{ getErrorMessage('tipoDocumento') }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!--reglaAsignacion-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="reglaAsignacion">REGLA DE ASIGNACION - ASIGNADOR</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="model.listReglaAsignacionItem"
+                          lazy="false"
+                          id="reglaAsignacion"
+                          [formControl]="model.complexForm.controls['reglaAsignacion']"
+                          placeholder="Seleccione"
+                          [autoWidth]="false"
+              >
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations.reglaAsignacion">
+                {{ validations.reglaAsignacion }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!--numeroDirecciones-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="numeroDirecciones">NUMERO DIRECCIONES PERMITIDAS</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="model.listNumDirecciones"
+                          lazy="false"
+                          id="numeroDirecciones"
+                          [formControl]="model.complexForm.controls['numeroDirecciones']"
+                          placeholder="SELECCIONE UNA OPCION"
+                          [autoWidth]="false"
+              >
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="isInvalid('numeroDirecciones')">
+                {{ getErrorMessage('numeroDirecciones') }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!--tieneSustanciadores-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <label class="lb" for="tieneSustanciadores">¿TIENE SUSTANCIADORES DE APOYO?</label>
+
+            <div class="ui-g-12 md-checkboxfield">
+              <p-checkbox id="tieneSustanciadores" [formControl]="model.complexForm.controls['tieneSustanciadores']"
+                          binary="true"
+                          label="(SELECCIONE SI APLICA)"></p-checkbox>
+            </div>
+          </div>
+        </div>
+
+
+        <!--tiempoGestion-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="tiempoGestion">TIEMPO GESTION DEL TRAMITE</label>
+
+            <div class="ui-g-12">
+                <span class="md-inputfield">
+                  <input type="text" pInputText class="large-input" id="tiempoGestion"
+                         [formControl]="model.complexForm.controls['tiempoGestion']"
+                  >
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="isInvalid('tiempoGestion')">
+                    {{ getErrorMessage('tiempoGestion') }}
+                  </div>
+                </span>
+            </div>
+          </div>
+        </div>
+
+        <!--unidadTiempo-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="unidadTiempo">UNIDAD DE TIEMPO</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="model.listUnidadTiempoItem"
+                          lazy="false"
+                          id="unidadTiempo"
+                          [formControl]="model.complexForm.controls['unidadTiempo']"
+                          placeholder="SELECCIONE UNA OPCION"
+                          [autoWidth]="false"
+              >
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="isInvalid('unidadTiempo')">
+                {{ getErrorMessage('unidadTiempo') }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <!--tieneSustanciadores-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <label class="lb" for="subdireccionInspeccion">¿REQUIERE PEDIR CONCEPTO DE SUBDIRECCION DE
+              INSPECCION?</label>
+
+            <div class="ui-g-12 md-checkboxfield">
+              <p-checkbox id="subdireccionInspeccion"
+                          [formControl]="model.complexForm.controls['subdireccionInspeccion']" binary="true"
+                          label="(SELECCIONE SI APLICA)"></p-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <!--soloRecepcion-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <label class="lb" for="soloRecepcion">¿TRAMITE SOLO RECEPCION?</label>
+
+            <div class="ui-g-12 md-checkboxfield">
+              <p-checkbox id="soloRecepcion" formControlName="soloRecepcion" binary="true"
+                          (onChange)="model.onChangeSoloRecepcion($event)"
+                          label="(SELECCIONE SI APLICA)"></p-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <!--estado-->
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <div class="ui-g form-group">
+            <label class="lb" for="estado">ACTIVAR TRÁMITE</label>
+
+            <div class="ui-g-12 md-checkboxfield">
+              <p-checkbox id="estado" [formControl]="model.complexForm.controls['estado']" binary="true"
+                          label="(SELECCIONE SI APLICA)"></p-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <!--descripcion-->
+        <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="descripcionTramite">DESCRIPCIÓN</label>
+
+            <div class="ui-g-12 md-inputfield">
+                <textarea rows="8" cols="70" pInputTextarea
+                          id="descripcionTramite"
+                          [formControl]="model.complexForm.controls['descripcionTramite']"
+                ></textarea>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="isInvalid('descripcionTramite')">
+                {{ getErrorMessage('descripcionTramite') }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div formArrayName="urlTramites" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+             *ngFor="let item of getControlAsArrayForm('urlTramites').controls; let i = index;"
+        >
+          <div [formGroupName]="i">
+            <div class="ui-sm-10 ui-md-10 ui-g-10 ui-lg-10">
+              <div class="ui-g form-group">
+                <span class="mandatory">*</span>
+                <label class="lb" for="{{'url-'+i}}">Url {{i+1}}</label>
+                <div class="ui-g-12">
+                  <span class="md-inputfield">
+                    <input class="large-input" type="text" id="{{'url-'+i}}"
+                           formControlName="url">
+                    <div class="ui-message ui-messages-error"
+                         *ngIf="isInvalidAbsControl(item.get('url'))">
+                    {{ getErrorMessageAbsControl(item.get('url')) }}
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!--tieneSustanciadores-->
+            <div class="ui-sm-2 ui-md-2 ui-g-2 ui-lg-2">
+              <div class="ui-g form-group">
+                <label class="lb" for="{{'esVisible'+i}}">¿Es Visible?</label>
+                <div class="ui-g-12 md-checkboxfield">
+                  <p-checkbox id="{{'esVisible'+i}}" binary="true" formControlName="esVisible"
+                              label=""></p-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <br/>
+    <br/>
+    <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" [toggleable]="true"
+                legend="Tipos Documentales Asociados Tramite">
+      <p-panel custom-panel no-borders>
+        <div class="ui-g ui-fluid">
+          <div class="ui-g-12">
+            <!--tpgDocumento-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <span class="mandatory">*</span>
+                <label class="lb" for="tpgDocumento">TIPO DOCUMENTAL</label>
+
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="model.listTipoDocumental" filter="true"
+                              [disabled]="this.model.tipoDocumentalTramite.id"
+                              lazy="false"
+                              id="tpgDocumento"
+                              [formControl]="model.complexForm.controls['tpgDocumento']"
+                              placeholder="SELECCIONE UNA OPCION"
+                              [autoWidth]="false"
+
+                  >
+                  </p-dropdown>
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="isInvalid('tpgDocumento')">
+                    {{ getErrorMessage('tpgDocumento') }}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!--descripcion-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <span class="mandatory">*</span>
+                <label class="lb" for="descripcion">DESCRIPCIÓN</label>
+
+                <div class="ui-g-12 md-inputfield">
+                <textarea rows="13" cols="70" pInputTextarea
+                          id="descripcion"
+                          [formControl]="model.complexForm.controls['descripcion']"
+                ></textarea>
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="isInvalid('descripcion')">
+                    {{ getErrorMessage('descripcion') }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--estado-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="esRequerido">DOCUMENTO OBLIGATORIO</label>
+
+                <div class="ui-g-12 md-checkboxfield">
+                  <p-checkbox id="esRequerido" [formControl]="model.complexForm.controls['esRequerido']" binary="true"
+                              label="(SELECCIONE SI APLICA)"></p-checkbox>
+                </div>
+              </div>
+            </div>
+            <!--estadoTpDoc-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="estadoTpDoc">ACTIVAR TIPO DOCUMENTAL</label>
+
+                <div class="ui-g-12 md-checkboxfield">
+                  <p-checkbox id="estadoTpDoc" [formControl]="model.complexForm.controls['estadoTpDoc']" binary="true"
+                              label="(SELECCIONE SI APLICA)"></p-checkbox>
+                </div>
+              </div>
+            </div>
+            <!--tienePactos-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="tienePactos">¿La entidad tiene pactos o convenciones colectivas?</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="(tienePactosOptions$ | async) | dropdownSingleItem"
+                              id="tienePactos"
+                              [formControl]="model.complexForm.controls['tienePactos']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false">
+                  </p-dropdown>
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.tienePactos">
+                    {{ validations.tienePactos }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--tieneReglamento-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="tieneReglamento">¿Su empresa está obligada a tener reglamento de trabajo?</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="tieneReglamentoOptions$ | async | dropdownSingleItem"
+                              id="tieneReglamento"
+                              [formControl]="model.complexForm.controls['tieneReglamento']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false"
+                  >
+                  </p-dropdown>
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.tieneReglamento">
+                    {{ validations.tieneReglamento }}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!--tipoSocietarioSas-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="tipoSocietarioSas">¿Su empresa corresponde al tipo societario SAS?</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="tipoSocietarioSasOptions$ | async | dropdownSingleItem"
+                              id="tipoSocietarioSas"
+                              [formControl]="model.complexForm.controls['tipoSocietarioSas']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false"
+                  >
+                  </p-dropdown>
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.tipoSocietarioSas">
+                    {{ validations.tipoSocietarioSas }}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!--radicadaPor-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="radicadaPor">Solicitud radicada por:</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="radicadaPorOptions$ | async | dropdownItem" filter="true"
+                              id="radicadaPor"
+                              [formControl]="model.complexForm.controls['radicadaPor']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false"
+                  >
+                  </p-dropdown>
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.radicadaPor">
+                    {{ validations.radicadaPor }}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!--justificacionSolicitud-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="justificacionSolicitud">La justificación de su solicitud es de carácter</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="justificacionSolicitudOptions$ | async | dropdownItem" filter="true"
+                              id="justificacionSolicitud"
+                              [formControl]="model.complexForm.controls['justificacionSolicitud']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false"
+                  >
+                  </p-dropdown>
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.justificacionSolicitud">
+                    {{ validations.justificacionSolicitud }}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!--gradoAsociacion-->
+            <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <span class="mandatory">*</span>
+                <label class="lb" for="gradoAsociacion">Indique el grado de la asociación de pensionados</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="gradoAsociacionOptions$ | async | dropdownItem" filter="true"
+                              id="gradoAsociacion"
+                              [formControl]="model.complexForm.controls['gradoAsociacion']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false"
+                  >
+                  </p-dropdown>
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.gradoAsociacion">
+                    {{ validations.gradoAsociacion }}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!--tipoGestion-->
+            <div *ngIf="model.tramite.id == 5" class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="justificacionSolicitud">Tipo de gestión</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="tipoGestionOptions$ | async | dropdownItem" filter="true"
+                              id="tipoGestion"
+                              [formControl]="model.complexForm.controls['tipoGestion']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false"
+                  >
+                  </p-dropdown>
+
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.tipoGestion">
+                    {{ validations.tipoGestion }}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!--tipoEntidad-->
+            <div *ngIf="model.tramite.id == 22" class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="tipoEntidad">Tipo Entidad</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="tipoEntidadOptions$ | async | dropdownItem" filter="true"
+                              id="tipoEntidad"
+                              [formControl]="model.complexForm.controls['tipoEntidad']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false"
+                  >
+                  </p-dropdown>
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.tipoEntidad">
+                    {{ validations.tipoEntidad }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--tipoParentesco-->
+            <div *ngIf="model.tramite.id == 22" class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+              <div class="ui-g form-group">
+                <label class="lb" for="tipoParentesco">Tipo Parentesco</label>
+                <div class="ui-g-12 md-dropdownfield">
+                  <p-dropdown [options]="tipoParentescoOptions$ | async | dropdownItem" filter="true"
+                              id="tipoParentesco"
+                              [formControl]="model.complexForm.controls['tipoParentesco']"
+                              placeholder="Seleccione"
+                              [autoWidth]="false"
+                  >
+                  </p-dropdown>
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.tipoEntidad">
+                    {{ validations.tipoEntidad }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <button pButton type="button" label="Cancelar" class="ui-button-info button-for-panel"
+                      (click)="cancelarTipoDocumentalTramite()"
+                      *ngIf="model.tipoDocumentalTramite.id"
+                      style="float: right; width: auto; margin-left: 12px; margin-bottom: 10px">
+              </button>
+
+              <button pButton type="button" [label]="model.tipoDocumentalTramite.id? 'Modificar' :'Agregar'"
+                      class="ui-button-info button-for-panel" (click)="agregar()"
+                      [disabled]="!model.tramite.permiteActualizacion"
+                      style="float: right; width: auto; margin-left: 12px; margin-bottom: 10px">
+              </button>
+            </div>
+            <p-panel custom-panel="" no-borders="">
+              <div class="ui-g ui-fluid">
+
+                <div class="ui-g-12">
+                  <p-dataTable [value]="model.tiposDocumentalesTramite"
+                               [paginator]="true" [rows]="10" [responsive]="true"
+                               emptyMessage="No se encontraron datos">
+
+                    <p-column field="nombre" header="Nombre Tipo Documental " [style]="{'width':'20%'}"></p-column>
+                    <p-column header="Obligatorio " [style]="{'width':'10%', 'text-align':'center'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        <img *ngIf="tipoDoctramite.esRequerido"
+                             alt="SI" title="SI"
+                             class="thumbs-up custom-icons"/>
+                        <img *ngIf="!tipoDoctramite.esRequerido"
+                             alt="NO" title="NO"
+                             class="custom-icons thumbs-down"/>
+                      </ng-template>
+                    </p-column>
+                    <p-column field="descripcion" header="¿La entidad tiene pactos o convenciones colectivas?"
+                              [style]="{'width':'10%'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        {{tipoDoctramite.indTienePactosColectivos ? 'Si' : 'No'}}
+                      </ng-template>
+                    </p-column>
+                    <p-column field="descripcion" header="¿Su empresa esta obligada a tener reglamento de trabajo?"
+                              [style]="{'width':'10%'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        {{tipoDoctramite.indTieneReglamentoTrabajo ? 'Si' : 'No'}}
+                      </ng-template>
+                    </p-column>
+                    <p-column field="descripcion" header="¿Su empresa corresponde al tipo propietario SAS?"
+                              [style]="{'width':'10%'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        {{tipoDoctramite.indTieneAsociacionSAS ? 'Si' : 'No'}}
+                      </ng-template>
+                    </p-column>
+                    <p-column field="descripcion" header="Solicitud radicada por"
+                              [style]="{'width':'15%'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        {{tipoDoctramite.nombreSolicitadoPor}}
+                      </ng-template>
+                    </p-column>
+                    <p-column field="descripcion" header="La justificación de su solicitud es de caracter"
+                              [style]="{'width':'10%'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        {{tipoDoctramite.nombreJustSolicitud}}
+                      </ng-template>
+                    </p-column>
+                    <p-column field="descripcion" header="Indeque el grado de la asociación de pensionados"
+                              [style]="{'width':'10%'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        {{tipoDoctramite.nombreGradoAsociacion}}
+                      </ng-template>
+                    </p-column>
+                    <p-column *ngIf="model.tramite.id == 5" field="descripcion" header="Tipo de gestión"
+                              [style]="{'width':'10%', 'word-break':'break-word'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        {{tipoDoctramite.nombreTipoGestion}}
+                      </ng-template>
+                    </p-column>
+                    <p-column header="Estado " [style]="{'width':'10%', 'text-align':'center'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        <img *ngIf="tipoDoctramite.estado" alt="Activar"
+                             title="Activo Tipo Documental"
+                             class="custom-icons done-button"/>
+                        <img *ngIf="!tipoDoctramite.estado"
+                             alt="Inactivo"
+                             title="Inativo Tipo Documental"
+                             class="custom-icons delete-button"/>
+                      </ng-template>
+                    </p-column>
+
+                    <p-column header="Acciones" [style]="{'width':'10%', 'text-align':'center'}">
+                      <ng-template pTemplate="body" let-tipoDoctramite="rowData">
+                        <button type="button" pButton icon="fa-search" class="ui-button-info custom-button-info"
+                                (click)="verDetalle(tipoDoctramite)"></button>
+                      </ng-template>
+                    </p-column>
+
+                  </p-dataTable>
+                </div>
+              </div>
+            </p-panel>
+
+          </div>
+        </div>
+      </p-panel>
+    </p-fieldset>
+
+
+    <div class="buttons-panel">
+      <button pButton type="button" label="Cancelar" class="ui-button-info button-for-panel"
+              (click)="cancelar()"></button>
+      <button pButton type="button" label="Enviar" class="ui-button-info button-for-panel" (click)="enviar()"
+              [disabled]="!model.tramite.permiteActualizacion"></button>
+    </div>
+
+    <br/>
+    <br/>
+
+
+  </div>
+</section>

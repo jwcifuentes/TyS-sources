@@ -1,0 +1,53 @@
+<p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+            legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DIRECCIONES_TERRITORIALES.TITULO_FIELDSET' | translate}}"
+            [toggleable]="true">
+
+
+  <!--direccionTerritorial-->
+  <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+    <div class="ui-g form-group">
+      <label class="lb" for="direccionTerritorial">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DIRECCIONES_TERRITORIALES.DIRECCION_TERRITORIAL' | translate}}</label>
+      <div class="ui-g-12 md-dropdownfield">
+        <p-dropdown [options]="options | dropdownItem" filter="true"
+                    id="direccionTerritorial"
+                    placeholder="Seleccione una Opción"
+                    [autoWidth]="false"
+                    [(ngModel)]="currentValue"
+                    filter ="true"
+                    title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DIRECCIONES_TERRITORIALES.SELECCIONE_DIRECCION_TERRITORIAL' | translate}}"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+
+    <button pButton type="button" label="{{'GENERALES.BUTTONS.AGREGAR' | translate}}" (click)="add()"  [disabled]="!currentValue"
+            *ngIf="(cantidadPermitidas == '1' && collection.length == 0) || (cantidadPermitidas == 'N')"
+            style="float: right; width: auto; margin-left: 12px; margin-bottom: 10px"
+            title="{{'GENERALES.BUTTONS.AGREGAR_TITULO' | translate}}">
+    </button>
+  </div>
+
+  <p-panel custom-panel no-borders>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+        <p-dataTable [value]="collection"
+                     [paginator]="true" [rows]="10" [responsive]="true" emptyMessage="{{'GENERALES.DATATABLE.NO_SE_ENCONTRARON_RESULTADOS' | translate}}">
+
+          <p-column field="nombre" header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DIRECCIONES_TERRITORIALES.DATATABLE.DIRECCION_TERRITORIAL_ASOCIADA' | translate}}"></p-column>
+
+          <p-column header="Opciones" [style]="{'width':'120px','text-align':'center'}">
+            <ng-template let-i="rowIndex" pTemplate="item">
+              <button type="button" pButton (click)="remove(i)"
+                      icon="fa-trash" class="ui-button-info custom-button-info"></button>
+            </ng-template>
+          </p-column>
+
+        </p-dataTable>
+      </div>
+    </div>
+  </p-panel>
+
+</p-fieldset>

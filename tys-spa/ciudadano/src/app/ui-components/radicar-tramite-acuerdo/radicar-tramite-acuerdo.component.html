@@ -1,0 +1,39 @@
+<section id="content">
+  <div class="inner">
+    <br/>
+    <h2>{{'FORMS.RADICAR_TRAMITE_ACUERDO.TITULO' | translate}}</h2>
+    <br>
+    <div class="ui-g ui-fluid">
+      <p-panel class="ui-sm-12 ui-sm-12 ui-lg-12" custom-panel no-borders>
+        <div class="ui-g ui-fluid">
+          <div class="ui-g-12">
+            <h3 class="titulo">{{'FORMS.RADICAR_TRAMITE_ACUERDO.BIENVENIDO' | translate}}</h3>
+            <p class="home-anounce">{{'FORMS.RADICAR_TRAMITE_ACUERDO.ANUNCIO' | translate}}
+            </p>
+            <div class="conceptos">
+              <p>{{'FORMS.RADICAR_TRAMITE_ACUERDO.CONCEPTO_A' | translate}}</p>
+              <p>{{'FORMS.RADICAR_TRAMITE_ACUERDO.CONCEPTO_B' | translate}}</p>
+              <p>{{'FORMS.RADICAR_TRAMITE_ACUERDO.CONCEPTO_C' | translate}}</p>
+              <p>{{'FORMS.RADICAR_TRAMITE_ACUERDO.CONCEPTO_D' | translate}}
+              </p>
+            </div>
+            <p class="home-anounce">
+              {{'FORMS.RADICAR_TRAMITE_ACUERDO.ANUNCIO_FIN' | translate}}
+            </p>
+          </div>
+        </div>
+      </p-panel>
+      <div class="ui-g-12" style="text-align: center">
+        <strong style="display: block">{{'FORMS.RADICAR_TRAMITE_ACUERDO.ACEPTO' | translate}}</strong>
+        <p-radioButton name="accept" [value]="true" label="{{'GENERALES.DECISION.SI' | translate}}" [(ngModel)]="accept"></p-radioButton>
+        <p-radioButton name="accept" [value]="false" label="{{'GENERALES.DECISION.NO' | translate}}" [(ngModel)]="accept"></p-radioButton>
+      </div>
+      <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" style="text-align: center;padding: 3px">
+        <button pButton type="button" label="{{'GENERALES.BUTTONS.ENVIAR' | translate}}" (click)="goToRadicarTramite()" [disabled]="!accept"
+                style="width: auto;">
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+

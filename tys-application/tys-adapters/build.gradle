@@ -1,0 +1,33 @@
+apply plugin: 'java-library'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+//    compile group: 'org.springframework', name: 'spring-core', version: SPRING_VERSION
+//    compile group: 'org.springframework', name: 'spring-context', version: SPRING_VERSION
+ //   compile group: 'org.springframework', name: 'spring-beans', version: SPRING_VERSION
+    
+	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: SERVLET_API_VERSION
+    
+    compile group: 'org.springframework', name: 'spring-web', version: SPRING_VERSION
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: JACKSON_VERSION
+    
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: LOG4J2
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: LOG4J2
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-context-support
+    compile group: 'org.springframework', name: 'spring-context-support', version: SPRING_VERSION
+
+    // https://mvnrepository.com/artifact/com.sun.mail/javax.mail
+    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
+    implementation("com.squareup.okhttp3:okhttp:4.3.1")
+
+    compile project(':tys-commons')
+}
+

@@ -1,0 +1,127 @@
+<form [formGroup]="form">
+  <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES_VINCULACION_FIELD_SET' | translate}}"
+                [toggleable]="true">
+    <!--nombrePractica -->
+    <div class="ui-sm-12 ui-md-6 ui-g-8 ui-lg-8">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="nombrePractica" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.INGRESE NOMBRE_PRACTICA' | translate}}">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.NOMBRE_PRACTICA'| translate}}
+        </label>
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="nombrePractica" (keypress)="this.restrictAlphaNames($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="nombrePractica"
+                   maxlength="100" (blur)="listenForBlurEvents(['nombrePractica'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.INTRDUZCA_PRACTICA' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['nombrePractica']">
+                {{ validations['nombrePractica'] | translate }}
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--practicaGratuita -->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+      <div class="ui-g form-group">
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+            <span class="mandatory">*</span>
+             <p-checkbox formControlName="practicaGratuita" binary="true"
+                         name="practicaGratuita"
+                         label="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.PRACTICA_GRATUITA' | translate}}"
+                         id="practicaGratuita"
+             >
+             </p-checkbox>
+            <div class="ui-message ui-messages-error" *ngIf="validations['practicaGratuita']">
+                {{ validations['practicaGratuita'] | translate }}
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--datosAuxilioPractica-->
+    <app-auxilio-practica
+      [parentForm]="this.form"
+    >
+    </app-auxilio-practica>
+    <p-panel custom-panel no-borders>
+      <div class="ui-g ui-fluid container-center">
+        <div class="ui-g-6">
+          <p-dataTable [value]="objetoPracticaOptions$ | async" [paginator]="false" [rows]="10" [responsive]="true"
+                       emptyMessage="{{'FORMS.ACTUALIZAR_TRAMITE.NO_ENCONTRARON_DOCUMENTO' | translate}}"
+          >
+            <p-column
+              header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.AUXILIO_PRACTICA.SELECCIONAR' | translate}}"
+              [style]="{'width':'120px','text-align':'center', 'padding': '15px 15px 15px 15px'}"
+            >
+              <ng-template let-i="rowIndex" pTemplate="item" let-rowData>
+                <p-checkbox [formControl]="getObjectoPracticaControl().controls[i].get('isSelected')" binary="true"></p-checkbox>
+              </ng-template>
+            </p-column>
+            <p-column
+              header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.AUXILIO_PRACTICA.OBJECTO_PRACTICA'| translate}}"
+            >
+              <ng-template let-i="rowIndex" pTemplate="item" let-rowData>
+                {{getObjectoPracticaControl().controls[i].get('objetoPractica').value}}
+              </ng-template>
+            </p-column>
+          </p-dataTable>
+        </div>
+      </div>
+    </p-panel>
+    <br/>
+    <!--descripcionDetallada-->
+    <div class="ui-g-12 ui-lg-12">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label
+          class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.AUXILIO_PRACTICA.DESCRIPICION' | translate}}</label>
+        <div class="ui-g-12 md-inputfield">
+          <textarea [rows]="3" pInputTextarea style="width: 100%;"
+                    placeholder="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.PLACEHOLDER_DESCRIPCION' | translate}}"
+                    (blur)="listenForBlurEvents(['descripcionDetallada'])" maxlength="150"
+                    autoResize="true" formControlName="descripcionDetallada"></textarea>
+          <div class="ui-message ui-messages-error" *ngIf="validations['descripcionDetallada']">
+            {{ validations['descripcionDetallada'] | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-registro-horario #registroHorario class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                          (onValid)="onRegistroHorasSemanalesValid()"
+                          (onInvalid)="onRegistroHorasSemanalesInvalid()"
+                          (total)="onRegistroHorasSemanalesTotal($event)"
+                          [diasLaborales]="diasLaborales"
+    >
+    </app-registro-horario>
+    <div *ngIf="horasTrabajoSemanal.invalid && (horasTrabajoSemanal.dirty || horasTrabajoSemanal.touched)">
+      <div *ngIf="horasTrabajoSemanal.errors.min" class="ui-message ui-messages-error">
+        El Total de horas debe ser superior a 0.
+      </div>
+    </div>
+    <!-- nombre de la entidad/ instutucion -->
+    <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="nombreEntidadInstitucion" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.NOMBRE_ENTIDAD' | translate}}">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.NOMBRE_ENTIDAD'| translate}}
+        </label>
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="nombreEntidadInstitucion"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="nombreEntidadInstitucion"
+                   maxlength="100" (blur)="listenForBlurEvents(['nombreEntidadInstutucion'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.INTRUDUZCA_NOMBRE_ENTIDAD' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['nombreEntidadInstitucion']">
+                {{ validations['nombreEntidadInstitucion'] | translate }}
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </p-fieldset>
+
+  </form>
+

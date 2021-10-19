@@ -1,0 +1,571 @@
+/* You can add global styles to this file, and also import other style files */
+
+$primaryColor: #2e967d;
+$dangerColor: #f44336;
+
+@import "./assets/custom.css";
+@import "./assets/index.css";
+
+img.thumbs-down {
+  content: url("./assets/icons/thumb-down.png");
+}
+
+img.thumbs-up {
+  content: url("./assets/icons/thumb-up.png");
+}
+
+img.done-button {
+  content: url("./assets/icons/done-button.png");
+}
+
+img.delete-button {
+  content: url("./assets/icons/delete-button.png");
+}
+
+img.delete-button {
+  content: url("./assets/icons/delete-button.png");
+}
+
+li.ui-menuitem.ui-menuitem-custom.ui-widget.ui-corner-all {
+  width: 100%;
+}
+
+label.large-input {
+  width: 100%;
+  font-size: 18px;
+  color: #006850;
+  font-weight: bold;
+  text-indent: 10px;
+  text-overflow: ellipsis;
+  text-align: justify;
+}
+
+.ui-dialog-content {
+  height: auto !important;
+}
+
+.ui-dialog {
+  //overflow: scroll;
+}
+
+.ui-dialog-content.ui-widget-content {
+  overflow: visible !important;
+}
+
+.ui-datepicker {
+  min-width: 20rem !important;
+}
+
+p-radioButton {
+  margin-right: 10px;
+}
+
+[no-borders] {
+  .ui-widget-content {
+    border: 0;
+  }
+}
+
+textarea.no-resize-x {
+  max-width: 100%;
+  min-width: 100%
+}
+
+[custom-panel] {
+
+  &[small-title] {
+
+    .ui-panel-titlebar.ui-widget-header {
+      font-size: 1rem;
+    }
+
+  }
+  .ui-panel-titlebar.ui-widget-header {
+    background: transparent;
+    color: #222;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-bottom: 0;
+    border-radius: 0;
+    padding: 0 5px;
+  }
+}
+
+p-dataTable input.ui-inputtext.ui-widget {
+  border-color: gray;
+  border-width: 1px;
+}
+
+.ui-progress-spinner {
+  position: absolute;
+  top: calc(50% - 100px);
+  left: calc(50% - 50px);
+  width: 100px;
+  height: 100px;
+  display: block;
+  z-index: 1002;
+
+  .ui-progress-spinner-svg .ui-progress-spinner-circle {
+    fill: transparent;
+  }
+}
+
+.ui-dialog {
+  //overflow: scroll;
+}
+
+.ui-dialog-content.ui-widget-content {
+  overflow: visible !important;
+}
+
+.ui-datatable-header {
+  text-align: left !important;
+  min-height: 35px;
+}
+
+thead th {
+  background-color: #eee !important;
+}
+
+thead tr th {
+  overflow: inherit !important;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-datatable-even.ui-state-highlight {
+  background-color: #26C6DA !important;
+  color: #ffffff;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-datatable-odd.ui-state-highlight {
+  background-color: #26C6DA !important;
+  color: #ffffff;
+}
+
+tbody tr {
+  background-color: #ffffff !important;
+}
+
+.short-table {
+  width: 25%;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media print {
+
+  @page {
+    size: auto;   /* auto is the initial value */
+    margin: 0mm;  /* this affects the margin in the printer settings */
+  }
+
+  .topbar, .layout-menu, .layout-mask, .layout-main {
+    display: none;
+  }
+
+  * {
+    color: #000;
+    background-color: #fff;
+  }
+
+  #ticket {
+    z-index: 999999999999999999;
+    visibility: visible;
+    position: relative;
+    color: black;
+    display: block;
+    margin: 0 auto;
+  }
+
+}
+
+.dialog-auto-with {
+  max-width: 80%;
+}
+
+.ui-g-1,
+.ui-g-2,
+.ui-g-3,
+.ui-g-4,
+.ui-g-5,
+.ui-g-6,
+.ui-g-7,
+.ui-g-8,
+.ui-g-9,
+.ui-g-10,
+.ui-g-11,
+.ui-g-12 {
+  padding: 0 6px 6px 6px;
+
+}
+
+body .ui-panel .ui-panel-content {
+  padding: 8px 0 8px 0;
+}
+
+body .ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler {
+  padding: .1em !important;
+  height: 1.2em !important;
+  width: 1.2em !important;
+}
+
+body .ui-fieldset {
+
+  padding-top: 16px !important;
+  margin-bottom: 16px;
+
+  [button-container] {
+    width: 100%;
+    position: relative;
+    top: -20px;
+  }
+
+  .md-inputfield {
+    .large-input, p-calendar input[type="text"] {
+      height: 52px;
+    }
+  }
+}
+
+body .ui-datatable .ui-paginator {
+  padding: .125em;
+}
+
+p-dataTable .ui-datatable-header .ui-widget-header {
+
+}
+
+body .ui-datatable .ui-datatable-header, body .ui-datatable .ui-datatable-footer {
+  border-radius: 3px 3px 0 0;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+
+  .ui-button {
+    height: 34px;
+  }
+}
+
+.ui-button.ui-button-icon.ui-button-icon-only {
+  font-size: .8em;
+}
+
+.layout-container .topbar .topbar-right {
+  padding: 10px 15px 0 5px;
+  position: relative;
+}
+
+.line-spacer {
+  line-height: 10px;
+  height: 10px;
+}
+
+.padding-12 {
+  padding: 12px;
+}
+
+.padding-5 {
+  padding: 5px;
+}
+
+.padding-hor-5 {
+  padding: 8px 0 8px 0;
+}
+
+.page-title {
+  margin: 5px 0 5px 10px;
+  color: #222;
+}
+
+.page-subtitle {
+  margin: 8px 0 8px 10px;
+  color: #222;
+}
+
+.text-danger {
+  color: #d43f3a;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.margin-bottom {
+  margin-bottom: 20px;
+}
+
+.text-left, [text-left] {
+  text-align: left;
+}
+
+.text-right, [text-right] {
+  text-align: right;
+}
+
+p-dataTable {
+  .md-inputfield label {
+    color: white;
+  }
+
+  .md-inputfield input:focus ~ label,
+  .md-inputfield input.ui-state-filled ~ label,
+  .md-inputfield .ui-inputwrapper-focus ~ label,
+  .md-inputfield .ui-inputwrapper-filled ~ label {
+    color: transparent;
+  }
+
+  .ui-inputtext {
+    border-color: white;
+  }
+
+  button .ui-widget:disabled, .ui-state-disabled {
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.26) inset;
+    -webkit-box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.26) inset;
+    -moz-box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.26) inset;
+    -o-box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.26) inset;
+  }
+
+  @media (max-width: 500px) {
+    p-header {
+      .ui-media-mobile-row {
+        width: 100%;
+      }
+      .md-inputfield {
+        width: calc(100% - 95px) !important;
+      }
+    }
+  }
+}
+
+.ui-button-primaryDark {
+  background-color: darken($primaryColor, 8%);
+}
+
+.fab-holder {
+  position: relative;
+}
+
+.fab-sticky-button {
+  width: auto !important;
+  position: absolute;
+  right: 0;
+  top: -30px;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: transparent !important;
+  font-size: 1.4rem !important;
+  border: 1px solid #ddd !important;
+  color: #555555 !important;
+}
+
+.fab-sticky-button:hover {
+  background-color: transparentize(#ddd, .5) !important;
+}
+
+body .form-group {
+  margin-bottom: 20px;
+
+  .mandatory {
+    padding-left: 8px;
+    color: #f44336;
+  }
+
+  label.lb {
+    color: #222;
+    display: inline-block;
+    margin-left: 8px;
+    flex: 1;
+    height: 36px;
+
+  }
+}
+
+#content .inner h2 {
+  padding-bottom: 20px;
+}
+
+body .md-checkboxfield {
+  padding: 18px;
+  background: #fafafa;
+  margin: 0 5px;
+}
+
+body .md-dropdownfield, .md-inputfield {
+
+  .large-input, p-calendar input[type="text"] {
+    width: 100%;
+    height: 48px;
+    border-radius: 2px;
+    border-width: 1px;
+    border-color: #d6d6d6;
+    font-size: 18px;
+    text-align: left;
+    color: #1B4F72;
+    border-style: solid;
+    font-weight: bold;
+    text-indent: 10px;
+    text-overflow: ellipsis;
+  }
+
+  .ui-dropdown {
+    display: block;
+  }
+
+  .ui-message {
+    border: none;
+    margin: 0;
+  }
+  .ui-messages-error {
+    color: #f44336;
+    background-color: transparent;
+    font-size: 12px;
+    position: absolute;
+  }
+
+  input.ng-touched.ng-invalid, input.ng-dirty.ng-invalid {
+    border-width: 1px;
+    border-color: $dangerColor;
+
+    .ui-inputtext:enabled:hover {
+      border-color: $dangerColor;
+    }
+
+    .ui-inputtext.ui-state-focus,
+    .ui-inputtext:focus {
+      outline: 0 none;
+      border-color: $dangerColor;
+      -moz-box-shadow: 0px 0px 5px $dangerColor;
+      -webkit-box-shadow: 0px 0px 5px $dangerColor;
+      box-shadow: 0px 0px 5px $dangerColor;
+    }
+  }
+
+}
+
+.ui-messages-tip {
+  color: $primaryColor !important;
+  padding: .25em 0;
+}
+
+span.table-text-custom {
+  padding: 8px;
+  position: relative;
+  top: -5px;
+}
+
+[padding-top] {
+  padding-top: 16px;
+}
+
+.comunicacion-detalles {
+  [padding-bottom] {
+    padding-bottom: 20px !important;
+  }
+
+  [padding-top] {
+    padding-top: 16px;
+  }
+
+  .ui-datatable-header {
+    text-align: left !important;
+  }
+  thead th {
+    background-color: #eee !important;
+  }
+
+  thead tr th {
+    overflow: inherit !important;
+  }
+
+  .ui-datatable .ui-datatable-data tr.ui-datatable-even.ui-state-highlight {
+    background-color: #26C6DA !important;
+    color: #ffffff;
+  }
+
+  .ui-datatable .ui-datatable-data tr.ui-datatable-odd.ui-state-highlight {
+    background-color: #26C6DA !important;
+    color: #ffffff;
+  }
+
+  tbody tr {
+    background-color: #ffffff !important;
+  }
+
+  [no-padding] .ui-tabview-panel.ui-widget-content {
+    padding: 0 !important;
+  }
+}
+
+.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-caption, .ui-datatable .ui-datatable-footer {
+  padding: .1em 0 .1em .75em;
+}
+
+//Login Responsive
+
+@media screen and (max-width: 800px) {
+  #header {
+    display: none;
+  }
+
+  div.centerPoint {
+    width: 60%;
+    height: auto;
+    top: 20%;
+    display: table-cell;
+
+  }
+
+  div.loginDiv {
+    clear: both;
+    width: 100%;
+  }
+
+  div.loginButtons {
+
+    .forgotButton {
+      position: initial;
+    }
+
+    .submitButton, .returnButton {
+      position: initial;
+      float: right;
+    }
+  }
+
+  div.alternateLoginDiv {
+    position: relative;
+    width: 100%;
+    top: 20px;
+    clear: both;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    a {
+      margin-left: 0;
+    }
+  }
+}
+
+@Media screen and (max-width: 600px) {
+  div.centerPoint {
+    width: 80%;
+  }
+}
+
+@Media screen and (max-width: 400px) {
+  div.centerPoint {
+    div.loginDivHeader {
+      font-size: 30px;
+      font-weight: 200;
+      span {
+        font-size: 30px;
+      }
+    }
+  }
+}
+.ui-chkbox-box.ui-state-active, .ui-radiobutton-box.ui-state-active {
+  border: 1px solid #006850;
+  background: #2e967d;
+  color: #FFFFFF;
+}
+

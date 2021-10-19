@@ -1,0 +1,41 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+    compile group: 'org.springframework', name: 'spring-core', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-context', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-beans', version: SPRING_VERSION
+    
+	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: SERVLET_API_VERSION
+    
+    compile group: 'org.springframework', name: 'spring-web', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-webmvc', version: SPRING_VERSION
+    
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: LOG4J2
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: LOG4J2
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: APACHE_COMMONS
+	compile group: 'commons-codec', name: 'commons-codec', version: APACHE_COMMONS_CODEC
+	
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: JACKSON_VERSION
+    
+    compile project(':tys-commons')
+    compile project(':tys-persistence')
+    compile project(':tys-adapters')
+
+}
+
+sourceSets {
+    main {
+        resources {
+            exclude '**/spring-config/*'
+        }
+    }
+}

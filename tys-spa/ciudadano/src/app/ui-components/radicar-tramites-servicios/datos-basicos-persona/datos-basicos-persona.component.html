@@ -1,0 +1,125 @@
+<form [formGroup]="form">
+  <!--primerNombre -->
+  <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+    <div class="ui-g form-group">
+      <span class="mandatory">*</span>
+      <label class="lb" for="primerNombre" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_PRIMER_NOMBRE' | translate}}">
+        {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.PRIMER_NOMBRE'| translate}}
+      </label>
+      <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="primerNombre" (keypress)="this.restrictAlphaNames($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="primerNombre"
+                   maxlength="25" (blur)="listenForBlurEvents(['primerNombre'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_PRIMER_NOMBRE' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['primerNombre']">
+                {{ validations['primerNombre'] | translate }}
+            </div>
+          </span>
+      </div>
+    </div>
+  </div>
+  <!--segundoNombre-->
+  <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+    <div class="ui-g form-group">
+      <label class="lb" for="segundoNombre" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_SEGUNDO_NOMBRE' | translate}}">
+        {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.SEGUNDO_NOMBRE'| translate}}
+      </label>
+      <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="segundoNombre" (keypress)="this.restrictAlphaNames($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="segundoNombre"
+                   maxlength="25" (blur)="listenForBlurEvents(['segundoNombre'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_SEGUNDO_NOMBRE' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['segundoNombre']">
+                {{ validations['segundoNombre'] | translate }}
+            </div>
+          </span>
+      </div>
+    </div>
+  </div>
+  <!--primerApellido-->
+  <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+    <div class="ui-g form-group">
+      <span class="mandatory">*</span>
+      <label class="lb" for="primerApellido"
+             title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_PRIMER_APELLIDO' | translate}}">
+        {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.PRIMER_APELLIDO'| translate}}
+      </label>
+      <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="primerApellido" (keypress)="this.restrictAlphaNames($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="primerApellido"
+                   maxlength="25" (blur)="listenForBlurEvents(['primerApellido'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_PRIMER_APELLIDO' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['primerApellido']">
+              {{ validations['primerApellido'] | translate }}
+            </div>
+          </span>
+      </div>
+    </div>
+  </div>
+  <!--segundoApellido-->
+  <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+    <div class="ui-g form-group">
+      <label class="lb" for="segundoApellido"
+             title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_SEGUNDO_APELLIDO' | translate}}">
+        {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.SEGUNDO_APELLIDO'| translate}}
+      </label>
+      <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="segundoApellido" (keypress)="this.restrictAlphaNames($event)"
+                   maxlength="25" onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                   formControlName="segundoApellido" (blur)="listenForBlurEvents(['segundoApellido'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_SEGUNDO_APELLIDO' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['segundoApellido']">
+              {{ validations['segundoApellido'] | translate }}
+            </div>
+          </span>
+      </div>
+    </div>
+  </div>
+  <!--tipoDocumento-->
+  <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+    <div class="ui-g form-group">
+      <span class="mandatory">*</span>
+      <label class="lb" for="tipoDocumento">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_DOCUMENTO' |
+        translate}}</label>
+      <div class="ui-g-12 md-dropdownfield">
+        <p-dropdown [options]="tipoDocumentoOptions$ | async | dropdownItem" filter="true" id="tipoDocumento"
+                    formControlName="tipoDocumento" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                    [autoWidth]="false"
+                    (onBlur)="listenForBlurEvents(['tipoDocumento'])"
+                    title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_DOCUMENTO' | translate}}">
+        </p-dropdown>
+        <div class="ui-message ui-messages-error" *ngIf="validations['tipoDocumento']">
+          {{ validations['tipoDocumento'] | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--nroDocumentoIdentidad-->
+  <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+    <div class="ui-g form-group">
+      <span class="mandatory">*</span>
+      <label class="lb" for="nroDocumentoIdentidad">
+        {{'GENERALES.DATOS_PERSONA.NO_DOCUMENTO_IDENTIDAD' | translate}}
+      </label>
+      <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="nroDocumentoIdentidad"
+                     formControlName="nroDocumentoIdentidad"
+                     maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false"
+                     onPaste="return false"
+                     (keypress)="this.restrictNumbers($event)"
+                     (blur)="listenForBlurEvents(['nroDocumentoIdentidad'])"
+              >
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['nroDocumentoIdentidad']">
+                {{ validations['nroDocumentoIdentidad'] | translate }}
+              </div>
+            </span>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,64 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+
+	<!-- SPRING COMMON CONFIGURATION -->
+
+	<import resource="security-config.xml" />
+	
+	<!-- LDAP CONFIGURATIONS -->
+	
+	<import resource="sc-ldap-datasources-config.xml"/>
+	
+
+	<context:property-placeholder
+		location="classpath:spring-config/application-web.properties" />
+
+	<context:annotation-config />
+	<context:component-scan base-package="co.com.mintrabajo.tys.mvc" />
+	<context:component-scan base-package="co.com.mintrabajo.tys.persistence" />
+	<context:component-scan base-package="co.com.mintrabajo.tys.boundary" />
+	<context:component-scan base-package="co.com.mintrabajo.tys.security" />
+	<context:component-scan base-package="co.com.mintrabajo.tys.adapters" />
+	<context:component-scan base-package="co.com.mintrabajo.tys.transformer" />
+
+	<!-- SPRING WEB/TASK CONFIGURATION -->
+
+	<mvc:annotation-driven />
+	<task:annotation-driven/>
+	 
+	<!-- SPRING JDBC CONFIGURATION -->
+
+	<bean id="jdbc_template" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="jdbc_name_template" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg name="dataSource" ref="dataSource" />
+	</bean>
+	
+
+
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/tramites"
+		expected-type="javax.sql.DataSource" />
+
+	
+	<!-- REST/SOAP REMOTE SERVICES -->
+
+	<bean id="wsFactory" class="co.com.mintrabajo.tys.wsfactory.WebServicesClientFactory"/>
+	<bean id="clienteTramites" class="co.com.mintrabajo.tys.adapters.integration.client.esb.JSONGenericoPortType" factory-bean="wsFactory" factory-method="buildTramitesService"/>
+	<bean id="clienteBPMTramites" class="co.com.mintrabajo.tys.adapters.integration.client.bpm.TramitesBPMPortType" factory-bean="wsFactory" factory-method="buildTramitesBPN"/>
+	<bean id="clienteECMTramites" class="co.com.mintrabajo.tys.adapters.integration.client.ecm.DocumentosBPMPortType" factory-bean="wsFactory" factory-method="buildDocumentosBPM"/>
+
+</beans>

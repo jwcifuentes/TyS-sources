@@ -1,0 +1,278 @@
+/* CUSTOM CLASSES */
+
+* {
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+/* ---------- PRIME STYLES */
+
+.ui-column-title {
+  font-weight: bold;
+  color: black;
+}
+
+.ui-button {
+  height: 45px;
+  background-color: #006850 !important;
+  color: white !important;
+}
+
+.custom-button-info {
+  height: 30px !important;
+  width: 30px !important;
+}
+
+.ui-button-text {
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+}
+
+.ui-paginator-page {
+  background-color: #006850 !important;
+}
+
+.ui-dropdown {
+  height: 52px !important;
+  color: #006850 !important;
+  font-weight: bold !important;
+}
+
+.ui-dropdown-label {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 0;
+  text-align: left;
+  vertical-align: middle !important;
+  padding-top: 17px !important;
+  font-size: 16px;
+  color: #006850 !important;
+  font-weight: bold !important;
+}
+
+.ui-dropdown-label:hover {
+  background-color: #F8F9F9 !important;
+}
+
+.ui-dropdown-trigger {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.fa-caret-down:before {
+  position: absolute !important;
+  top: 20% !important;
+  left: 18% !important;
+  content: url("./icons/settings.png") !important;
+}
+
+/* ---------- TABLES */
+
+.form-label {
+  font-size: 12px;
+  text-align: left;
+  color: #424949;
+}
+
+.column_label {
+  width: 15%;
+  text-align: right;
+}
+
+.column_input {
+  width: 65%;
+  text-align: left;
+}
+
+.column_button {
+  width: 20%;
+  text-align: left;
+}
+
+/* ---------- INPUTS */
+
+.large-input {
+  width: 100%;
+  height: 40px;
+  font-size: 18px;
+  text-align: left;
+  color: #1B4F72;
+  font-weight: bold;
+}
+
+.custom-lbl {
+  font-weight: bold;
+  text-align: left;
+}
+
+.error-status {
+  border: #FF0000 1px solid;
+  border-radius: 5px;
+}
+
+/* ---------- UTILS */
+
+.left-align {
+  text-align: left;
+}
+
+.column_small {
+  width: 15%;
+  text-align: left;
+}
+
+.column_medium {
+  width: 35%;
+  text-align: left;
+}
+
+.column_half {
+  width: 50%;
+  text-align: left;
+}
+
+.column_full {
+  width: 100%;
+  text-align: left;
+}
+
+.buttons-panel {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.button-for-panel {
+  width: 100px !important;
+}
+
+.breadcrumb {
+  align-content: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 10px;
+  text-align: left;
+}
+
+.ui-breadcrumb {
+  align-content: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 10px;
+  text-align: left;
+}
+
+/* ---------- LOGIN STYLES */
+
+div.centerPoint {
+  width: 60%;
+  height: 42%;
+  background-color: rgba(255, 255, 255, 0.85);
+  /*border-top: 5px solid rgb(255, 191, 39);*/
+  border-top: 5px solid rgb(46, 150, 119);
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  padding: 30px;
+}
+
+div.loginDiv {
+  margin-bottom: 10px;
+  width: 60%;
+  float: left;
+}
+
+.loginDivHeader {
+  /*color: rgb(26, 44, 128); */
+  color: #3e99ff;
+  font-size: 40px;
+  font-weight: 100;
+  width: 100%;
+}
+
+.bold {
+  font-weight: bold;
+  /* color: rgb(26, 44, 128); */
+  color: #3e99ff;
+  font-size: 40px;
+}
+
+.loginButtons {
+  margin-top: 20px;
+  width: 100%;
+}
+
+div.alternateLoginDiv {
+  position: absolute;
+  top: 40%;
+  left: 60%;
+  float: left;
+  width: 40%
+}
+
+div.alternateLoginDiv a {
+  margin-left: 40px;
+  display: inline-block;
+  padding: 9px 10px;
+  text-decoration: none;
+  /* background-color: rgb(48, 76, 203); */
+  background-color: #2e967d;
+  color: rgb(255, 255, 255);
+  width: 80%;
+  font-size: 1.3em;
+  font-weight: 100;
+}
+
+div.alternateLoginDiv .fa-chevron-right {
+  float: right;
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+.loginButtons {
+  margin-top: 20px;
+}
+
+.submitButton, .returnButton {
+  position: relative;
+  left: 57%;
+  /* background-color: rgb(255, 191, 39); */
+  background-color: #006850;
+  padding: 10px 20px;
+  border: medium none;
+  color: white;
+  font-weight: 700;
+  border-radius: 0px;
+  font-size: 1.2em;
+}
+
+.forgotButton {
+  position: relative;
+  left: 55%;
+  display: inline-block;
+  color: rgb(48, 76, 203) !important;
+  text-decoration: none;
+  padding: 10px 0px;
+}
+
+.login-label {
+  margin-top: 10px;
+  display: inline-block;
+  font-size: 18px;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-input {
+  width: 100%;
+  margin-top: 5px;
+  border: 1px solid rgb(204, 204, 204);
+  height: 40px;
+  font-size: 1.4em;
+  text-indent: 10px;
+  background-color: rgb(250, 255, 189);
+  background-image: none;
+}
+

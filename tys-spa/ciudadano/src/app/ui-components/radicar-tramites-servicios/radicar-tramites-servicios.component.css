@@ -1,0 +1,46 @@
+.ui-steps .ui-steps-item {
+  width: 33.33%;
+}
+
+.ui-steps.steps-custom {
+  padding: 40px 0;
+  background-color: white;
+}
+
+.ui-steps.steps-custom .ui-steps-item .ui-menuitem-link {
+  height: 10px;
+  padding: 0 1em;
+}
+
+.ui-steps.steps-custom .ui-steps-item .ui-steps-number {
+  background-color: #006850;
+  color: #FFFFFF;
+  display: inline-block;
+  width: 36px;
+  border-radius: 50%;
+  margin-top: -14px;
+  margin-bottom: 10px;
+}
+
+.ui-steps.steps-custom .ui-steps-item .ui-steps-title {
+  color: #555555;
+}
+
+.ui-steps .ui-steps-item.ui-state-highlight .ui-menuitem-link {
+  height: 12px !important;
+}
+
+p-footer {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.ui-state-highlight {
+  border-color: #006850;
+  background: #2e967d;
+  color: #FFFFFF;
+}
+
+
+
+

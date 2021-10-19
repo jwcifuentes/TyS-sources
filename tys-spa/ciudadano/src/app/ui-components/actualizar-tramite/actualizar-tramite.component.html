@@ -1,0 +1,143 @@
+<p-growl [(value)]="msgs" life="6000"></p-growl>
+<section id="content">
+  <div class="inner">
+    <div class="ui-g ui-fluid">
+      <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" style="text-align: center; padding-bottom: 20px">
+        <button pButton label="{{'GENERALES.BUTTONS.ATRAS' | translate}}" style="width: auto;float: left;" (click)="backToConsultarTramites()"></button>
+        <h2 style="display: inline-block;align-self: center; margin-top: 10px;">{{'FORMS.ACTUALIZAR_TRAMITE.TITULO' | translate}}</h2>
+      </div>
+    </div>
+    <div class="ui-g ui-fluid">
+      <h3 style="color: #1B4F72">
+        &nbsp;&nbsp;&nbsp;{{'FORMS.ACTUALIZAR_TRAMITE.DESCRIPCION' | translate}}
+      </h3>
+      <p-panel class="ui-sm-12 ui-sm-12 ui-lg-12" custom-panel no-borders>
+        <div class="ui-g ui-fluid">
+          <div class="ui-g-12">
+            <p-dataTable [value]="documentos" [paginator]="true" [rows]="10" [responsive]="true" emptyMessage="No se encontraron documentos">
+              <p-column field="nombre" header="{{'FORMS.ACTUALIZAR_TRAMITE.TABLA.NOMBRE_DOCUMENTO' | translate}}" [sortable]="true"></p-column>
+              <p-column field="descripcion" header="{{'FORMS.ACTUALIZAR_TRAMITE.TABLA.DESCRIPCION' | translate}}" [sortable]="true"></p-column>
+              <p-column header="{{'FORMS.ACTUALIZAR_TRAMITE.TABLA.OBLIGATORIO' | translate}}" [style]="{'width':'170px','text-align':'center'}">
+                <ng-template let-documento="rowData" pTemplate="item">
+                  <div style="font-weight: 600; color: #1B4F72; font-size: 1.4rem">
+                    <div *ngIf="documento.obligatorio"> {{'GENERALES.DECISION.SI' | translate}}</div>
+                    <div *ngIf="!documento.obligatorio"> {{'GENERALES.DECISION.NO' | translate}}</div>
+                  </div>
+                </ng-template>
+              </p-column>
+
+              <p-column field="subclasificacion" header="{{'FORMS.ACTUALIZAR_TRAMITE.TABLA.SUBCLASIFICACION' | translate}}" [style]="{width: '13%','text-align':'center'}">
+                <ng-template pTemplate="body" let-documento="rowData" let-i="rowIndex">
+
+                  <textarea [(ngModel)]="documento.subclasificacion" (change)="onChangeSubclasificacion(documento,i)" (blur)="onChangeSubclasificacion(documento,i)" pInputTextarea *ngIf="documento.other"></textarea>
+                </ng-template>
+              </p-column>
+
+              <p-column header="{{'FORMS.ACTUALIZAR_TRAMITE.TABLA.VER_DOCUMENTO' | translate}}" [style]="{width: '10%','text-align':'center'}">
+                <ng-template pTemplate="body" let-documento="rowData" let-i="rowIndex">
+                  <button type="button" pButton icon="fa-file-pdf-o" (click)="showDocuemento(documento, i)" *ngIf="documento.idFilenet  || files[i]"
+                    class="ui-button-info custom-icon-btn">
+                  </button>
+                </ng-template>
+              </p-column>
+              <p-column header="{{'FORMS.ACTUALIZAR_TRAMITE.TABLA.ADJUNTAR' | translate}}" [style]="{'width':'170px','text-align':'center'}">
+                <ng-template let-i="rowIndex" pTemplate="item" let-documento="rowData">
+                  <p-fileUpload #uploadInput mode="basic" accept="*" maxFileSize="2097152" chooseLabel="{{'GENERALES.FILEUPLOAD.ADJUNTAR' | translate}}" uploadLabel="{{'GENERALES.FILEUPLOAD.ADJUNTADO' | translate}}" cancelLabel="{{'GENERALES.FILEUPLOAD.CANCELAR' | translate}}"
+                    accept="application/pdf"  customUpload="true" (uploadHandler)="customUploader($event, i)"
+                    invalidFileSizeMessageDetail="{{'GENERALES.FILEUPLOAD.INVALIDA_SIZE_MESSAGE' | translate}}" *ngIf="shouldUpdateDocument(documento)"
+                    (onUpload)="onUpload($event, i)" (onClear)="onClear($event, i)" (onSelect)="onSelect($event, i, uploadInput)">
+                  </p-fileUpload>
+                </ng-template>
+              </p-column>
+              <p-column field="estadoDoc.nombre" header="{{'FORMS.ACTUALIZAR_TRAMITE.TABLA.ESTADO' | translate}}" [style]="{width: '10%','text-align':'center'}"></p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+
+
+    <div style="padding-bottom: 30px"></div>
+    <div class="ui-g ui-fluid">
+      <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" style="text-align: center; padding-bottom: 20px">
+        <h2 style="display: inline-block;align-self: center; margin-top: 10px;">Adicionar documentos opcionales al trámite
+        </h2>
+      </div>
+    </div>
+    <div class="ui-g ui-fluid">
+      <h3 style="color: #1B4F72">
+        &nbsp;&nbsp;&nbsp;{{'FORMS.ACTUALIZAR_TRAMITE.RECUERDE_ADJUNTAR_PDF' | translate}}
+      </h3>
+
+      <p-panel class="ui-sm-12 ui-sm-12 ui-lg-12" custom-panel no-borders>
+        <div class="ui-g ui-fluid">
+          <div class="ui-g-12">
+            <p-fileUpload #uploader mode="advanced" chooseLabel="{{'GENERALES.FILEUPLOAD.BUSCAR' | translate}}" [showUploadButton]="false" [showCancelButton]="false" multiple="false"
+              accept="application/pdf" maxFileSize="2097152" customUpload="true" (onUpload)="onUpload($event)" (onClear)="onClear($event)"
+              (onSelect)="onAditionalDocumentSelected($event, uploader)" invalidFileSizeMessageSummary="Alerta:" invalidFileSizeMessageDetail="El archivo adjunto excede el tamaño permitido.">
+              <ng-template pTemplate="toolbar">
+              </ng-template>
+              <ng-template let-file pTemplate="file">
+              </ng-template>
+              <ng-template pTemplate="content">
+                <ul *ngIf="nuevosDocumentosAdicionales.length">
+                  <ng-template ngFor let-file let-i="index" [ngForOf]="nuevosDocumentosAdicionales">
+                    <li>{{file.nombreDocumento}} - {{file.size}}  <button pButton type="button" (click)="removeDocumentoAdicional(i)" icon="fa-close" style="height: 23px"></button></li>
+                  </ng-template>
+                </ul>
+              </ng-template>
+
+            </p-fileUpload>
+
+            <p-dataTable [value]="this.documentosAdicionales" [paginator]="false" [rows]="10" [responsive]="true" emptyMessage="{{'FORMS.ACTUALIZAR_TRAMITE.NO_ENCONTRARON_DOCUMENTO' | translate}}">
+
+              <p-column field="nombreDocumento" header="{{'FORMS.ACTUALIZAR_TRAMITE.NOMBRE_DOCUMENTO' | translate}}" [sortable]="true"></p-column>
+              <!--  <p-column field="size" header="Tamaño" [sortable]="true" [style]="{width: '10%','text-align':'center'}"></p-column> -->
+
+              <p-column header="Ver documento" [style]="{width: '10%','text-align':'center'}">
+                <ng-template pTemplate="body" let-documento="rowData" let-i="rowIndex">
+                  <button type="button" pButton icon="fa-file-pdf-o" (click)="showDocumentoAdicional(documento, i)" *ngIf="documento.idFilenet  || documento.base64"
+                    class="ui-button-info custom-icon-btn">
+                  </button>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+  <div style="text-align: right;padding-right: 10px;">
+    <button pButton type="button" label="Actualizar" (click)="update()" style="width: auto; margin-left: 12px; margin-bottom: 10px">
+    </button>
+  </div>
+</section>
+
+
+<p-dialog header="Trámite actualizado con exito" [contentStyle]="{'overflow':'visible'}" *ngIf="tramite" [(visible)]="showSuccessUpdateDialog"
+  [width]="800" modal="modal" [responsive]="true">
+  <div class="ui-g ui-fluid table-dialog">
+    <p>
+      Se le informa que el trámite {{tramite?.nombreTramite}}, ha sido actualizado con éxito con la siguiente informacion:
+    </p>
+
+    <div class="ui-g-4 thead">
+      <label style="display: block">DEPENDENCIA</label>
+    </div>
+    <div class="ui-g-4 thead">
+      <label style="display: block">NM. RADICADO</label>
+    </div>
+    <div class="ui-g-4 thead">
+      <label style="display: block">COD. SEGURIDAD</label>
+    </div>
+
+    <div class="ui-g-4 td"> {{tramite?.direccionTerritorial}}</div>
+    <div class="ui-g-4 td"> {{tramite?.numeroRadicado}}</div>
+    <div class="ui-g-4 td"> {{data?.codigoVerificacion}}</div>
+
+  </div>
+  <p-footer>
+    <button pButton type="button" class="ui-button-info" label="Aceptar" (click)="goToModuleSelection();" style="width: auto; margin-left: 12px; margin-bottom: 10px">
+    </button>
+  </p-footer>
+</p-dialog>

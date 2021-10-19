@@ -1,0 +1,25 @@
+<section id="content">
+  <div class="inner">
+    <br>
+    <h2>{{ 'SELECCION_MODULOS.TITULO' | translate}}</h2>
+    <div class="ui-g ui-fluid">
+      <p-panel class="ui-sm-12 ui-sm-12 ui-lg-12" custom-panel no-borders>
+        <div class="ui-g ui-fluid">
+          <div class="ui-g-12" style="width: auto;margin: 0 auto">
+            <div class="ui-sm-12 ui-md-12 ui-g-6 ui-lg-6 big-btn-container">
+              <button pButton type="button" label="{{'SELECCION_MODULOS.MODULOS.TRAMITES.NOMBRE' | translate}}"  [attr.title]="'SELECCION_MODULOS.MODULOS.TRAMITES.TOOLTIP' | translate"
+                icon="fa-archive" (click)="goToConsultarTramites()">
+                
+              </button>
+            </div>
+            <div class="ui-sm-12 ui-md-12 ui-g-6 ui-lg-6 big-btn-container">
+              <button pButton type="button" label="{{'SELECCION_MODULOS.MODULOS.RADICAR_TRAMITES.NOMBRE' | translate}}" icon="fa-edit" [attr.title]="'SELECCION_MODULOS.MODULOS.RADICAR_TRAMITES.TOOLTIP' | translate"
+                (click)="goToRadicarTramiteAcuerdo()">
+              </button>
+            </div>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</section>

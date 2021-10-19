@@ -1,0 +1,31 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<security:global-method-security pre-post-annotations="enabled" />
+
+	
+	<security:http pattern="/web-controllers/admin/**" entry-point-ref="restAuthenticationEntryPoint" 
+				   authentication-manager-ref="jwtAuthManager" create-session="stateless">
+		<security:csrf disabled="true" />
+		<security:custom-filter before="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter" />
+	</security:http> 
+    
+   
+	<security:authentication-manager alias="jwtAuthManager" id="jwtAuthManager" >
+        <security:authentication-provider ref="jwtAuthenticationProvider" />
+    </security:authentication-manager>
+    
+    
+    <bean id="jwtAuthenticationFilter" class="co.com.mintrabajo.tys.security.jwt.JwtAuthenticationFilter">
+    	<constructor-arg name="url" value="/web-controllers/admin/**"/>
+    	<property name="authenticationManager" ref="jwtAuthManager"/>
+    	<property name="authenticationSuccessHandler" ref="jwtAuthenticationSuccessHandler" />
+    </bean>
+    
+</beans>

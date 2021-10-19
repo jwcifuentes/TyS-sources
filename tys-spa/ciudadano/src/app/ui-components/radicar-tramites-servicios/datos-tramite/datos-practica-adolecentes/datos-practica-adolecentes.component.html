@@ -1,0 +1,247 @@
+<form [formGroup]="form">
+  <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+              legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES' | translate}}"
+              [toggleable]="true">
+    <p-fieldset formGroupName="datosBasicosAdolecente" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.DATOS_ADOLECENTE' | translate}}"
+                [toggleable]="true">
+      <!--primerNombre -->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="primerNombre" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_PRIMER_NOMBRE' | translate}}">
+            {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.PRIMER_NOMBRE'| translate}}
+          </label>
+          <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="primerNombre" (keypress)="this.restrictAlphaNames($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="primerNombre"
+                   maxlength="25" (blur)="listenForBlurEvents(['datosBasicosAdolecente','primerNombre'])"
+                   (change)="onNameChange('datosBasicosAdolecente.')"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_PRIMER_NOMBRE' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['datosBasicosAdolecente_primerNombre']">
+                {{ validations['datosBasicosAdolecente_primerNombre'] | translate }}
+            </div>
+          </span>
+          </div>
+        </div>
+      </div>
+      <!--segundoNombre-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb" for="segundoNombre" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_SEGUNDO_NOMBRE' | translate}}">
+            {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.SEGUNDO_NOMBRE'| translate}}
+          </label>
+          <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="segundoNombre" (keypress)="this.restrictAlphaNames($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="segundoNombre"
+                   maxlength="25" (blur)="listenForBlurEvents(['datosBasicosAdolecente','segundoNombre'])"
+                   (change)="onNameChange('datosBasicosAdolecente.')"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_SEGUNDO_NOMBRE' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['datosBasicosAdolecente_segundoNombre']">
+                {{ validations['datosBasicosAdolecente_segundoNombre'] | translate }}
+            </div>
+          </span>
+          </div>
+        </div>
+      </div>
+      <!--primerApellido-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="primerApellido"
+                 title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_PRIMER_APELLIDO' | translate}}">
+            {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.PRIMER_APELLIDO'| translate}}
+          </label>
+          <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="primerApellido" (keypress)="this.restrictAlphaNames($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="primerApellido"
+                   maxlength="25" (blur)="listenForBlurEvents(['datosBasicosAdolecente','primerApellido'])"
+                   (change)="onNameChange('datosBasicosAdolecente.')"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_PRIMER_APELLIDO' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['datosBasicosAdolecente_primerApellido']">
+              {{ validations['datosBasicosAdolecente_primerApellido'] | translate }}
+            </div>
+          </span>
+          </div>
+        </div>
+      </div>
+      <!--segundoApellido-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb" for="segundoApellido"
+                 title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_SU_SEGUNDO_APELLIDO' | translate}}">
+            {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.SEGUNDO_APELLIDO'| translate}}
+          </label>
+          <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="segundoApellido" (keypress)="this.restrictAlphaNames($event)"
+                   maxlength="25" onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                   (change)="onNameChange('datosBasicosAdolecente.')"
+                   formControlName="segundoApellido" (blur)="listenForBlurEvents(['datosBasicosAdolecente','segundoApellido'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_SEGUNDO_APELLIDO' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['datosBasicosAdolecente_segundoApellido']">
+              {{ validations['datosBasicosAdolecente_segundoApellido'] | translate }}
+            </div>
+          </span>
+          </div>
+        </div>
+      </div>
+      <!--tipoDocumento-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="tipoDocumento">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_DOCUMENTO' |
+            translate}}</label>
+          <div class="ui-g-12 md-dropdownfield">
+            <p-dropdown [options]="tipoDocumentoOptions$ | async | dropdownItem" filter="true" id="tipoDocumento"
+                        formControlName="tipoDocumento" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                        [autoWidth]="false"
+                        (onBlur)="listenForBlurEvents(['datosBasicosAdolecente','tipoDocumento'])"
+                        title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_DOCUMENTO' | translate}}">
+            </p-dropdown>
+            <div class="ui-message ui-messages-error" *ngIf="validations['datosBasicosAdolecente_tipoDocumento']">
+              {{ validations['datosBasicosAdolecente_tipoDocumento'] | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--nroDocumentoIdentidad-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="nroDocumentoIdentidad">
+            {{'GENERALES.DATOS_PERSONA.NO_DOCUMENTO_IDENTIDAD' | translate}}
+          </label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="nroDocumentoIdentidad"
+                     formControlName="nroDocumentoIdentidad"
+                     maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false"
+                     onPaste="return false"
+                     (keypress)="this.restrictNumbers($event)"
+                     (blur)="listenForBlurEvents(['datosBasicosAdolecente','nroDocumentoIdentidad'])"
+              >
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['datosBasicosAdolecente_nroDocumentoIdentidad']">
+                {{ validations['datosBasicosAdolecente_nroDocumentoIdentidad'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!--edad-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="edad">
+            {{'GENERALES.DATOS_PERSONA.EDAD' | translate}}
+          </label>
+          <div class="ui-g-12 md-dropdownfield">
+            <p-dropdown [options]="edadOptions$ | async | dropdownItem" filter="true" id="edad"
+                        formControlName="edad" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                        [autoWidth]="false"
+                        (onBlur)="listenForBlurEvents(['datosBasicosAdolecente','edad'])"
+                        title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_DOCUMENTO' | translate}}">
+            </p-dropdown>
+            <div class="ui-message ui-messages-error" *ngIf="validations['datosBasicosAdolecente_edad']">
+              {{ validations['datosBasicosAdolecente_edad'] | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--datosResidencia-->
+      <app-datos-residencia-adolecente
+        [validEvent]="validEvent"
+        [parentForm]="getParentForm()"
+      >
+      </app-datos-residencia-adolecente>
+
+      <!--datosAfiliacionSalud-->
+      <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" formGroupName="datosAfiliacionSalud"
+                  legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.AFILIACION_SALUD' | translate}}"
+                  [toggleable]="true">
+        <!--tipoRegimen-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="tipoRegimen">
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.AFILIACION_SALUD.TIPO_REGIMEN' | translate}}
+            </label>
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoRegimenOptions$ | async | dropdownItem" filter="true" id="tipoRegimen"
+                          formControlName="tipoRegimen" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['datosBasicosAdolecente', 'datosAfiliacionSalud', 'tipoRegimen'])"
+                          title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_DOCUMENTO' | translate}}">
+              </p-dropdown>
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations[['datosBasicosAdolecente_datosAfiliacionSalud_tipoRegimen']]"
+              >
+                {{ validations['datosBasicosAdolecente_datosAfiliacionSalud_tipoRegimen'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--nombre-->
+        <div class="ui-sm-12 ui-md-6 ui-g-8 ui-lg-8">
+          <div class="ui-g form-group">
+            <span *ngIf="showNombreMandatory" class="mandatory">*</span>
+            <label class="lb" for="nombre"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.AFILIACION_SALUD.INGRESE_NOMBRE' | translate}}">
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.AFILIACION_SALUD.NOMBRE'| translate}}
+            </label>
+            <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="nombre" (keypress)="this.restrictAlphaNames($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" formControlName="nombre"
+                   maxlength="60" (blur)="listenForBlurEvents([ 'datosBasicosAdolecente', 'datosAfiliacionSalud', 'nombre'])"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.AFILIACION_SALUD.INTRODUZCA_NOMBRE' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations[[ 'datosBasicosAdolecente_datosAfiliacionSalud_nombre']]">
+              {{ validations['datosBasicosAdolecente_datosAfiliacionSalud_nombre'] | translate }}
+            </div>
+          </span>
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
+      <app-datos-representante-legal
+        [validEvent]="validEvent"
+        [parentForm]="getParentForm()"
+      >
+      </app-datos-representante-legal>
+    </p-fieldset>
+
+    <app-datos-formacion
+      [validEvent]="validEvent"
+      [parentForm]="getParentForm()">
+    </app-datos-formacion>
+
+    <app-escenario-practica
+      [validEvent]="validEvent"
+      [parentForm]="getParentForm()">
+    </app-escenario-practica>
+
+    <app-condiciones-vinculacion
+      [validEvent]="validEvent"
+      [parentForm]="getParentForm()"
+    >
+    </app-condiciones-vinculacion>
+  </p-fieldset>
+
+  <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12">
+    <div class="ui-sm-12 ui-md-12 ui-g-5 ui-lg-5"></div>
+    <div class="ui-sm-12 ui-md-12 ui-g-7 ui-lg-7">
+      <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" >
+        <label class="lb" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.PREVISUALICE' | translate}}">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CONDICIONES.PREVISUALICE'| translate}}
+        </label>
+      </div>
+      <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" style="text-align: center" >
+        <button (click)="onClickVisualizarPdf.emit()" pButton type="button" label="Generar Formato PDF" class="btn"></button>
+      </div>
+    </div>
+  </div>
+</form>

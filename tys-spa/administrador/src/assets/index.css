@@ -1,0 +1,248 @@
+/* LEGACY CLASSES */
+
+a {
+  outline: medium none;
+}
+
+body {
+  background: rgb(238, 239, 242) none repeat scroll 0 0;
+  margin: 0;
+  padding: 0;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  color: rgb(102, 102, 102);
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  line-height: 1em;
+  /* color: rgb(0, 0, 0); */
+  color: #3e99ff;
+  margin: 0 0 15px;
+}
+
+h1 {
+  font-size: 1.846em;
+}
+
+h2 {
+  font-size: 1.692em;
+}
+
+h3 {
+  font-size: 1.538em;
+  color: rgb(53, 52, 138);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+a {
+  text-decoration: underline;
+  color: rgb(0, 138, 68);
+}
+
+a:visited {
+  color: rgb(0, 102, 25);
+}
+
+a:hover, a:active, a.active {
+  color: rgb(93, 128, 179);
+}
+
+strong, b {
+  font-weight: bold;
+  color: rgb(51, 51, 51);
+}
+
+label {
+  color: rgb(51, 51, 51);
+  font-weight: bold;
+}
+
+span.required {
+  color: rgb(53, 52, 138);
+  font-weight: bold;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+#header {
+  position: relative;
+  height: 120px;
+  width: 100% !important;
+  background: url('layout-set-logo.png') no-repeat scroll center bottom;
+  background-color: white;
+}
+
+body #header h1 {
+  margin: 0 !important;
+  width: 270px;
+  height: 80px;
+}
+
+body #header .dian {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 250px;
+  height: 250px;
+}
+
+#content .inner h2 {
+  text-align: center;
+}
+
+#content {
+  max-width: 1080px;
+  position: relative;
+  margin: 10px auto 20px;
+  background: rgb(255, 255, 255) none repeat scroll 0 0;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+#changer {
+  position: fixed;
+  right: 0;
+  top: 150px;
+  height: 78px;
+  width: 15px;
+  background: rgb(53, 52, 138) none repeat scroll 0 0;
+  border-radius: 5px 0 0 5px;
+  padding: 12px 10px 0;
+  z-index: 15;
+  box-shadow: 0 0 2px rgb(255, 255, 255);
+}
+
+#changer a {
+  width: 15px;
+  height: 15px;
+  margin-bottom: 10px;
+  display: block;
+  text-indent: -99999px;
+}
+
+#changer a#incfont {
+  background: rgba(0, 0, 0, 0) url('aplus.png') no-repeat scroll 0 0;
+}
+
+#changer a#decfont {
+  background: rgba(0, 0, 0, 0) url('aminus.png') no-repeat scroll 0 0;
+}
+
+#changer .contraste a {
+  background: rgba(0, 0, 0, 0) url('contraste.png') no-repeat scroll 0 0;
+}
+
+#changer #colores {
+  display: none;
+}
+
+#changer #grayscale {
+  display: block;
+}
+
+.container {
+  overflow: hidden;
+}
+
+section.contenidoprincipal {
+  width: 100%;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 10px;
+}
+
+.contenidoprincipal .container {
+  margin: 0;
+  position: relative;
+  width: 95%;
+  padding: 2.5%;
+}
+
+.botones {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.botones button, .botones input[type="submit"] {
+  margin: 0 5px;
+}
+
+h3.titulo {
+  background: rgb(93, 128, 179) none repeat scroll 0 0;
+  color: rgb(51, 51, 51);
+  font-size: 1.077em;
+  padding: 5px 2.6%;
+  margin: 0 -2.6% 15px;
+  text-align: center;
+}
+
+.conceptos {
+  background: rgb(238, 238, 238) none repeat scroll 0 0;
+  border-radius: 10px;
+  color: rgb(53, 52, 138);
+  margin-bottom: 15px;
+  padding: 15px 15px 0;
+  overflow: hidden;
+}
+
+.row::before, .row::after {
+  content: "";
+  display: table;
+}
+
+.row::after {
+  clear: both;
+}
+
+footer {
+  background: rgb(53, 52, 138) none repeat scroll 0 0;
+  color: rgb(255, 255, 255) !important;
+}
+
+@media all and (max-width: 1200px) {
+  #content {
+    margin: 10px;
+  }
+}
+
+/* ::::: http://pqrsd.mintrabajo.gov.co/SedeElectronicaWeb/css/tablet.css ::::: */
+
+h1 {
+  font-size: 1.846em;
+}
+
+h2 {
+  font-size: 1.538em;
+}
+
+h3 {
+  font-size: 1.308em;
+}
+
+@media all and (max-width: 768px) {
+}
+
+@media all and (max-width: 650px) {
+}
+
+@media all and (max-width: 560px) {
+  body {
+    font-size: 0.75em;
+  }
+}
+
+@media all and (max-width: 420px) {
+  body #header .dian {
+    display: none;
+  }
+}
+
+.custom-icons {
+  width: 24px;
+  height: 24px;
+}

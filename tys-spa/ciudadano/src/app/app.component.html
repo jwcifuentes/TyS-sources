@@ -1,0 +1,151 @@
+<!--<p-menubar [model]="items">-->
+<!--<span class="login-label" style="padding-right: 0.5cm;">Bienvenido, {{_session.getUserFullName()}} </span>-->
+<!--<button pButton label="Logout" icon="fa-sign-out" (click)="logout()"></button>-->
+<!--</p-menubar>-->
+
+<div id="content-wrapper" [ngStyle]="{'font-size': fontSize + 'px'}">
+
+  <div id="header-wrapper">
+    <section id="header">
+      <a style="position: absolute; left: calc(50% - 240px); top: 55px; height: 50px; width: 230px" routerLink="seleccion_modulos"></a>
+
+      <div class="contenedor">
+        <!-- <div class="dian">
+          <a>
+            <h1></h1>
+          </a>
+
+        </div> -->
+      </div>
+    </section>
+  </div>
+
+  <div>
+    <div>
+      <div class="breadcrumb-container">
+        <p-breadcrumb [model]="breadcrumb"></p-breadcrumb>
+      </div>
+      <div class="font-container">
+        <a title="Manual de Usuario Trámites y Servicios" href=" http://www.mintrabajo.gov.co/documents/20147/59512476/Mintrabajo+Ventanilla+Radicacion+Manual+de+usuario+Ventanillav1.0+Nuevo.pdf"><span
+            class="button btn-font-m"></span></a>
+
+
+        <!--<a title="Manual de Usuario Trámites y Servicios" href="http://www.mintrabajo.gov.co/documents/20147/59512476/Mintrabajo+Ventanilla+Radicacion+Manual+de+usuario+Ventanillav1.0.pdf"><span
+            class="button btn-font-m"></span></a>-->
+        <a title="Video-Tutorial Radicar Trámite" href="http://www.mintrabajo.gov.co/documents/20147/59512476/Radicar+tramite-nov22.mp4/4430e2e3-ee0b-e997-9cdb-abfde49c2d39"><span
+            class="button btn-font-v"></span></a>
+        <a title=" Video-Tutorial Consulta trámite" href="http://www.mintrabajo.gov.co/documents/20147/59512476/Consulta_tramite-Nov22.mp4/3b970d47-e8c7-73e6-be9e-b7a23573aef1"><span
+            class="button btn-font-v"></span></a>
+      </div>
+      <div class="font-container">
+        <span class="button btn-font-i" (click)="changeFontSize(1)"></span>
+        <span class="button btn-font-d" (click)="changeFontSize(-1)"></span>
+        <span class="button btn-font-s" (click)="resetFontSize()"></span>
+      </div>
+      <div class="lang-container">
+        <app-translate-options (onChange)="ChangeLanguage($event)"></app-translate-options>
+      </div>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+
+</div>
+
+<div id="footer-wrapper">
+  <footer id="footer">
+    <div class="container">
+      <div class="ui-g ui-fluid">
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <section>
+            <h4 class="uppercase">{{ 'GENERALES.FOOTER.TOP.TITULO' | translate }}</h4>
+            <h5>{{ 'GENERALES.FOOTER.TOP.SEDE' | translate }}</h5>
+            <p>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.DIRECCION' | translate }}: {{ 'GENERALES.FOOTER.TOP.DIRECCION_1' |
+                  translate }}</span> </label>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.CODIGO_POSTAL' | translate }}:</span> 110221 </label>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.TELEFONOS' | translate }}:</span> (57-1) 5186868 </label>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.CORRESPONDENCIA' | translate }}:</span> {{
+                'GENERALES.FOOTER.TOP.CORRESPONDENCIA_1' | translate }} </label>
+            </p>
+            <h5>{{ 'GENERALES.FOOTER.BOTTOM.ATENCION_PRESENCIAL' | translate }}</h5>
+            <p>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.ATENCION_CIUDADANO' | translate }}:</span> <a href="https://www.google.com/maps?q=Bogot%C3%A1+Carrera+7+No.+32-63&entry=gmail&source=g">Bogotá
+                  Carrera 7 No. 32-63</a> </label>
+              <br />
+              <label><a href="http://www.mintrabajo.gov.co/en/relaciones-laborales/inspeccion-vigilancia-y-control/inspectores-regionales&source=gmail&ust=1533185708271000&usg=AFQjCNHaXUur7SyvVjhFn4s59fhiAAbNXg">
+                  <h5>{{ 'GENERALES.FOOTER.TOP.PUNTOS_ATENCION' | translate }}</h5>
+                </a></label>
+              <br />
+              <label><span>
+                  <h5>{{ 'GENERALES.FOOTER.TOP.ATENCION_TELEFONICA' | translate }}</h5>
+                </span></label>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.CALL_CENTER' | translate }}: {{
+                  'GENERALES.FOOTER.TOP.CALL_CENTER_1' |translate }}</span></label>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.CALL_CENTER_2' | translate }}</span></label>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.FREE_LINE' | translate }}</span></label>
+              <label><span>{{ 'GENERALES.FOOTER.TOP.FREE_LINE_1' | translate }}</span></label>
+              <br />
+            </p>
+          </section>
+        </div>
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <section>
+            <h5>
+              <div class="titlesfooter">Servicios a la Ciudadanía</div>
+            </h5>
+            <div>
+              <p><a style="
+                font-size: 10px;" href="http://www.mintrabajo.gov.co/el-ministerio/nuestra-funcion/datos-basicos">{{'GENERALES.FOOTER.TOP.DATOS_CONTACTO'
+                  |translate}}</a></p>
+
+              <p><a style="
+                font-size: 10px;" href="http://pqrsd.mintrabajo.gov.co/SedeElectronicaWeb/seg/CU004-2.xhtml">{{'GENERALES.FOOTER.TOP.PSQRD'
+                  |translate}}</a></p>
+
+              <p><a style="
+                font-size: 10px;" href="http://www.mintrabajo.gov.co/empleo-y-pensiones/movilidad-y-formacion/estado-joven">{{'GENERALES.FOOTER.TOP.CONVOCATORIA_PUBLICO'
+                  |translate}}</a></p>
+
+              <p><a style="
+                font-size: 10px;" href="http://www.mintrabajo.gov.co/atencion-al-ciudadano/notificaciones/judiciales">{{'GENERALES.FOOTER.TOP.NOTIFICACIONES_JUDICIALES'
+                  |translate}}</a></p>
+
+              <p><a style="
+                font-size: 10px;" href="http://www.mintrabajo.gov.co/web/guest/atencion-al-ciudadano/transparencia">{{'GENERALES.FOOTER.TOP.INFORMACION_PUBLICA'
+                  |translate}}</a></p>
+
+              <p>{{'GENERALES.FOOTER.TOP.INFORMACION_PUBLICADA' |translate}}</p>
+
+              <p><a style="
+                font-size: 10px;" href="https://www.colombiacompra.gov.co/">{{'GENERALES.FOOTER.TOP.COMPRA_EFICIENTE'
+                  |translate}}</a></p>
+
+              <p><a style="
+                font-size: 10px;" href="http://www.suin-juriscol.gov.co/">{{'GENERALES.FOOTER.TOP.INFORMACION_NORMATIVA'
+                  |translate}}</a></p>
+            </div>
+          </section>
+        </div>
+        <div class="ui-sm-12 ui-md-12 ui-g-4 ui-lg-4">
+          <section class="last-child">
+
+          </section>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <p>
+        {{ 'GENERALES.FOOTER.BOTTOM.AVISO_PRIVACIDAD' | translate }} |
+        <a style="font-size: 10px;" href="http://www.mintrabajo.gov.co/documents/20147/35158/POL%C3%8DTICA+PROTEC.+DATOS+PERSONALES.pdf"
+          target="_blank">{{ 'GENERALES.FOOTER.BOTTOM.DATOS_PERSONALES' | translate }}</a> | &nbsp;
+        <a style="font-size: 10px;" href=" http://www.mintrabajo.gov.co/documents/20147/75929/condiciones+de+uso++Tramites+y+servicios.pdf">{{
+          'GENERALES.FOOTER.BOTTOM.CONDICIONES_USO' | translate }}</a>
+      </p>
+    </div>
+  </footer>
+</div>
+
+<p-blockUI [blocked]="isLoading"></p-blockUI>
+<p-progressSpinner *ngIf="isLoading" [style]="{width: '100px', height: '100px'}" strokeWidth="4" fill="#EEEEEE"
+  animationDuration="1s"></p-progressSpinner>

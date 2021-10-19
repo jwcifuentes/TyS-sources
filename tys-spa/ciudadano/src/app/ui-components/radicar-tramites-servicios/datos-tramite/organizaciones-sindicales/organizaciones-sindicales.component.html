@@ -1,0 +1,67 @@
+<p-growl [(value)]="commonModel.msgs"></p-growl>
+<p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+            legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.ORGANIZACIONES_SINDICALES.TIULO_FIELDSET' | translate}}"
+            [toggleable]="true">
+  <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+    <button pButton type="button" label="{{'GENERALES.BUTTONS.AGREGAR' | translate}}" (click)="showDialog()"
+            style="width: auto; align-content: center"
+            title="{{'GENERALES.BUTTONS.AGREGAR_TITULO' | translate}}">
+    </button>
+  </div>
+
+  <p-panel custom-panel no-borders>
+    <div class="ui-g ui-fluid">
+
+      <div class="ui-g-12">
+        <p-dataTable [value]="collection"
+                     [paginator]="true" [rows]="10" [responsive]="true" emptyMessage="{{'GENERALES.DATATABLE.NO_SE_ENCONTRARON_RESULTADOS' | translate}}">
+          <p-column
+            header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.ORGANIZACIONES_SINDICALES_DATATABLE.NOMBRE_ORGANIZACION' | translate}}"
+          >
+            <ng-template let-i="rowIndex" pTemplate="item" let-rowData>
+              <span class="md-inputfield">
+                <input type="text" required class="large-input" maxlength="25" (change)="onChangeInput()" [(ngModel)]="collection[i].nombreOrganizacion">
+              </span>
+            </ng-template>
+          </p-column>
+          <p-column header="Sigla" >
+            <ng-template let-i="rowIndex" pTemplate="item" let-rowData>
+              <span class="md-inputfield">
+                <input type="text" class="large-input"  maxlength="25" [(ngModel)]="collection[i].sigla">
+              </span>
+            </ng-template>
+          </p-column>
+          <p-column field="numeroPersoneria" header="Número de Personería Jurídica">
+            <ng-template let-i="rowIndex" pTemplate="item" let-rowData>
+              <span class="md-inputfield">
+                <input type="text" class="large-input" maxlength="25" (change)="onChangeInput()" required [(ngModel)]="collection[i].numeroPersoneria">
+              </span>
+            </ng-template>
+          </p-column>
+          <p-column field="direccion" header="Dirección" [style]="{'width':'140','text-align':'center'}"
+          >
+            <ng-template let-i="rowIndex" pTemplate="item" let-rowData>
+              <app-datos-direccion-custom
+                [indexOrg]="i"
+                #direccion [ngClass]="{'mandatory': validations['tieneDirecciones']}" headerTitle="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.DIRECCION' | translate}}"
+                (onSave)="onSaveDireccion($event)"
+                (onValid)="setTieneDirecciones(['tieneDirecciones'], true)" (onInvalid)="setTieneDirecciones(['tieneDirecciones'], null)"
+              >
+              </app-datos-direccion-custom>
+              {{getDireccionString(collection[i].direccion)}}
+            </ng-template>
+          </p-column>
+          <p-column header="{{'GENERALES.DATATABLE.COLUMNA_OPCIONES' | translate}}" [style]="{'width':'120px','text-align':'center'}">
+            <ng-template let-i="rowIndex" pTemplate="item">
+              <button type="button" pButton (click)="remove(i)"
+                      icon="fa-trash" class="ui-button-info custom-button-info"></button>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+      </div>
+    </div>
+  </p-panel>
+  <div class="ui-message ui-messages-error" *ngIf="messageError">
+    {{  messageError | translate }}
+  </div>
+</p-fieldset>

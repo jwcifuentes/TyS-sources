@@ -1,0 +1,88 @@
+<form [formGroup]="form">
+  <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+              legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_RESIDENCIA_ADOLECENTE' | translate}}"
+              [toggleable]="true">
+    <!--direccioneAdolecente-->
+    <p-panel custom-panel="" no-borders="">
+      <div class="ui-g ui-fluid form-group">
+        <div class="ui-g-12">
+          <app-datos-direccion #direccionComponent
+                               headerTitle="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.TITLE.PRACTICAS_ADOLECENTE' | translate}}"
+                               [ngClass]="{'mandatory': validations['direcciones']}"
+                               (onValid)="onDireccionAdolecenteValid()"
+                               (onInvalid)="onDireccionAdolecenteInvalid()">
+          </app-datos-direccion>
+          <div class="ui-g-12 md-inputfield" style="padding-bottom: 16px;height: 30px;"
+               *ngIf="validations['direcciones']">
+            <div class="ui-message ui-messages-error" *ngIf="validations['direcciones']">
+              {{ validations['direcciones'] | translate }}
+            </div>
+          </div>
+      </div>
+      </div>
+    </p-panel>
+    <!--telefonoFijo-->
+    <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="telefonoFijo" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_NUM_TELF' | translate}}">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.CELULAR'| translate}}
+        </label>
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="telefonoFijo" (keypress)="this.restrictNumbers($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" minlength="0" maxlength="12"
+                   formControlName="telefonoFijo" (blur)="listenForBlurEvents('telefonoFijo')"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_NUM_TELF' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['telefonoFijo']">
+              {{ validations['telefonoFijo'] | translate }}
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--telefonoCelular-->
+    <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="telefonoCelular" title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_NUM_TELF' | translate}}">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.TELEFONO.FIJO'| translate}}
+        </label>
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pInputText class="large-input" id="telefonoCelular" (keypress)="this.restrictNumbers($event)"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" minlength="0" maxlength="12"
+                   formControlName="telefonoCelular" (blur)="listenForBlurEvents('telefonoCelular')"
+                   title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_NUM_TELF' | translate}}">
+            <div class="ui-message ui-messages-error" *ngIf="validations['telefonoCelular']">
+              {{ validations['telefonoCelular'] | translate }}
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--correoElectronico -->
+    <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="email"
+               [attr.title]="'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_CORREO_ELECTRONICO' | translate"
+        >
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.CORREO_ELECTRONICO'| translate}}
+        </label>
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+            <input type="text" pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+                   pInputText class="large-input" id="email" formControlName="email" maxlength="100"
+                   onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                   (blur)="listenForBlurEvents('email')"
+                   [attr.title]="'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_CORREO_ELECTRONICO' | translate">
+            <div class="ui-message ui-messages-error" *ngIf="validations['email']">
+              {{ validations['email'] | translate }}
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </p-fieldset>
+</form>

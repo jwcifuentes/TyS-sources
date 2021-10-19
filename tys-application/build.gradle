@@ -1,0 +1,92 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
+apply plugin: 'base'
+apply plugin: 'java'
+
+ext {
+    SPRING_VERSION = "4.3.13.RELEASE"
+    //SPRING_VERSION = "4.2.9.RELEASE"
+    SPRING_SECURITY_VERSION = "4.2.3.RELEASE"
+    SPRING_LDAP_VERSION = "2.1.0.RELEASE"
+    SERVLET_API_VERSION = "3.1.0"
+    JACKSON_VERSION = "2.7.5"
+    LOMBOK = "1.16.18"
+    APACHE_COMMONS = "3.4"
+    APACHE_COMMONS_CODEC = "1.9"
+    LOG4J2 = "2.3"
+    TOMCAT_HOME = System.getenv('TOMCAT_HOME')
+}
+
+tasks.create(name: 'web-app-deploy') {
+    doLast {
+        deployWarIntoServer("tys-web");
+    }
+}
+
+tasks.create(name: 'services-app-deploy') {
+    doLast {
+        deployWarIntoServer("tys-services");
+    }
+}
+
+
+def void deployWarIntoServer(String war) {
+
+    println "ELIMINANDO CONTENIDO EN EL SERVIDOR: " + TOMCAT_HOME + "/webapps/"
+    deleteFolderContent(file(TOMCAT_HOME + "/webapps/" + war))
+    Files.deleteIfExists(Paths.get(TOMCAT_HOME + "/webapps/" + war + ".war"))
+    Files.deleteIfExists(Paths.get(TOMCAT_HOME + "/webapps/" + war))
+
+    def warFile = file("/" + war + "/build/libs/" + war + ".war")
+
+    println "COPIANDO ARCHIVO $warFile EN " + TOMCAT_HOME + "/webapps/"
+    Files.copy(Paths.get(warFile.toString()), Paths.get(TOMCAT_HOME + '/webapps/' + warFile.name))
+}
+
+def void deleteFolderContent(File refFile) {
+
+    def files = refFile.listFiles()
+    files.each { File file ->
+
+        if (file.isDirectory()) {
+            deleteFolderContent(file)
+        }
+
+        Files.deleteIfExists(Paths.get(file.toString()))
+    }
+}
+
+task webConfiguration(type: Jar) {
+    baseName = 'tys-web-conf'
+    from('/tys-web/src/main/resources')
+    with jar
+}
+
+task servicesConfiguration(type: Jar) {
+    baseName = 'tys-services-conf'
+    from('/tys-services/src/main/resources')
+    with jar
+}
+
+
+tasks.create(name: 'web-conf-deploy', dependsOn: ['webConfiguration']) {
+    doLast {
+        deployConfigurationJar("tys-web-conf");
+    }
+}
+
+tasks.create(name: 'services-conf-deploy', dependsOn: ['servicesConfiguration']) {
+    doLast {
+        deployConfigurationJar("tys-services-conf");
+    }
+}
+
+
+def void deployConfigurationJar(String confName) {
+    Files.deleteIfExists(Paths.get(TOMCAT_HOME + "/lib/" + confName + ".jar"))
+    def confFile = file("/build/libs/" + confName + ".jar")
+    println "INSTALANDO CONFIGURACIONES: " + TOMCAT_HOME + "/lib/"
+    Files.copy(Paths.get(confFile.toString()), Paths.get(TOMCAT_HOME + '/lib/' + confFile.name))
+}
+

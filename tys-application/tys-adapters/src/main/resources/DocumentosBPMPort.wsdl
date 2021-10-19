@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!--File DocumentosBPM.wsdl, application DocumentosBPM--><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="DocumentosBPM" targetNamespace="http://soaint.com/Servicios/Negocio/wsdl/DocumentosBPM" xmlns:obj="http://soaint.com/Servicios/Negocio/xsd/DocumentosBPM" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soaint.com/Servicios/Negocio/wsdl/DocumentosBPM" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="DocumentosBPMBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="DocumentosBPMBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema>
+<xsd:import namespace="http://soaint.com/Servicios/Negocio/xsd/DocumentosBPM" schemaLocation="http://172.20.43.66:7801/DocumentosBPMService/DocumentosBPMPort?xsd=xsd0"/>
+</xsd:schema>
+  </wsdl:types>
+  
+  <wsdl:message name="obtenerDatosDocumento">
+    <wsdl:part element="obj:obtenerDatosDocumento" name="input"/>
+  </wsdl:message>
+  <wsdl:message name="obtenerDatosDocumentoResponse">
+    <wsdl:part element="obj:obtenerDatosDocumentoResponse" name="output"/>
+  </wsdl:message>
+
+  <wsdl:message name="subirDocumentoActualizar">
+    <wsdl:part element="obj:subirDocumentoActualizar" name="input"/>
+  </wsdl:message>
+  <wsdl:message name="subirDocumentoActualizarResponse">
+    <wsdl:part element="obj:subirDocumentoActualizarResponse" name="output"/>
+  </wsdl:message>
+
+  <wsdl:message name="obtenerDocumentoPorIdFilenet">
+    <wsdl:part element="obj:obtenerDocumentoPorIdFilenet" name="input"/>
+  </wsdl:message>
+  <wsdl:message name="obtenerDocumentoPorIdFilenetResponse">
+    <wsdl:part element="obj:obtenerDocumentoPorIdFilenetResponse" name="output"/>
+  </wsdl:message>
+  
+  <wsdl:portType name="DocumentosBPMPortType">
+    <wsdl:operation name="obtenerDatosDocumento">
+      <wsdl:input message="tns:obtenerDatosDocumento" name="obtenerDatosDocumentoRq"/>
+      <wsdl:output message="tns:obtenerDatosDocumentoResponse" name="obtenerDatosDocumentoRs"/>
+    </wsdl:operation>
+	
+	<wsdl:operation name="subirDocumentoActualizar">
+      <wsdl:input message="tns:subirDocumentoActualizar" name="subirDocumentoActualizarRq"/>
+      <wsdl:output message="tns:subirDocumentoActualizarResponse" name="subirDocumentoActualizarRs"/>
+    </wsdl:operation>
+
+	<wsdl:operation name="obtenerDocumentoPorIdFilenet">
+      <wsdl:input message="tns:obtenerDocumentoPorIdFilenet" name="obtenerDocumentoPorIdFilenetRq"/>
+      <wsdl:output message="tns:obtenerDocumentoPorIdFilenetResponse" name="obtenerDocumentoPorIdFilenetRs"/>
+    </wsdl:operation>
+	
+  </wsdl:portType>
+  
+  <wsdl:binding name="DocumentosBPMBinding" type="tns:DocumentosBPMPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    
+	<wsdl:operation name="obtenerDatosDocumento">
+      <soap:operation soapAction="http://soaint.com/Servicios/Negocio/Administracion/wsdl/DocumentosBPM/obtenerDatosDocumento"/>
+      <wsdl:input name="obtenerDatosDocumentoRq">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="obtenerDatosDocumentoRs">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+	
+    <wsdl:operation name="subirDocumentoActualizar">
+      <soap:operation soapAction="http://soaint.com/Servicios/Negocio/Administracion/wsdl/DocumentosBPM/subirDocumentoActualizar"/>
+      <wsdl:input name="subirDocumentoActualizarRq">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="subirDocumentoActualizarRs">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="obtenerDocumentoPorIdFilenet">
+      <soap:operation soapAction="http://soaint.com/Servicios/Negocio/Administracion/wsdl/DocumentosBPM/obtenerDocumentoPorIdFilenet"/>
+      <wsdl:input name="obtenerDocumentoPorIdFilenetRq">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="obtenerDocumentoPorIdFilenetRs">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+	
+  </wsdl:binding>
+  <wsdl:service name="DocumentosBPMService">
+    <wsdl:port binding="tns:DocumentosBPMBinding" name="DocumentosBPMSOAP">
+      <soap:address location="http://172.20.43.66:7801/DocumentosBPMService/DocumentosBPMPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

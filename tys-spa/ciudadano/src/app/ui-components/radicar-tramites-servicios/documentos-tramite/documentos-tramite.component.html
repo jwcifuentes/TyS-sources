@@ -1,0 +1,68 @@
+<p-growl [(value)]="commonModel.msgs"></p-growl>
+<br/>
+<h2>{{'FORMS.DOCUMENTOS_TRAMITE.TITULO' | translate}} </h2>
+<br>
+
+<div class="ui-g ui-fluid" [hidden]="documentos.length !== 0">
+  <h3 style="color: #1B4F72">&nbsp;&nbsp;&nbsp;{{'FORMS.DOCUMENTOS_TRAMITE.NO_REQUIERE_DOCUMENTOS' | translate}}</h3>
+</div>
+<div class="ui-g ui-fluid" [hidden]="documentos.length === 0">
+
+  <h3 style="color: #1B4F72">&nbsp;&nbsp;&nbsp;{{'FORMS.DOCUMENTOS_TRAMITE.RECUERDE_ADJUNTAR_DOCUMENTOS' | translate}}</h3>
+
+  <p-panel class="ui-sm-12 ui-sm-12 ui-lg-12" custom-panel no-borders>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+        <p-dataTable [value]="documentos"
+                     [paginator]="true" [rows]="10" [responsive]="true" emptyMessage="{{'FORMS.DOCUMENTOS_TRAMITE.NO_ENCONTRARON_DOCUMENTOS' | translate}}">
+
+
+          <p-column header="{{'FORMS.DOCUMENTOS_TRAMITE.OBLIGATORIO' | translate}}" [style]="{'width':'170px','text-align':'center'}">
+            <ng-template let-i="rowIndex" pTemplate="item">
+              <div style="font-weight: 600; color: #1B4F72; font-size: 1.4rem">
+                <div *ngIf="documentos[i].esRequerido"> {{'GENERALES.DECISION.SI' | translate}} </div>
+                <div *ngIf="!documentos[i].esRequerido"> {{'GENERALES.DECISION.NO' | translate}} </div>
+              </div>
+            </ng-template>
+          </p-column>
+          <p-column field="nombre" header="{{'FORMS.DOCUMENTOS_TRAMITE.NOMBRE_DOCUMENTO' | translate}}" [sortable]="true"></p-column>
+          <p-column field="descripcion" header="{{'FORMS.DOCUMENTOS_TRAMITE.ANOTACIONES_ADICIONALES' | translate}}" [sortable]="true"></p-column>
+
+          <p-column header="{{'FORMS.DOCUMENTOS_TRAMITE.VER' | translate}}" [style]="{'width':'170px','text-align':'center'}">
+            <ng-template let-i="rowIndex" pTemplate="item">
+
+              <img *ngIf="files[i]" alt="{{'FORMS.DOCUMENTOS_TRAMITE.VER_DOCUMENTO' | translate}}" (click)="visualizarDocumentos(i)"
+                   title="{{'FORMS.DOCUMENTOS_TRAMITE.VER_DOCUMENTO' | translate}}"
+                   class="custom-icons doc-viewer"/>
+
+            </ng-template>
+          </p-column>
+
+          <p-column header="{{'GENERALES.FILEUPLOAD.ADJUNTAR' | translate}}" [style]="{'width':'170px','text-align':'center'}" *ngIf="editable">
+            <ng-template let-i="rowIndex" pTemplate="item">
+              <p-fileUpload
+                #uploadInput #form
+                mode="basic"
+                maxFileSize="2097152"
+                chooseLabel="{{'GENERALES.FILEUPLOAD.ADJUNTAR' | translate}}"
+                uploadLabel="{{'GENERALES.FILEUPLOAD.ADJUNTADO' | translate}}"
+                cancelLabel="{{'GENERALES.FILEUPLOAD.CANCELAR' | translate}}"
+                accept="application/pdf"
+                customUpload="false"
+                (uploadHandler)="customUploader($event, i,form)"
+                (onUpload)="onUpload($event, i)"
+                (onClear)="onClear($event, i)"
+                (onSelect)="onSelect($event, i, uploadInput)"
+                invalidFileSizeMessageSummary="{{'GENERALES.FILEUPLOAD.ALERTA' | translate}}"
+                invalidFileSizeMessageDetail="{{'GENERALES.FILEUPLOAD.INVALIDA_SIZE_MESSAGE' | translate}}"
+              ></p-fileUpload>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+
+      </div>
+    </div>
+  </p-panel>
+</div>
+
+

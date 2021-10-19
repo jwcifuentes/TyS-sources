@@ -1,0 +1,9 @@
+.ui-datatable .ui-datatable-thead>tr>th {
+  color: black;
+  font-weight: 700;
+  overflow: hidden !important;
+}
+td {
+  text-align: center;
+  overflow: hidden;
+}

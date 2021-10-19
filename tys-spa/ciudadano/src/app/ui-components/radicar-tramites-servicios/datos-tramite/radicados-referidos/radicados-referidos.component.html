@@ -1,0 +1,59 @@
+<p-growl [(value)]="commonModel.msgs"></p-growl>
+<p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+            legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REDICADOS_REFERIDOS.TITULO_FIELDSET' | translate}}"
+            [toggleable]="true">
+
+  <!--radicadosRelacionados-->
+  <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+    <div class="ui-g form-group">
+      <label class="lb" for="radicadosRelacionados">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REDICADOS_REFERIDOS.NO_RADICADOS_RELACIONAL' | translate}}</label>
+      <div class="ui-g-12">
+                  <span class="md-inputfield">
+                    <input type="text" pInputText class="large-input" id="radicadosRelacionados"
+                           pattern="^([0-9]{2}(EE|ee|SE|se|Se|sE|eE|Ee)([0-9]{4})([0-9]{15}))$"
+                           (keypress)="restrictAlphaNum($event)"
+                           [(ngModel)]="currentValue"
+                           maxlength="23"
+                           minlength="23"
+                           onCopy="return false" onDrop="return false" onPaste="return false"
+                           #uname="ngModel"
+                           title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REDICADOS_REFERIDOS.INTRODUZCA_NO_RADICADO_RELACIONAL' | translate}}"
+                    >
+                    <div class="ui-message ui-messages-error" *ngIf="uname.errors?.pattern">
+                      {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REDICADOS_REFERIDOS.INTRODUZCA_NO_RADICADO_RELACIONAL.ERROR' | translate}}
+                    </div>
+
+                  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+    <button pButton type="button" label="{{'GENERALES.BUTTONS.AGREGAR' | translate}}" (click)="add()" *ngIf="!uname.errors?.pattern" [disabled]="!currentValue"
+            style="float: right; width: auto; margin-left: 12px; margin-bottom: 10px"
+            title="{{'GENERALES.BUTTONS.AGREGAR_TITULO' | translate}}">
+    </button>
+  </div>
+
+  <p-panel custom-panel no-borders>
+    <div class="ui-g ui-fluid">
+
+      <div class="ui-g-12">
+        <p-dataTable [value]="collection"
+                     [paginator]="true" [rows]="10" [responsive]="true" emptyMessage="{{'GENERALES.DATATABLE.NO_SE_ENCONTRARON_RESULTADOS' | translate}}">
+
+          <p-column field="nombre" header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REDICADOS_REFERIDOS.DATATABLE.RADICADOS_REFERIDOS' | translate}}"></p-column>
+
+          <p-column header="{{'GENERALES.DATATABLE.COLUMNA_OPCIONES' | translate}}" [style]="{'width':'120px','text-align':'center'}">
+            <ng-template let-i="rowIndex" pTemplate="item">
+              <button type="button" pButton (click)="remove(i)"
+                      icon="fa-trash" class="ui-button-info custom-button-info"></button>
+            </ng-template>
+          </p-column>
+
+        </p-dataTable>
+      </div>
+    </div>
+  </p-panel>
+
+</p-fieldset>

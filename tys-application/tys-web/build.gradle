@@ -1,0 +1,98 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+    compile group: 'org.springframework', name: 'spring-core', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-context', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-beans', version: SPRING_VERSION
+    compile group: 'org.springframework.ldap', name: 'spring-ldap-core', version: SPRING_LDAP_VERSION
+    
+	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: SERVLET_API_VERSION
+    
+    compile group: 'org.springframework', name: 'spring-web', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-webmvc', version: SPRING_VERSION
+    
+	compile group: 'org.springframework.security', name: 'spring-security-core', version: SPRING_SECURITY_VERSION
+    compile group: 'org.springframework.security', name: 'spring-security-web', version: SPRING_SECURITY_VERSION
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: SPRING_SECURITY_VERSION 
+      
+    
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: LOG4J2
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: LOG4J2
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: APACHE_COMMONS
+	compile group: 'commons-codec', name: 'commons-codec', version: APACHE_COMMONS_CODEC
+	
+	compile 'com.googlecode.json-simple:json-simple:1.1.1'
+	
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: JACKSON_VERSION
+    implementation("com.squareup.okhttp3:okhttp:4.3.1")
+    compile project(':tys-commons')
+    compile project(':tys-persistence')
+    compile project(':tys-adapters')
+
+}
+
+sourceSets {
+    main {
+        resources {
+            exclude '**/spring-config/*'
+        }
+    }
+}
+
+war {
+  
+  	from('../../tys-spa/administrador/dist') { 
+        include '*' 
+        into('administrador') 
+    }
+    
+    from('../../tys-spa/administrador/dist/assets') { 
+        include '*' 
+        into('administrador/assets') 
+    }
+    
+    from('../../tys-spa/administrador/dist/assets/icons') { 
+        include '*' 
+        into('administrador/assets/icons') 
+    }
+    
+    from('../../tys-spa/ciudadano/dist') { 
+        include '*' 
+        into('ciudadano') 
+    }
+     from('../../tys-spa/ciudadano/dist/assets') { 
+        include '*' 
+        into('ciudadano/assets') 
+    }
+    
+    from('../../tys-spa/ciudadano/dist/assets/icons') { 
+        include '*' 
+        into('ciudadano/assets/icons') 
+    }
+    
+     from('../../tys-spa/ciudadano/dist/assets/img') { 
+        include '*' 
+        into('ciudadano/assets/img') 
+    }
+    
+      from('../../tys-spa/ciudadano/dist/assets/img/flags') { 
+        include '*' 
+        into('ciudadano/assets/img/flags') 
+    }
+    
+      from('../../tys-spa/ciudadano/dist/assets/i18n') { 
+        include '*' 
+        into('ciudadano/assets/i18n') 
+    }
+    
+}
+

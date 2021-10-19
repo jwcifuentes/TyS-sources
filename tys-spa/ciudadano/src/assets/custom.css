@@ -1,0 +1,386 @@
+/* CUSTOM CLASSES */
+
+#content {
+  padding: 16px;
+}
+
+* {
+  font-family: Verdana;
+  /* font-size: 12px; */
+}
+
+/* ---------- PRIME STYLES */
+
+.ui-column-title {
+  font-weight: bold;
+  color: black;
+}
+
+.ui-button {
+  height: 45px;
+  background-color: #006850 !important;
+  color: white !important;
+  }
+
+.custom-button-info {
+  height: 30px !important;
+  width: 30px !important;
+}
+
+.ui-button-text {
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+}
+
+.ui-paginator-page {
+  background-color: #006850 !important;
+}
+
+.ui-dropdown {
+  height: 52px !important;
+  color: #1B4F72 !important;
+  font-weight: bold !important;
+}
+
+.ui-dropdown-label {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 0;
+  text-align: left;
+  vertical-align: middle !important;
+  padding-top: 17px !important;
+  font-size: 16px;
+  /*color: #1B4F72 !important;   */
+  color:#006850;
+  font-weight: bold !important;
+}
+
+.ui-dropdown-label:hover {
+  background-color: #F8F9F9 !important;
+}
+
+.ui-dropdown-trigger {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.ui-multiselect-standard{
+  width: 100% !important;
+  height: 100% !important;
+  left: 0px;
+  top: 0px;
+  z-index: 0;
+  text-align: left;
+  vertical-align: middle !important;
+  padding-top: 17px !important;
+  font-size: 12px;
+  /* color: #1B4F72 !important; */
+  color: #006850;
+  font-weight: bold !important;
+}
+.ui-multiselect-standard .ui-multiselect-trigger {
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 0;
+  cursor: pointer;
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0 .25em
+}
+.ui-multiselect-standard .ui-multiselect-label {
+  display: block;
+  /*padding: .25em 2em .25em .25em;*/
+  width: auto;
+  height: 50px !important;
+  border: 0;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #006850 !important;
+  padding-top: 17px !important;
+  padding-bottom: 4px !important;
+  padding-right: 24px !important;
+  padding-left: 8px !important;
+}
+.fa-caret-down:before {
+  position: absolute !important;
+  top: 30% !important;
+  left: 18% !important;
+  content: url("./icons/iconfinder-24.png") !important;
+  color: #006850;
+
+}
+
+/* ---------- TABLES */
+
+.form-label {
+  font-size: 12px;
+  text-align: left;
+  color: #424949;
+}
+
+.column_label {
+  width: 15%;
+  text-align: right;
+}
+
+.column_input {
+  width: 65%;
+  text-align: left;
+}
+
+.column_button {
+  width: 20%;
+  text-align: left;
+}
+
+/* ---------- INPUTS */
+
+.custom-lbl {
+  font-weight: bold;
+  text-align: left;
+}
+
+.error-status {
+  border: #FF0000 1px solid;
+  border-radius: 5px;
+}
+
+/* ---------- UTILS */
+
+.left-align {
+  text-align: left;
+}
+
+.column_small {
+  width: 15%;
+  text-align: left;
+}
+
+.column_medium {
+  width: 35%;
+  text-align: left;
+}
+
+.column_half {
+  width: 50%;
+  text-align: left;
+}
+
+.column_full {
+  width: 100%;
+  text-align: left;
+}
+
+.buttons-panel {
+  text-align: right;
+  padding-right: 70px;
+}
+
+.button-for-panel {
+  width: 100px !important;
+}
+
+.breadcrumb {
+  align-content: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 10px;
+  text-align: left;
+}
+
+.ui-breadcrumb {
+  align-content: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 10px;
+  text-align: left;
+}
+
+/* ---------- LOGIN STYLES */
+
+div.centerPoint {
+  width: 60%;
+  height: 42%;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-top: 5px solid rgb(255, 191, 39);
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  padding: 30px;
+}
+
+div.loginDiv {
+  margin-bottom: 10px;
+  width: 60%;
+  float: left;
+}
+
+.loginDivHeader {
+  color: rgb(26, 44, 128);
+  font-size: 40px;
+  font-weight: 100;
+  width: 100%;
+}
+
+.bold {
+  font-weight: bold;
+  color: rgb(26, 44, 128);
+  font-size: 40px;
+}
+
+.loginButtons {
+  margin-top: 20px;
+  width: 100%;
+}
+
+div.alternateLoginDiv {
+  position: absolute;
+  top: 40%;
+  left: 60%;
+  float: left;
+  width: 40%
+}
+
+div.alternateLoginDiv a {
+  margin-left: 40px;
+  display: inline-block;
+  padding: 9px 10px;
+  text-decoration: none;
+  background-color: rgb(48, 76, 203);
+  color: rgb(255, 255, 255);
+  width: 80%;
+  font-size: 1.3em;
+  font-weight: 100;
+}
+
+div.alternateLoginDiv .fa-chevron-right {
+  float: right;
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+.loginButtons {
+  margin-top: 20px;
+}
+
+.submitButton, .returnButton {
+  position: relative;
+  left: 57%;
+  background-color: rgb(255, 191, 39);
+  padding: 10px 20px;
+  border: medium none;
+  color: rgb(51, 51, 51);
+  font-weight: 700;
+  border-radius: 0px;
+  font-size: 1.2em;
+}
+
+.forgotButton {
+  position: relative;
+  left: 55%;
+  display: inline-block;
+  color: rgb(48, 76, 203) !important;
+  text-decoration: none;
+  padding: 10px 0px;
+}
+
+.login-label {
+  margin-top: 10px;
+  display: inline-block;
+  font-size: 18px;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-input {
+  width: 90%;
+  margin-top: 5px;
+  border: 1px solid rgb(204, 204, 204);
+  height: 40px;
+  font-size: 1.4em;
+  padding: 0px 10px;
+  background-color: rgb(250, 255, 189);
+  background-image: none;
+}
+
+.breadcrumb-container {
+  display: inline-block;
+  width: 75%;
+  vertical-align: top;
+}
+.font-container {
+  display: inline-block;
+  width: 7%;
+  border-bottom: 1px solid  #d9d9d9;
+  border-right: 1px solid  #d9d9d9;
+  vertical-align: top;
+  padding-top: 5px;
+}
+.font-container .button {
+  display:inline-block; width: 20px; height: 20px;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  margin: 0 5px 0 0;
+  cursor: pointer;
+}
+.font-container .button:last-child {
+  margin: 0;
+}
+.font-container .button.btn-font-i {
+  background-image: url("./icons/font-increase.png");
+}
+.font-container .button.btn-font-d {
+  background-image: url("./icons/font-decrease.png");
+}
+.font-container .button.btn-font-s {
+  background-image: url("./icons/font-standard.png");
+}
+.font-container .button.btn-font-m{
+  background-image: url("./icons/manual-mitra.png");
+}
+.font-container .button.btn-font-v{
+  background-image: url("./icons/video-camera.png");
+}
+
+
+.lang-container {
+  display: inline-block;
+  width: 8%;
+  padding-top: 5px;
+  border-bottom: 1px solid  #d9d9d9;
+  border-right: 1px solid  #d9d9d9;
+  border-radius: 3px;
+}
+
+.uppercase { text-transform: uppercase; }
+
+
+footer {
+  background: rgb(46, 150, 119) none repeat scroll 0 0;
+  color: rgb(255, 255, 255) !important;
+}
+footer .container { padding: 20px 30px; }
+footer .container *{ color: #F8F9F9; }
+footer .container section { padding: 0 5px; border-right: 1px solid #F8F9F9; height: 100%; }
+footer .container section.last-child { border: none; }
+footer .container section a { text-decoration: none; }
+footer .container section h4 { font-size: 16px; }
+footer .container section h5 { font-size: 14px; margin-bottom: 5px; }
+footer .container section label { display: block; font-size: 10px; font-style: normal; }
+footer .text-center { text-align: center; padding: 5px 0; background: #006850; }
+footer .text-center p { font-size: 10px; margin: 20px 0; }
+footer .text-center p span { padding: 0 5px; }
+
+.ui-widget-header .ui-button, .ui-widget-content .ui-button, .ui-widget.ui-button, .ui-button {
+  //border: 1px solid rgba(0, 104, 80, 0.91);
+  color: #FFFFFF;
+  background: #2e967d;
+  transition: background-color .2s;
+}

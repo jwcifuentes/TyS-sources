@@ -1,0 +1,14 @@
+<p-menubar [model]="items" *ngIf="_session.isLoggedIn()">
+  <div style="max-width: 1080px;width: 100%;margin: 0 auto">
+    <div style="float: left" *ngIf="isInTramiteDetail()">
+      <button pButton label="Atrás" icon="fa-arrow-left" (click)="goToAdminTramites()"></button>
+    </div>
+    <div style="float: right">
+      <span class="login-label" style="padding-right: 0.5cm;">Bienvenido, {{_session.getUserFullName()}} </span>
+      <button pButton label="Salir" icon="fa-sign-out" (click)="logout()"></button>
+    </div>
+  </div>
+</p-menubar>
+<div>
+  <router-outlet></router-outlet>
+</div>

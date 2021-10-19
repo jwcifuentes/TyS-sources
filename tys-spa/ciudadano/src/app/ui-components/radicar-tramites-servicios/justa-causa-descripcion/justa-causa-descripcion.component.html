@@ -1,0 +1,34 @@
+<p-dialog class="no-scroll" header="{{'FORMS.JUSTA_CAUSA.TITULO' | translate}}" [contentStyle]="{'overflow':'visible'}"
+    [(visible)]="showJustaCausaDescripcion" [modal]="true" [responsive]="true" [positionTop]="50" [blockScroll]="true"
+    [width]="1500" [draggable]="false" [closeOnEscape]="true" [resizable]="false">
+    <p-panel custom-panel no-borders>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <p-dataTable var="justa" [value]="justaCausaAny" [paginator]="true" [rows]="10" [responsive]="true"
+                    emptyMessage="{{'GENERALES.DATATABLE.NO_SE_ENCONTRARON_RESULTADOS' | translate}}">
+                    <p-column field="description_name" header="{{'FORMS.JUSTA_CAUSA.TITULO' | translate}}"></p-column>
+                    <p-column field="" header="{{'FORMS.JUSTA_CAUSA.DESCRIPCION' | translate}}">
+                        <ng-template let-item="rowData" pTemplate="item">
+                            <textarea *ngIf="item.check_description" [rows]="5" [cols]="30" pInputTextarea
+                                autoResize="autoResize" placeholder="Descripcion" [(ngModel)]="item.observacion"></textarea>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="check" header="{{'FORMS.JUSTA_CAUSA.SELECCIONAR' | translate}}"
+                        [style]="{'width':'120px','text-align':'center'}">
+                        <ng-template let-item="rowData" pTemplate="item">
+                            <!-- <button type="button" pButton (click)="tsonclick(item)" icon="fa-check"
+                            class="ui-button-info custom-button-info"></button> -->
+                            <p-checkbox icon="fa-check" class="ui-button-info custom-button-info"
+                                        binary="true"
+                                        [(ngModel)]="item.check_description">
+                            </p-checkbox>
+                        </ng-template>
+                    </p-column>
+
+                </p-dataTable>
+                <button pButton type="button" style="width: auto; margin-right: 12px; margin-top: 2%;"
+                    label="Seleccionar" class="ui-button-raised" (click)="hideDialog()"></button>
+            </div>
+        </div>
+    </p-panel>
+</p-dialog>

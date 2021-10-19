@@ -1,0 +1,200 @@
+<p-growl [(value)]="msgs" life="6000"></p-growl>
+<section id="content">
+  <div class="inner">
+    <div class="ui-g ui-fluid">
+      <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" style="text-align: center; padding-bottom: 20px">
+        <button pButton label="{{'GENERALES.BUTTONS.ATRAS' | translate}}" style="width: auto;float: left;"
+                (click)="backToModuleSelection()"></button>
+        <h2 style="display: inline-block;align-self: center; margin-top: 10px;">Consultar y adjuntar trámite</h2>
+      </div>
+    </div>
+    <div class="ui-g ui-fluid">
+      <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" [toggleable]="true"
+                  legend="Consulta Trámites Radicados">
+        <form [formGroup]="form">
+          <div class="ui-g ui-fluid">
+            <!--numeroRadicado-->
+            <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+              <div class="ui-g form-group">
+                <label class="lb" for="numeroRadicado">{{'FORMS.CONSULTAR_TRAMITE.NUMERO_RADICADO' | translate}}</label>
+                <div class="ui-g-12">
+                <span class="md-inputfield">
+                  <input type="text" pInputText class="large-input" id="numeroRadicado"
+                         formControlName="numeroRadicado" (blur)="listenForBlurEvents('numeroRadicado')">
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.numeroRadicado">
+                      {{ validations.numeroRadicado | translate }}
+                  </div>
+                </span>
+                </div>
+              </div>
+            </div>
+            <!--codigoVerificacion-->
+            <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+              <div class="ui-g form-group">
+                <label class="lb"
+                       for="codigoVerificacion">{{'FORMS.CONSULTAR_TRAMITE.CODIGO_VERIFICACION' | translate}}</label>
+                <div class="ui-g-12">
+                <span class="md-inputfield">
+                  <input type="text" pInputText class="large-input" id="codigoVerificacion"
+                         formControlName="codigoVerificacion" (blur)="listenForBlurEvents('codigoVerificacion');">
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations.codigoVerificacion">
+                      {{ validations.codigoVerificacion | translate }}
+
+                  </div>
+                </span>
+                </div>
+              </div>
+            </div>
+            <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" style="padding-top: 39px">
+              <button pButton type="button" label="{{'GENERALES.BUTTONS.CONSULTAR' | translate}}"
+                      (click)="reloadTramites()"
+                      style="width: auto; margin-left: 12px;float: right"></button>
+
+            </div>
+          </div>
+        </form>
+      </p-fieldset>
+      <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12 ui-datatable"
+                  legend="Tr&aacute;mite Radicado" [toggleable]="true"
+                  *ngIf="tramite">
+        <table>
+          <thead class="ui-datatable-thead">
+          <tr class="ui-state-default">
+            <th class="ui-state-default ui-unselectable-text">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.NO_RADICADO' | translate }}
+            </th>
+            <th class="ui-state-default ui-unselectable-text">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.TIPO_TRAMITE'| translate}}
+            </th>
+            <th class="ui-state-default ui-unselectable-text">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.FECHA_RADICADO' | translate }}
+            </th>
+            <th class="ui-state-default ui-unselectable-text">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.DIRECCION_TERRITORIAL' | translate }}
+            </th>
+            <th class="ui-state-default ui-unselectable-text">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.DEPENDENCIA' | translate }}
+            </th>
+
+            <th class="ui-state-default ui-unselectable-text"
+                *ngIf="tramite.idTramite === 9">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.ENTREVISTA' | translate }}
+            </th>
+            <th class="ui-state-default ui-unselectable-text"
+                *ngIf="tramite.idTramite === 9">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.VISITA' | translate }}
+            </th>
+
+            <th class="ui-state-default ui-unselectable-text">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.ESTADO' | translate }}
+            </th>
+
+            <th class="ui-state-default ui-unselectable-text"
+                *ngIf="comunicacionesIntermedias!==null">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.VER_COMUNICACIONES_INTERMEDIAS' | translate }}
+            </th>
+
+            <th class="ui-state-default ui-unselectable-text"
+                *ngIf="tramite.id !== 9 && documentoEsVisible()">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.VER_RESPUESTA' | translate }}
+            </th>
+            <th class="ui-state-default ui-unselectable-text"
+                *ngIf="tramite.id === 9 && soporteEsVisible()">
+              Soporte
+            </th>
+            <th class="ui-state-default ui-unselectable-text"
+                *ngIf="tramiteEsActualizable()">
+              {{'FORMS.CONSULTAR_TRAMITE.TABLA.ACTUALIZAR_TRAMITE' | translate }}
+            </th>
+          </tr>
+          </thead>
+          <tbody class="ui-datatable-data ui-widget-content">
+          <tr class="ui-datatable-even ui-widget-content">
+            <td>{{ tramite.numeroRadicado }}</td>
+            <td>{{ tramite.nombreTramite }}</td>
+            <td>{{ tramite.fechaRadicacion }}</td>
+            <td>{{ tramite.direccionTerritorial }}</td>
+            <td>{{ tramite.dependencia }}</td>
+
+            <td *ngIf="tramite.idTramite === 9">
+              {{ estadosNinosNinas[tramite?.indEstadoEntrevista] }}
+            </td>
+
+
+
+            <td *ngIf="tramite.idTramite === 9">
+              {{ estadosNinosNinas[tramite?.indEstadoVisita] }}
+            </td>
+
+            <td>{{ tramite.nombreEstado }}</td>
+            <!-- <td>{{ tramite.getStateDescription() }}</td> -->
+
+            <td *ngIf="comunicacionesIntermedias!==null">
+              <button type="button" pButton icon="fa fa-file-text-o"
+                      class="ui-button-info custom-icon-btn"
+                      (click)="listardocumentos()">
+              </button>
+            </td>
+
+            <td *ngIf="tramite.idTramite !== 9 && documentoEsVisible()">
+              <button type="button" pButton icon="fa-file-pdf-o"
+                      class="ui-button-info custom-icon-btn"
+                      (click)="showProducedDocument(tramite.idFilenetDocProducido)">
+              </button>
+            </td>
+            <td *ngIf="tramite.idTramite === 9 && soporteEsVisible()">
+              <a
+                href="http://mintrabgd08/rotulador/PlantillaTYS?Tramite=nnaentr&numRadicado={{ tramite.numeroRadicado }}"                
+                alt="Ver" title="Ver"
+                download>
+                <button type="button" pButton icon="fa-file-pdf-o"
+                        class="ui-button-info custom-icon-btn">
+                </button>
+              </a>
+            </td>
+            <td *ngIf="tramiteEsActualizable()">
+              <button type="button" pButton icon="fa-edit"
+                      class="ui-button-info custom-icon-btn"
+                      (click)="goActualizarTramite(tramite)">
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </p-fieldset>
+    </div>
+  </div>
+
+
+  <p-dialog [(visible)]="showPopupComunicaciones" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12 ui-datatable"
+            header="Comunicaciones Intermedias">
+
+
+    <p-dataTable [value]="comunicacionesIntermedias" >
+
+    </p-dataTable>
+    <table *ngIf="!!this.comunicacionesIntermedias">
+      <thead class="ui-datatable-thead">
+      <tr class="ui-state-default">
+        <th class="ui-state-default ui-unselectable-text">{{'FORMS.CONSULTAR_TRAMITE.TABLA_EMEGERNTE.NOMBRE' | translate }}</th>
+        <th class="ui-state-default ui-unselectable-text">{{'FORMS.CONSULTAR_TRAMITE.TABLA_EMEGERNTE.IDENTIFICADOR' | translate }}</th>
+        <th class="ui-state-default ui-unselectable-text">{{'FORMS.CONSULTAR_TRAMITE.TABLA_EMEGERNTE.ARCHIVO' | translate }}</th>
+      </tr>
+      </thead>
+      <tbody class="ui-datatable-data ui-widget-content">
+      <tr class="ui-datatable-even ui-widget-content" *ngFor="let rec of this.comunicacionesIntermedias">
+        <td>{{rec.nombreDocumento || 'No Aplica'}}</td>
+        <td>{{rec.idDocumento}}</td>
+        <td>
+          <button type="button" pButton icon="fa-file-pdf-o"
+                  class="ui-button-info custom-icon-btn"
+                  (click)="showDocuemento(rec)">
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </p-dialog>
+</section>

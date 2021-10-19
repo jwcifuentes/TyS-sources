@@ -1,0 +1,101 @@
+<div #actualTarget style="position: relative; top: 0"></div>
+
+<p-overlayPanel #op [showCloseIcon]="true">
+  <div class="ui-g-12">
+    {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.JORNADAS_TRABAJO_AUTORIZADAS' | translate}}
+  </div>
+</p-overlayPanel>
+
+<p-panel custom-panel="" no-borders="">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+
+      <p-dataTable [value]="registroHorario" [responsive]="true"
+                   emptyMessage="{{'GENERALES.DATATABLE.NO_SE_ENCONTRARON_RESULTADOS' | translate}}"
+                   [ngClass]="{'mandatory': calendarValidators.length > 0 }">
+        <p-header>
+          <button type="text" pButton label="{{'GENERALES.BUTTONS.AYUDA' | translate}}"
+                  (click)="op.show($event, actualTarget)"
+                  style="width: auto; padding-right: 8px"></button>
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.DESCRIBA_DISTRIBUCION_HORAS_SEMANA' | translate}}
+        </p-header>
+
+        <p-column field="dia" header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.DATATABLE.DIA_SEMANA' | translate}}"></p-column>
+        <p-column header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.DATATABLE.JORNADA_MAÑANA_DESDE' | translate}}"
+                  [style]="{'text-align':'center'}">
+          <ng-template let-i="rowIndex" pTemplate="item">
+            <!--hoursList-->
+            <p-dropdown [options]="hoursDayOptions"
+                        [filter]="true"
+                        [(ngModel)]="registroHorario[i].mi"
+                        [autoWidth]="false"
+                        (onChange)="calcFullTotal()">
+            </p-dropdown>
+
+            <div style="border: 1px solid red;" *ngIf="calendarValidators[i]"></div>
+
+          </ng-template>
+        </p-column>
+        <p-column header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.DATATABLE.JORNADA_MAÑANA_HASTA' | translate}}"
+                  [style]="{'text-align':'center'}">
+          <ng-template let-i="rowIndex" pTemplate="item">
+
+            <p-dropdown [options]="finalHourOptions(hoursDayOptions, registroHorario[i].mi)"
+                        [filter]="true"
+                        [(ngModel)]="registroHorario[i].mh"
+                        [autoWidth]="false"
+                        (onChange)="calcFullTotal()">
+            </p-dropdown>
+
+            <div style="border: 1px solid red;" *ngIf="calendarValidators[i]"></div>
+
+          </ng-template>
+        </p-column>
+        <p-column header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.DATATABLE.JORNADA_TARDE_DESDE' | translate}}" [style]="{'text-align':'center'}">
+          <ng-template let-i="rowIndex" pTemplate="item">
+
+            <p-dropdown [options]="hoursLateOptions"
+                        [filter]="true"
+                        [(ngModel)]="registroHorario[i].ti"
+                        [autoWidth]="false"
+                        (onChange)="calcFullTotal()">
+            </p-dropdown>
+
+            <div style="border: 1px solid red;" *ngIf="calendarValidators[i]"></div>
+
+          </ng-template>
+        </p-column>
+        <p-column header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.DATATABLE.JORNADA_TARDE_HASTA' | translate}}" [style]="{'text-align':'center'}">
+          <ng-template let-i="rowIndex" pTemplate="item">
+
+            <p-dropdown [options]="finalHourOptions(hoursLateOptions, registroHorario[i].ti)"
+                        [filter]="true"
+                        [(ngModel)]="registroHorario[i].th"
+                        [autoWidth]="false"
+                        (onChange)="calcFullTotal()">
+            </p-dropdown>
+
+            <div style="border: 1px solid red;" *ngIf="calendarValidators[i]"></div>
+
+          </ng-template>
+        </p-column>
+
+        <p-column field="total" header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.DATATABLE.TOTAL_HORAS' | translate}}" [styleClass]="'large-input'"
+                  [style]="{'text-align': 'center'}">
+          <ng-template let-i="rowIndex" pTemplate="item">
+            <span>{{ registroHorario[i].total }}</span>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>
+
+    <div class="ui-g-12" style="padding: 16px">
+      <span class="item-label">
+          {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REGISTRO_HORARIO.DATATABLE.TOTAL_DE_HORAS' | translate}}
+      </span>
+      <span *ngIf="totalRegistroHorario" class="large-input">
+          {{ totalRegistroHorario }}
+      </span>
+    </div>
+  </div>
+</p-panel>

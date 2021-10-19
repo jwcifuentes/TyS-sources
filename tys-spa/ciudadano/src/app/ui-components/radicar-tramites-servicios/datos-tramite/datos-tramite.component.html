@@ -1,0 +1,2424 @@
+<p-growl [value]="commonModel.msgs"></p-growl>
+
+<br/>
+<h2>{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_TRAMITES' | translate}} </h2>
+<br>
+
+<form [formGroup]="form">
+
+  <div class="ui-g ui-fluid">
+
+    <!--<div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12">-->
+    <!--<button pButton type="button" label="Agregar" (click)="getDatosTramiteForm()"-->
+    <!--style="width: auto; margin-left: 12px"></button>-->
+    <!--</div>-->
+    <!--tipoTramite-->
+    <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="tipoSolicitante">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_TRAMITE' |
+          translate}}</label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="tipoTramiteOptions$ | async | dropdownItem" filter="true" id="tipoSolicitante"
+                      formControlName="tipoTramite" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                      [autoWidth]="false"
+                      (onChange)="saveAndShowDescription($event)"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_TRAMITE_RADICAR' | translate}}">
+          </p-dropdown>
+
+          <div class="ui-message ui-messages-error" *ngIf="validations.tipoTramite">
+            {{ validations.tipoTramite | translate }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--descarga de documentos-->
+    <div class="help-message" *ngIf="tipoTramite.value?.id === 22">
+      <h3>{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.INFORMACION_ADICIONAL.DOCUMENTOS' | translate}}</h3>
+      <div>
+        <label class="lblb">* FORMATO CARTA DE INTENCIÓN PARA LA REALIZACIÓN DE PRACTICA LABORAL  <a class="ui-link-download" href="{{doc_carta_intencion}}" target="_blank">Descargue aquí</a></label>
+      </div>
+      <div>
+        <label class="lblb">* FORMATO CARTA DE AUTORIZACIÓN DE LA INSTITUCIÓN DE EDUCACIÓN O FORMACIÓN PARA PRACTICAS LABORALES  <a class="ui-link-download" href="{{doc_carta_autorizacion}}" target="_blank">Descargue aquí</a></label>
+      </div>
+    </div>
+
+    <div class="help-message" *ngIf="isVisibleDescripcionTramite()">
+      <h3>{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.INFORMACION_ADICIONAL' | translate}}</h3>
+      {{ tramiteDescription }}
+      <div *ngIf="tramiteUrls">
+            <div *ngFor="let item of tramiteUrls">
+              <a href="{{item}}" target="_blank"><h3> {{item}}</h3></a>
+            </div>
+      </div>
+    </div>
+
+    <!--circunstanciasDescripcion-->
+    <div class="ui-g-12 ui-lg-12" [hidden]="!visibility.circunstanciasDescripcion">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label
+          class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.CIRCUNSTANCIA_DESCRIPCION' | translate}}</label>
+        <div class="ui-g-12">
+          <span class="md-inputfield">
+          <textarea maxlength="500" [rows]="3" pInputTextarea 
+                    placeholder="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.PLACEHOLDER_DESCRIPCION' | translate}}"
+                    autoResize="true" formControlName="circunstanciasDescripcion"></textarea>
+          <div class="ui-message ui-messages-error" *ngIf="validations['circunstanciasDescripcion']">
+            {{ validations['circunstanciasDescripcion'] | translate }}
+          </div>
+            </span>
+        </div>
+      </div>
+    </div>
+
+    <!--DireccionesTerritoriales-->
+    <app-direcciones-territoriales #direccionesTerritoriales [options]="direccionTerritorialOptions$ | async"
+                                   [ngClass]="{'mandatory': validations['tieneDireccionesTerritoriales']}"
+                                   [cantidadPermitidas]="nmDireccionesPermitidas"
+                                   [hidden]="!visibility.tieneDireccionesTerritoriales"
+                                   (infoChange)="onDireccionTerritorialChange($event.id)"
+                                   (onValid)="onDireccionTerritorialValid()"
+                                   (onInvalid)="onDireccionTerritorialInvalid()">
+    </app-direcciones-territoriales>
+    <div class="ui-g-12 md-inputfield" style="padding-bottom: 16px;height: 30px;"
+         *ngIf="validations['tieneDireccionesTerritoriales']">
+      <div class="ui-message ui-messages-error">
+        {{ validations['tieneDireccionesTerritoriales'] | translate }}
+      </div>
+    </div>
+
+    <!--RadicadosRelacionados-->
+    <app-radicados-referidos #radicadosReferidos [ngClass]="{'mandatory': validations['tieneRadicadosReferidos']}"
+                             [hidden]="!visibility.tieneRadicadosReferidos">
+    </app-radicados-referidos>
+
+    <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" [hidden]="!visibility.tipoGestion">
+      <div class="ui-g-12">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb"><strong
+            style="display: block">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_GESTION'
+            | translate}}</strong></label>
+          <div class="ui-g-12">
+            <ng-template ngFor let-opcion [ngForOf]="tipoGestionOptions$ | async">
+              <!--<p-radioButton formControlName="tipoGestion" name="tipoGestion" [value]="opcion.id"
+                             (onClick)="selectTipoGestion(opcion.id)"
+                             [label]="opcion.nombre"></p-radioButton>-->
+              <input type="radio" formControlName="tipoGestion" name="tipoGestion"
+                     (click)="selectTipoGestion(opcion.id)" [value]="opcion.id"
+              >
+              <label >
+                {{opcion.nombre}}
+              </label>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--justificacionSolicitud-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="!visibility.justificacionSolicitud">
+      <div class="ui-g form-group">
+        <label class="lb"
+               for="justificacionSolicitud">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.JUSTIFICACION_SOLICITUD'
+          | translate}}</label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="justificacionSolicitudOptions$ | async | dropdownItem" filter="true"
+                      id="justificacionSolicitud"
+                      formControlName="justificacionSolicitud"
+                      placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_JUSTIFICACION_SOLICITUD' | translate}}"
+                      [autoWidth]="false" (onBlur)="listenForBlurEvents('justificacionSolicitud')">
+          </p-dropdown>
+
+          <div class="ui-message ui-messages-error" *ngIf="validations.justificacionSolicitud">
+            {{ validations.justificacionSolicitud | translate }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--gradoAsociacion-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="!visibility.gradoAsociacion">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="gradoAsociacion">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.GRADO_ASOCIACION' |
+          translate}}</label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="gradoAsociacionOptions$ | async | dropdownItem" filter="true" id="gradoAsociacion"
+                      formControlName="gradoAsociacion" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                      [autoWidth]="false"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_GRADO_ASOCIACION' | translate}}"
+                      (onBlur)="listenForBlurEvents('gradoAsociacion')">
+          </p-dropdown>
+
+          <div class="ui-message ui-messages-error" *ngIf="validations.gradoAsociacion">
+            {{ validations.gradoAsociacion | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--tipoSolicitud-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="!visibility.tipoSolicitud">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="tipoSolicitud">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_SOLICITUD' |
+          translate}}</label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="tipoSolicitudOptions$ | async | dropdownItem" filter="true" id="tipoSolicitud"
+                      formControlName="tipoSolicitud" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                      [autoWidth]="false"
+                      title="Seleccione tipo de solicitud" (onBlur)="listenForBlurEvents('tipoSolicitud')">
+          </p-dropdown>
+
+          <div class="ui-message ui-messages-error" *ngIf="validations.tipoSolicitud">
+            {{ validations.tipoSolicitud | translate }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--tienePactos-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="!visibility.tienePactos">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="tienePactos">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.ENTIDAD_TIENE_PACTOS' |
+          translate}}</label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="tienePactosOptions$ | async| dropdownYesNo" id="tienePactos"
+                      formControlName="tienePactos"
+                      placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}" [autoWidth]="false"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.ESCOJA_ENTIDAD_PACTOS_CONVENCIONES_COL' | translate}}"
+                      (onBlur)="listenForBlurEvents('tienePactos')">
+          </p-dropdown>
+
+          <div class="ui-message ui-messages-error" *ngIf="validations.tienePactos">
+            {{ validations.tienePactos | translate }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--tieneReglamento-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="!visibility.tieneReglamento">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb" for="tieneReglamento">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIENE_REGLAMENTO' |
+          translate}}</label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="tieneReglamentoOptions$ | async| dropdownYesNo" id="tieneReglamento"
+                      formControlName="tieneReglamento" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                      [autoWidth]="false"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_OPCION_TIENE_REGLAMENTO' | translate}}"
+                      (onBlur)="listenForBlurEvents('tieneReglamento')">
+          </p-dropdown>
+          <div class="ui-message ui-messages-error" *ngIf="validations.tieneReglamento">
+            {{ validations.tieneReglamento | translate }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--tieneOrganizacionesSindicales-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="!visibility.tieneOrganizacionesSindicales">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+        <label class="lb"
+               for="tieneOrganizacionesSindicales">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIENE_ORGANIZACIONES_SINDICALES' |
+          translate}}</label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="tieneOrganizacionesSindicalesOptions$ | async| dropdownYesNo"
+                      id="tieneOrganizacionesSindicales"
+                      formControlName="tieneOrganizacionesSindicales"
+                      placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}" [autoWidth]="false"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_OPCION_TIENE_ORGANIZACIONES_SINDICALES' | translate}}"
+                      (onBlur)="listenForBlurEvents('tieneOrganizacionesSindicales')">
+          </p-dropdown>
+          <div class="ui-message ui-messages-error" *ngIf="validations.tieneOrganizacionesSindicales">
+            {{ validations.tieneOrganizacionesSindicales | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Organizaciones sindicales tabla-->
+    <app-organizaciones-sindicales #organizacionesSindicales
+                                   [parentForm]="form"
+                                   [messageError]="getMessageErrorOrganizaciones()"
+                                   *ngIf="this.form.get('tieneOrganizacionesSindicales').value? this.form.get('tieneOrganizacionesSindicales').value.value:false">
+    </app-organizaciones-sindicales>
+    <!--radicadaPor-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="!visibility.radicadaPor">
+      <div class="ui-g form-group">
+        <label class="lb" for="radicadaPor">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SOLICITUD_RADICADA_POR' |
+          translate}}</label>
+        <div class="ui-g-12 md-dropdownfield">
+          <p-dropdown [options]="radicadaPorOptions$ | async | dropdownItem" filter="true" id="radicadaPor"
+                      formControlName="radicadaPor" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                      [autoWidth]="false"
+                      (onBlur)="listenForBlurEvents('radicadaPor')"
+                      title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TRAMITE_RADICADO_POR' | translate}}">
+          </p-dropdown>
+
+          <div class="ui-message ui-messages-error" *ngIf="validations.radicadaPor">
+            {{ validations.radicadaPor | translate }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--tipoSocietarioSas-->
+    <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="!visibility.tipoSocietarioSas">
+      <div class="ui-g form-group">
+        <span class="mandatory">*</span>
+          <label class="lb"
+                for="tipoSocietarioSas">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_SOCIETARIOS_SAS'
+            | translate}}</label>
+          <div class="ui-g-12 md-dropdownfield">
+            <p-dropdown [options]="tipoSocietarioSasOptions$ | async | dropdownYesNo" id="tipoSocietarioSas"
+                        formControlName="tipoSocietarioSas" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                        [autoWidth]="false" (onChange)="sharedData.next({isEmpresaSas: form.value.tipoSocietarioSas})"
+                        (onBlur)="listenForBlurEvents('tipoSocietarioSas')"
+                        title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_SOCIETARIOS_SAS' | translate}}">
+            </p-dropdown>
+
+            <div class="ui-message ui-messages-error" *ngIf="validations.tipoSocietarioSas">
+              {{ validations.tipoSocietarioSas | translate }}
+            </div>
+
+          </div>
+      </div>
+    </div>
+
+
+    <!--objetoSaludDescripcion-->
+    <div class="ui-g-12 ui-lg-12" [hidden]="!visibility.objetoSaludDescripcion">
+      <div class="ui-g form-group">
+        <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.OBJETO_SOLICITUD' | translate}}</label>
+        <div class="ui-g-12 md-inputfield">
+          <textarea [rows]="3" pInputTextarea
+                    placeholder="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.PLACEHOLDER_DESCRIPCION' | translate}}"
+                    autoResize="true" formControlName="objetoSaludDescripcion"></textarea>
+          <div class="ui-message ui-messages-error" *ngIf="validations.objetoSaludDescripcion">
+            {{ validations.objetoSaludDescripcion | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p-fieldset formGroupName="datosNotificacionTrabajador" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                [hidden]="!visibility.datosNotificacionTrabajador"
+                legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_NOTIFICACION_TRABAJADOR' | translate}}"
+                *ngIf="visibility.datosNotificacionTrabajador"
+                [toggleable]="true">
+
+      <!--primerNombre-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb"><span class="text-danger">*</span>
+            {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRIMER_NOMBRE' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="primerNombre" maxlength="20"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (change)="onNameChange('datosNotificacionTrabajador.','nombreTrabajador')"
+                     (onBlur)="listenForBlurEvents(['datosNotificacionTrabajador','primerNombre'])">
+              <div class="ui-message ui-messages-error" *ngIf="validations['datosNotificacionTrabajador_primerNombre']">
+                {{ validations['datosNotificacionTrabajador_primerNombre'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--segundoNombre-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SEGUNDO_NOMBRE' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="segundoNombre" maxlength="20"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (change)="onNameChange('datosNotificacionTrabajador.','nombreTrabajador')"
+                     (onBlur)="listenForBlurEvents(['datosNotificacionTrabajador','segundoNombre'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['datosNotificacionTrabajador_segundoNombre']">
+                {{ validations['datosNotificacionTrabajador_segundoNombre'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--primerApellido-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb"><span class="text-danger">*</span>
+            {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRIMER_APELLIDO' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="primerApellido" maxlength="20"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (change)="onNameChange('datosNotificacionTrabajador.','nombreTrabajador')"
+                     (onBlur)="listenForBlurEvents(['datosNotificacionTrabajador','primerApellido'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['datosNotificacionTrabajador_primerApellido']">
+                {{ validations['datosNotificacionTrabajador_primerApellido'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--segundoApellido-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SEGUNDO_APELLIDO' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="segundoApellido" maxlength="20"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (change)="onNameChange('datosNotificacionTrabajador.','nombreTrabajador')"
+                     (onBlur)="listenForBlurEvents(['datosNotificacionTrabajador','segundoApellido'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['datosNotificacionTrabajador_segundoApellido']">
+                {{ validations['datosNotificacionTrabajador_segundoApellido'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+      <!--emailTrabajador-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb"
+                 for="emailTrabajador">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.CORREO_ELECT_TRABAJADOR'
+            | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="emailTrabajador"
+                     pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+                     formControlName="emailTrabajador"
+                     (onBlur)="listenForBlurEvents(['datosNotificacionTrabajador','emailTrabajador'])">
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['datosNotificacionTrabajador_emailTrabajador']">
+                {{ validations['datosNotificacionTrabajador_emailTrabajador'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--Direcciones Trabajador-->
+      <p-panel custom-panel no-borders>
+        <div class="ui-g ui-fluid">
+          <div class="ui-g-12">
+            <app-datos-direccion #direccionesTrabajador
+                                 [ngClass]="{'mandatory': validations['datosNotificacionTrabajador_tieneDirecciones']}"
+                                 (onValid)="setTieneDirecciones(['datosNotificacionTrabajador','tieneDirecciones'], true)"
+                                 (onInvalid)="setTieneDirecciones(['datosNotificacionTrabajador','tieneDirecciones'], null)">
+            </app-datos-direccion>
+            <div class="ui-g-12 md-inputfield" style="padding-bottom: 16px;height: 30px;"
+                 *ngIf="validations['datosNotificacionTrabajador_tieneDirecciones']">
+              <div class="ui-message ui-messages-error">
+                {{ validations['datosNotificacionTrabajador_tieneDirecciones'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-panel>
+
+      <!-- justaCausaDescripcionUpdate -->
+      <p-fieldset legend="Justa Causa" [toggleable]="true">
+          <div class="ui-g-12 ui-lg-12">
+              <div class="ui-g form-group">
+                  <div class="ui-sm-5 ui-md-5 ui-g-5 ui-lg-5">
+                      <span class="mandatory" class="text-danger">*</span>
+                      <label class="lb" style="height: 16px;margin-top: 14px">{{'Causal del despido'}}</label>
+                    </div>
+                    <div class="ui-sm-7 ui-md-7 ui-g-7 ui-lg-7" text-right>
+                        <label class="lb">{{'Seleccione la opción Agregar para diligenciar las justas causas de la radicacion'}}</label>
+                    </div>
+                  <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" text-right>
+                      <button pButton type="button" style="width: auto; margin-left: 12px" label="{{'GENERALES.BUTTONS.AGREGAR' | translate}}"
+                        (click)="showJustaCausaDescripcionDialog()" [disabled]="!capturaListaCausalD"></button>
+                    </div>
+                      <div class="ui-g-12 md-dropdownfield">
+                        <p-dropdown
+                                    [options]="causalDespidos$ | async | dropdownItemCausalDespido"
+                                    placeholder="Seleccione una Opción"
+                                    [style]="{'width':'470px'}"
+                                    filter ="true"
+                                    [(ngModel)]="capturaListaCausalD"
+                                    formControlName="causalDespidoLista"
+                                    (onChange)="seleccion()">
+                        </p-dropdown>
+                      </div>
+              </div>
+
+              <div class="ui-g-12 ui-lg-12">
+                  <p-dataTable [value]="listseleccionados" selectionMode="single" [paginator]="true" [rows]="10" [responsive]="true"
+                  emptyMessage="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.MENSAJES.NO_RESULTADOS_ENCONTRADOS' | translate}}">
+                  <!-- Columna de la descripcion seleccionada -->
+                  <p-column header="Justa Causa" field="description_name"></p-column>
+                  <!-- Columna de la justa causa seleccionada -->
+                  <p-column header="Descripción de la justa Causa" field="observacion"></p-column>
+                  <!-- Columna de la justa causa Eliminar -->
+                  <p-column header="Eliminar" [style]="{'width':'120px','text-align':'center'}">
+                    <ng-template let-i="rowIndex" pTemplate="item">
+                      <button type="button" pButton (click)="remove(i)"
+                              icon="fa-trash" class="ui-button-info custom-button-info"></button>
+                    </ng-template>
+                  </p-column>
+                </p-dataTable>
+              </div>
+          </div>
+
+      </p-fieldset>
+
+      <app-justa-causa-descripcion #justaCausaDescripcion [causalDespido]="capturaListaCausalD"
+                                   (onSelectJustaCausa)="onSelectJustaCausa($event)"
+                                   [ngClass]="{'mandatory': validations['causalDespidoLista']}">
+      </app-justa-causa-descripcion>
+      <div class="ui-g-12 md-inputfield" style="padding-bottom: 16px;height: 30px;" *ngIf="validations['causalDespidoLista']">
+          <div class="ui-message ui-messages-error">
+            {{ validations['causalDespidoLista'] | translate }}
+          </div>
+        </div>
+    </p-fieldset>
+
+    <!--Autorizacion de trabajo Adolescente-->
+    <p-fieldset formGroupName="autorizacionTrabajoAdolescente" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                *ngIf="visibility.autorizacionTrabajoAdolescente"
+                legend="Autorización de Trabajo Niño - Niña - Adolescente" [toggleable]="true">
+
+      <!--primerNombre-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb"><span class="text-danger">*</span>
+            {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRIMER_NOMBRE' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="primerNombre" maxlength="20"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (change)="onNameChange('autorizacionTrabajoAdolescente.')"
+                     (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','primerNombre'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_primerNombre']">
+                {{ validations['autorizacionTrabajoAdolescente_primerNombre'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--segundoNombre-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SEGUNDO_NOMBRE' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="segundoNombre" maxlength="20"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (change)="onNameChange('autorizacionTrabajoAdolescente.')"
+                     (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','segundoNombre'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_segundoNombre']">
+                {{ validations['autorizacionTrabajoAdolescente_segundoNombre'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--primerApellido-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb"><span class="text-danger">*</span>
+            {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRIMER_APELLIDO' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="primerApellido" maxlength="20"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (change)="onNameChange('autorizacionTrabajoAdolescente.')"
+                     (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','primerApellido'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_primerApellido']">
+                {{ validations['autorizacionTrabajoAdolescente_primerApellido'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--segundoApellido-->
+      <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+        <div class="ui-g form-group">
+          <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SEGUNDO_APELLIDO' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="segundoApellido" maxlength="20"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (change)="onNameChange('autorizacionTrabajoAdolescente.')"
+                     (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','segundoApellido'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_segundoApellido']">
+                {{ validations['autorizacionTrabajoAdolescente_segundoApellido'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--tipoDocumento-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="tipoDocumento">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_DOCUMENTO' |
+            translate}}</label>
+          <div class="ui-g-12 md-dropdownfield">
+            <p-dropdown [options]="tipoDocumentoNNAOptions$ | async | dropdownItem" filter="true" id="tipoDocumento"
+                        formControlName="tipoDocumento" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                        [autoWidth]="false"
+                        (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','tipoDocumento'])"
+                        title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_DOCUMENTO' | translate}}">
+            </p-dropdown>
+
+            <div class="ui-message ui-messages-error"
+                 *ngIf="validations['autorizacionTrabajoAdolescente_tipoDocumento']">
+              {{ validations['autorizacionTrabajoAdolescente_tipoDocumento'] | translate }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!--nroDocumentoIdentidad-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="nroDocumentoIdentidad">{{'GENERALES.DATOS_PERSONA.NO_DOCUMENTO_IDENTIDAD' |
+            translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="nroDocumentoIdentidad"
+                     formControlName="nroDocumentoIdentidad"
+                     maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false"
+                     onPaste="return false"
+                     (keypress)="this.restrictNumbers($event)" (blur)="listenForBlurEvents('numeroDocumentoIdentidad')">
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_nroDocumentoIdentidad']">
+                {{ validations['autorizacionTrabajoAdolescente_nroDocumentoIdentidad'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--edad-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="edad">{{'GENERALES.DATOS_PERSONA.EDAD' | translate}}</label>
+
+          <div class="ui-g-12 md-dropdownfield">
+            <p-dropdown [options]="edadOptions$ | async | dropdownItem" id="edad" formControlName="edad"
+                        placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                        [autoWidth]="false" (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','edad'])"
+                        title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_EDAD' | translate}}"
+                        (onChange)="ageChange()">
+            </p-dropdown>
+
+            <div class="ui-message ui-messages-error" *ngIf="validations['autorizacionTrabajoAdolescente_edad']">
+              {{ validations['autorizacionTrabajoAdolescente_edad'] | translate }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!--esUnMenor-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group" style="margin-top: 54px">
+          <p-checkbox formControlName="esUnMenor" name="esUnMenor" binary="true" readonly="true"
+                      label="{{'GENERALES.DATOS_PERSONA.MENOR_15' | translate}}"></p-checkbox>
+        </div>
+      </div>
+      <!--fechaNacimiento-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="fechaNacimiento">{{'GENERALES.DATOS_PERSONA.FECHA_NACIMIENTO' | translate}}</label>
+          <div class="ui-g-12">
+              <span class="md-inputfield">
+                <p-calendar [locale]="es" dateFormat="dd/mm/yy" formControlName="fechaNacimiento"
+                            (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','fechaNacimiento'])"
+                            id="fechaNacimiento"
+                            title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_FECHA_NACIMIENTO' | translate}}">
+                </p-calendar>
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_fechaNacimiento']">
+                  {{ validations['autorizacionTrabajoAdolescente_fechaNacimiento'] |
+                  translate }}
+                </div>
+              </span>
+          </div>
+        </div>
+      </div>
+      <!--genero-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="genero">{{'GENERALES.DATOS_PERSONA.GENERO' |
+            translate}}</label>
+          <div class="ui-g-12 md-dropdownfield">
+            <p-dropdown [options]="generoOptions$ | async | dropdownItem" filter="true" id="genero"
+                        formControlName="genero" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                        [autoWidth]="false"
+                        (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','genero'])"
+                        title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_GENERO' | translate}}">
+            </p-dropdown>
+
+            <div class="ui-message ui-messages-error" *ngIf="validations['autorizacionTrabajoAdolescente_genero']">
+              {{ validations['autorizacionTrabajoAdolescente_genero'] | translate }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!--condicionDiscapacidad-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="condicionDiscapacidad">{{'GENERALES.DATOS_PERSONA.CONDICION_DISCAPACIDAD' |
+            translate}}</label>
+          <div class="ui-g-12 md-dropdownfield ">
+            <p-multiSelect [options]="condicionDiscapacidadOptions$ | async | dropdownItem" filter="true" id="condicionDiscapacidad"
+                          class="ui-multiselect-standard"
+                           formControlName="condicionDiscapacidad" defaultLabel="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                           (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','condicionDiscapacidad'])"
+                        title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_CONDICION_DISCAPACIDAD' | translate}}">
+            </p-multiSelect>
+
+            <div class="ui-message ui-messages-error"
+                 *ngIf="validations['autorizacionTrabajoAdolescente_condicionDiscapacidad']">
+              {{ validations['autorizacionTrabajoAdolescente_condicionDiscapacidad'] | translate }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!--tieneHijos?-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+        <div class="ui-g form-group">
+          <span class="mandatory">*</span>
+          <label class="lb" for="tieneHijos">{{'GENERALES.DATOS_PERSONA.TIENE_HIJOS' |
+            translate}}</label>
+          <div class="ui-g-12 md-dropdownfield">
+            <p-dropdown [options]="tieneHijosOptions$ | async | dropdownItem" filter="true" id="tieneHijos"
+                        formControlName="tieneHijos" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                        [autoWidth]="false"
+                        (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','tieneHijos'])"
+                        title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_TIENE_HIJOS' | translate}}"
+            >
+            </p-dropdown>
+
+            <div class="ui-message ui-messages-error" *ngIf="validations['autorizacionTrabajoAdolescente_tieneHijos']">
+              {{ validations['autorizacionTrabajoAdolescente_tieneHijos'] | translate }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!--cuantos hijos-->
+      <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" [hidden]="cuantosHijosVisibility">
+        <div class="ui-g form-group">
+          <label class="lb">{{'GENERALES.DATOS_PERSONA.CUANTOS_HIJOS' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="cuantosHijos" maxlength="4"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictNumbers($event)"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','cuantosHijos'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_cuantosHijos']">
+                {{ validations['autorizacionTrabajoAdolescente_cuantosHijos'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!--Nivel-Escolaridad-->
+      <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" legend="Nivel de Escolaridad"
+                  [toggleable]="true">
+        <!--ultimoGradoCursado-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb" for="ultimoGradoCursado"><span class="mandatory">*</span>
+              {{'GENERALES.DATOS_PERSONA.ULTIMO_GRADO_CURSADO' | translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="ultimoGradoCursado"
+                     formControlName="ultimoGradoCursado"
+                     onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictNumbers($event)"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','ultimoGradoCursado'])"
+                     maxlength="2">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_ultimoGradoCursado']">
+                {{ validations['autorizacionTrabajoAdolescente_ultimoGradoCursado'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+        <!--nombreInstitucionEducativa-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb"
+                   for="nombreInstitucionEducativa">{{'GENERALES.DATOS_PERSONA.NOMBRE_INSTITUCION_EDUCATIVA' | translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="nombreInstitucionEducativa"
+                     formControlName="nombreInstitucionEducativa"
+                     onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" maxlength="50"
+                     (keypress)="this.restrictAlphaNames($event)"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','nombreInstitucionEducativa'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_nombreInstitucionEducativa']">
+                {{ validations['autorizacionTrabajoAdolescente_nombreInstitucionEducativa'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+        <!--Jornada escolar-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="jornadaEscolar">{{'GENERALES.DATOS_PERSONA.JORNADA_ESCOLAR' |
+              translate}}</label>
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="jornadaEscolar$ | async | dropdownItem" filter="true" id="jornadaEscolar"
+                          formControlName="jornadaEscolar" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','jornadaEscolar'])"
+                          title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_JORNADA_ESCOLAR' | translate}}"
+              >
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_jornadaEscolar']">
+                {{ validations['autorizacionTrabajoAdolescente_jornadaEscolar'] | translate }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
+      <!--Datos-residencia-->
+      <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" legend="Datos de Residencia"
+                  formGroupName="datosResidencia"
+                  [toggleable]="true">
+        <!--direccion-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb" for="direccion"><span class="mandatory">*</span>
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_RESIDENCIA_DIRECCION' | translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="direccion" formControlName="direccion"
+                     onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" maxlength="60"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosResidencia', 'direccion'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_direccion']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_direccion'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+        <!--Tipo de ubicacion-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb"
+                   for="tipoUbicacion">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_TIPO_UBICACION' |
+              translate}}</label>
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoUbicacionOptions$ | async | dropdownItem" filter="true" id="tipoUbicacion"
+                          formControlName="tipoUbicacion" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','datosResidencia','tipoUbicacion'])"
+                          title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_SELECCIONE_TIPO_UBICACION' | translate}}"
+              >
+              </p-dropdown>
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_tipoUbicacion']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_tipoUbicacion'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--nombre ubicación-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb" for="nombreUbicacion"><span class="mandatory">*</span>
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_RESIDENCIA_NOMBRE_TIPO_UBICACION' | translate}}
+            </label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="nombreUbicacion" formControlName="nombreUbicacion"
+                     onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" maxlength="45"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','datosResidencia','nombreUbicacion'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_nombreUbicacion']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_nombreUbicacion'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <!--Tipo de zona-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="tipoZona">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_TIPO_ZONA' |
+              translate}}</label>
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoZonaOptions$ | async | dropdownItem" filter="true" id="tipoZona"
+                          formControlName="tipoZona" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','datosResidencia','tipoZona'])"
+                          title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_SELECCIONE_TIPO_ZONA' | translate}}"
+              >
+              </p-dropdown>
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_tipoZona']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_tipoZona'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--departamento-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.DEPARTAMENTO' | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="(departamentoColombiaOptions$ | async ) | dropdownItem" filter="true"
+                          formControlName="departamento"
+                          placeholder="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosResidencia', 'departamento'])">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_departamento']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_departamento'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--municipio-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="municipio">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.MUNICIPIO' |
+              translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="(municipioOptionsNNADatosDireccion$ | async) | dropdownItem" filter="true" id="municipio"
+                          formControlName="municipio"
+                          placeholder="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosResidencia', 'municipio'])">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_municipio']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_municipio'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--tipoTelefono-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="tipoTelefono">{{'GENERALES.DATOS_PERSONA.TIPO_TELEFONO' | translate}}</label>
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoTelefonoOptions$ | async | dropdownItem" filter="true" id="tipoTelefono"
+                          formControlName="tipoTelefono" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosResidencia','tipoTelefono'])"
+                          title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_TIPO_TELEFONO' | translate}}">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_tipoTelefono']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_tipoTelefono'] | translate }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!--indicativo-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.INDICATIVO' | translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" formControlName="indicador" maxlength="4"
+                     onCopy="return false"
+                     onDrag="return false" onDrop="return false" onPaste="return false"
+                     (keypress)="this.restrictNumbers($event)"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosResidencia','indicador'])">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_indicador']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_indicador'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <!--telefono-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="telefonoAutorizacionTrabajoAdolescente">{{'GENERALES.DATOS_PERSONA.NO_TELF' |
+              translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="telefonoAutorizacionTrabajoAdolescente"
+                     formControlName="telefono" maxlength="14" minlength="7" onCopy="return false" onDrag="return false"
+                     onDrop="return false" onPaste="return false" (keypress)="this.restrictNumbers($event)"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosResidencia','telefono'])">
+
+              <div class="ui-message ui-messages-error" *ngIf="validations['autorizacionTrabajoAdolescente_telefono']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_telefono'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+        <!--correoElectronico -->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="correoElectronico"
+                   [attr.title]="'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_CORREO_ELECTRONICO' | translate">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.CORREO_ELECTRONICO'
+              | translate}}
+            </label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text"
+                     pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+                     pInputText class="large-input" id="correoElectronico" formControlName="correoElectronico"
+                     onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" maxlength="50"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosResidencia','correoElectronico'])"
+                     [attr.title]="'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_CORREO_ELECTRONICO' | translate">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosResidencia_correoElectronico']">
+                {{ validations['autorizacionTrabajoAdolescente_datosResidencia_correoElectronico'] | translate }}
+              </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
+
+      <p-fieldset formGroupName="representanteLegal" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                  legend="Datos del Representante Legal"
+                  [toggleable]="true">
+
+        <!--primerNombre-->
+        <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+          <div class="ui-g form-group">
+            <label class="lb"><span class="text-danger">*</span>
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRIMER_NOMBRE' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="primerNombre" maxlength="20"
+                       onCopy="return false"
+                       onDrag="return false" onDrop="return false" onPaste="return false"
+                       (keypress)="this.restrictAlphaNames($event)"
+                       (change)="onNameChange('autorizacionTrabajoAdolescente.representanteLegal.')"
+                       (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','representanteLegal','primerNombre'])">
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_representanteLegal_primerNombre']">
+                  {{ validations['autorizacionTrabajoAdolescente_representanteLegal_primerNombre'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--segundoNombre-->
+        <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+          <div class="ui-g form-group">
+            <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SEGUNDO_NOMBRE' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="segundoNombre" maxlength="20"
+                       onCopy="return false"
+                       onDrag="return false" onDrop="return false" onPaste="return false"
+                       (keypress)="this.restrictAlphaNames($event)"
+                       (change)="onNameChange('autorizacionTrabajoAdolescente.representanteLegal.')"
+                       (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','representanteLegal','segundoNombre'])">
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_representanteLegal_segundoNombre']">
+                  {{ validations['autorizacionTrabajoAdolescente_representanteLegal_segundoNombre'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--primerApellido-->
+        <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+          <div class="ui-g form-group">
+            <label class="lb"><span class="text-danger">*</span>
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRIMER_APELLIDO' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="primerApellido" maxlength="20"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       (keypress)="this.restrictAlphaNames($event)"
+                       (change)="onNameChange('autorizacionTrabajoAdolescente.representanteLegal.')"
+                       (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','representanteLegal','primerApellido'])">
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_representanteLegal_primerApellido']">
+                  {{ validations['autorizacionTrabajoAdolescente_representanteLegal_primerApellido'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--segundoApellido-->
+        <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+          <div class="ui-g form-group">
+            <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SEGUNDO_APELLIDO' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="segundoApellido" maxlength="20"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       (keypress)="this.restrictAlphaNames($event)"
+                       (change)="onNameChange('autorizacionTrabajoAdolescente.representanteLegal.')"
+                       (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','representanteLegal','segundoApellido'])">
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_representanteLegal_segundoApellido']">
+                  {{ validations['autorizacionTrabajoAdolescente_representanteLegal_segundoApellido'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--tipoDocumento-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="tipoDocumento">{{'GENERALES.DATOS_PERSONA.TIPO_DOCUMENTO' | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoDocumentoOptionsNNAReprsentante$ | async | dropdownItem" filter="true"
+                          formControlName="tipoDocumento"
+                          placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}" [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','representanteLegal','tipoDocumento'])"
+                          title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_TIPO_DOCUMENTO' | translate}}"
+                          (onChange)="onTipoDocumentoChange($event.value)">
+              </p-dropdown>
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_representanteLegal_tipoDocumento']">
+                {{ validations['autorizacionTrabajoAdolescente_representanteLegal_tipoDocumento'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--nroDocumentoIdentidad-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="nroDocumentoIdentidad">{{'GENERALES.DATOS_PERSONA.NO_DOCUMENTO_IDENTIDAD' |
+              translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="nroDocumentoIdentidad"
+                     formControlName="nroDocumentoIdentidad"
+                     maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false"
+                     onPaste="return false"
+                     (keypress)="this.restrictNumbers($event)" (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','representanteLegal','nroDocumentoIdentidad'])">
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_representanteLegal_nroDocumentoIdentidad']">
+                {{ validations['autorizacionTrabajoAdolescente_representanteLegal_nroDocumentoIdentidad'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+        <!--parentesco-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="parentesco">{{'GENERALES.DATOS_PERSONA.PARENTESCO' | translate}}</label>
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="parentescoOptions$ | async | dropdownItem" filter="true" id="parentesco"
+                          formControlName="parentesco" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'representanteLegal','parentesco'])"
+                          title="{{'GENERALES.DATOS_PERSONA.PARENTESCO' | translate}}">
+              </p-dropdown>
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_representanteLegal_parentesco']">
+                {{ validations['autorizacionTrabajoAdolescente_representanteLegal_parentesco'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--otro-parentesco-->
+        <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3" *ngIf="otroParentescoIsVisible">
+          <div class="ui-g form-group">
+            <label
+              class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.REPRESENTANTE_LEGAL_PARENTESCO_OTRO' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="otroParentesco" maxlength="20"
+                       onCopy="return false"
+                       onDrag="return false" onDrop="return false" onPaste="return false"
+                       (keypress)="this.restrictAlphaNames($event)"
+                       (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','representanteLegal','otroParentesco'])">
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_representanteLegal_otroParentesco']">
+                  {{ validations['autorizacionTrabajoAdolescente_representanteLegal_otroParentesco'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
+      <!-- datos-empleador-->
+      <p-fieldset formGroupName="datosEmpleador" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                  legend="Identificación del empleador"
+                  [toggleable]="true">
+        <!--Tipo empleador-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb"
+                   for="tipoEmpleador">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_EMPLEADOR' | translate}}</label>
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoEmpleadorOptionsNNA$ | async | dropdownItem" filter="true" id="tipoEmpleador"
+                          formControlName="tipoEmpleador" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador','tipoEmpleador'])"
+                          title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_EMPLEADOR' | translate}}">
+              </p-dropdown>
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_tipoEmpleador']">
+                {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_tipoEmpleador'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Nombre-Razon-Social-->
+        <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+          <div class="ui-g form-group">
+            <label class="lb"><span class="text-danger">*</span>
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.NOMBRE_RAZON_SOCIAL' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="nombreRazonSocial"
+                       onCopy="return false"
+                       onDrag="return false" onDrop="return false" onPaste="return false" maxlength="40"
+                       (keypress)="this.restrictAlphaNames($event)"
+                       (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador','nombreRazonSocial'])">
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_nombreRazonSocial']">
+                  {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_nombreRazonSocial'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!--nroDocumentoNit-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="nroDocumentoIdentidad">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.NIT' |
+              translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="nroDocumentoNit"
+                     formControlName="nroDocumentoNit"
+                     maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false"
+                     onPaste="return false"
+                     (keypress)="this.restrictNumbers($event)" (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador','nroDocumentoNit'])">
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_nroDocumentoNit']">
+                {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_nroDocumentoNit'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+        <!--Nombre-Representate-Legal-->
+        <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+          <div class="ui-g form-group">
+            <label class="lb"><span class="text-danger">*</span>
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_EMPLEADOR_NOMBRE_REPRESENTANTE' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="nombreRepresentanteLegalDatosEmpleador"
+                       onCopy="return false"
+                       onDrag="return false" onDrop="return false" onPaste="return false" maxlength="40"
+                       (keypress)="this.restrictAlphaNames($event)"
+                       (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador','nombreRepresentanteLegalDatosEmpleador'])">
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_nombreRepresentanteLegalDatosEmpleador']">
+                  {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_nombreRepresentanteLegalDatosEmpleador'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!--direccion-Representante-Legal-->
+        <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+          <div class="ui-g form-group">
+            <label class="lb"><span class="text-danger">*</span>
+              {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_RESIDENCIA_DIRECCION' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="direccion" maxlength="60"
+                       onCopy="return false"
+                       onDrag="return false" onDrop="return false" onPaste="return false"
+                       (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador','direccion'])">
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_direccion']">
+                  {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_direccion'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!--telefono-datos-empleador-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="telefonoDatosEmpleador">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DATOS_EMPLEADOR_TELEFONO' |
+              translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="telefonoDatosEmpleador"
+                     formControlName="telefonoDatosEmpleador" maxlength="14" minlength="7" onCopy="return false" onDrag="return false"
+                     onDrop="return false" onPaste="return false" (keypress)="this.restrictNumbers($event)"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador','telefonoDatosEmpleador'])">
+
+              <div class="ui-message ui-messages-error" *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_telefonoDatosEmpleador']">
+                {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_telefonoDatosEmpleador'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+        <!--celular-datos-empleador-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="celularDatosEmpleador">{{'GENERALES.DATOS_PERSONA.CELULAR' |
+              translate}}</label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText class="large-input" id="celularDatosEmpleador"
+                     formControlName="celularDatosEmpleador" maxlength="14" minlength="7" onCopy="return false" onDrag="return false"
+                     onDrop="return false" onPaste="return false" (keypress)="this.restrictNumbers($event)"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador','celularDatosEmpleador'])">
+
+              <div class="ui-message ui-messages-error" *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_celularDatosEmpleador']">
+                {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_celularDatosEmpleador'] | translate }}
+              </div>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <!--correoElectronico-datos-empleador -->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="correoElectronicoDatosEmpleador"
+                   [attr.title]="'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INGRESE_CORREO_ELECTRONICO' | translate">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.CORREO_ELECTRONICO'
+              | translate}}
+            </label>
+            <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text"
+                     pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+                     pInputText class="large-input" id="correoElectronicoDatosEmpleador" formControlName="correoElectronicoDatosEmpleador"
+                     onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false" maxlength="50"
+                     (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador','correoElectronicoDatosEmpleador'])"
+                     [attr.title]="'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_REMITENTE.INTRODUZCA_CORREO_ELECTRONICO' | translate">
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_correoElectronicoDatosEmpleador']">
+                {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_correoElectronicoDatosEmpleador'] | translate }}
+              </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!--departamento-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.DEPARTAMENTO' | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="(departamentoColombiaOptions$ | async ) | dropdownItem" filter="true"
+                          formControlName="departamentoDatosEmpleador"
+                          placeholder="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador', 'departamentoDatosEmpleador'])">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_departamentoDatosEmpleador']">
+                {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_departamentoDatosEmpleador'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--municipio-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="municipioDatosEmpleador">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.MUNICIPIO' |
+              translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="(municipioOptionsNNADatosEmpleador$ | async) | dropdownItem" filter="true" id="municipioDatosEmpleador"
+                          formControlName="municipioDatosEmpleador"
+                          placeholder="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_DIRECCION.SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'datosEmpleador', 'municipioDatosEmpleador'])">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_datosEmpleador_municipioDatosEmpleador']">
+                {{ validations['autorizacionTrabajoAdolescente_datosEmpleador_municipioDatosEmpleador'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </p-fieldset>
+      <p-fieldset formGroupName="tipoCondicionesVinculacion" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                  legend="Tipo y Condiciones de Vinculación"
+                  [toggleable]="true">
+        <!--tipoVinculacion-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb">{{'GENERALES.DATOS_PERSONA.TIPO_VINCULACION' | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoVinculacionOptions$ | async | dropdownItem" filter="true"
+                          formControlName="tipoVinculacion"
+                          placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}" [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','tipoCondicionesVinculacion','tipoVinculacion'])"
+                          title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_TIPO_VINCULACION' | translate}}">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_tipoVinculacion']">
+                {{ validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_tipoVinculacion'] | translate
+                }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!--tipoActividad-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4" *ngIf="isChildLessThan15">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb"
+                   for="tipoActividad">{{'GENERALES.DATOS_PERSONA.TIPO_ACTIVIDAD_EXCEPCIONAL' | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoActividadOptions$ | async | dropdownItem" filter="true" id="tipoActividad"
+                          formControlName="tipoActividad" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','tipoCondicionesVinculacion','tipoActividad'])"
+                          title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_TIPO_ACTIVIDAD_EXCEPCIONAL' | translate}}">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_tipoActividad']">
+                {{ validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_tipoActividad'] | translate
+                }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--remuneracion-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb"
+                     for="autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_remuneracion">{{'GENERALES.DATOS_PERSONA.REMUNERACION'
+              | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <!--<div class="overlay-pa" #op>-->
+                <!--<p>SALARIO Y PRESTACIONES DEL NNA:-->
+                <!--El NNA tendrá derecho a percibir un salario de acuerdo a la actividad que desempeña y proporcionalmente al tiempo trabajado, sin que en ningún caso pueda ser inferior al mínimo legal mensual vigente, así como a recibir la totalidad de sus prestaciones sociales de conformidad con lo previsto en el Código Sustantivo del Trabajo.-->
+                <!--</p>-->
+                <!--</div>-->
+                <!--@todo ovelay panel for help text-->
+                <input type="text" pInputText class="large-input"
+                       id="autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_remuneracion"
+                       (keypress)="this.restrictNumbers($event)" onCopy="return false" onDrag="return false"
+                       onDrop="return false"
+                       onPaste="return false" formControlName="remuneracion" maxlength="10"
+                       title="{{'GENERALES.DATOS_PERSONA.REMUNERACION_INDIVIDUO_CANTIDAD' | translate}}"
+                       pTooltip="SALARIO Y PRESTACIONES DEL Niño - Niña - Adolescente:
+
+                             El Niño - Niña - Adolescente tendrá derecho a percibir un salario de acuerdo a la actividad que desempeña y proporcionalmente al tiempo trabajado, sin que en ningún caso pueda ser inferior al máximo legal mensual vigente, así como a recibir la totalidad de sus prestaciones sociales de conformidad con lo previsto en el Código Sustantivo del Trabajo."
+                       tooltipPosition="top" tooltipEvent="focus"
+                       (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','tipoCondicionesVinculacion','remuneracion'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_remuneracion']">
+                  {{ validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_remuneracion'] | translate
+                  }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--auxilioTransporte-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb"
+                   for="auxilioTransporte">{{'GENERALES.DATOS_PERSONA.AUXILIO_TRANSPORTE' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="auxilioTransporte"
+                       formControlName="auxilioTransporte"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       (keypress)="this.restrictNumbers($event)"
+                       maxlength="10" title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_AUXILIO_TRANSPORTE' | translate}}"
+                       (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'tipoCondicionesVinculacion','auxilioTransporte'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_auxilioTransporte']">
+                  {{ validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_auxilioTransporte'] |
+                  translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--formaPago-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="formaPago">{{'GENERALES.DATOS_PERSONA.FORMA_PAGO' | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="formaPagoOptions$ | async | dropdownItem" filter="true" id="formaPago"
+                          formControlName="formaPago" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          [autoWidth]="false"
+                          (onBlur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'tipoCondicionesVinculacion','formaPago'])"
+                          title="{{'GENERALES.DATOS_PERSONA.SELECCIONE_FORMA_PAGO' | translate}}">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_formaPago']">
+                {{ validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_formaPago'] | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--cargo-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="cargo">{{'GENERALES.DATOS_PERSONA.CARGO' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="cargo" formControlName="cargo"
+                       (keypress)="this.restrictAlphaNames($event)"
+                       title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_CARGO_INDIVIDUO' | translate}}"
+                       onCopy="return false"
+                       onDrag="return false" onDrop="return false" onPaste="return false"
+                       (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente', 'tipoCondicionesVinculacion','cargo'])"
+                       maxlength="30">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_cargo']">
+                  {{ validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_cargo'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--direcciones tipoVinculacion-->
+        <p-panel custom-panel="" no-borders="" *ngIf="tieneDireccionesTerritoriales.value">
+          <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+              <app-datos-direccion #direccionesVinculacion
+                                   [ngClass]="{'mandatory': validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_tieneDirecciones']}"
+                                   (onValid)="onDireccionesTipoVinculacionValid()"
+                                   (onInvalid)="onDireccionesTipoVinculacionInvalid()"></app-datos-direccion>
+              <div class="ui-g-12 md-inputfield" style="padding-bottom: 16px;height: 30px;"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_tieneDirecciones']">
+                <div class="ui-message ui-messages-error">
+                  {{ validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_tieneDirecciones'] |
+                  translate }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-panel>
+
+        <app-registro-horario #registroHorario class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                              (onValid)="onRegistroHorasSemanalesValid()"
+                              (onInvalid)="onRegistroHorasSemanalesInvalid()"
+                              (total)="onRegistroHorasSemanalesTotal($event)">
+        </app-registro-horario>
+        <div *ngIf="horasTrabajoSemanal.invalid && (horasTrabajoSemanal.dirty || horasTrabajoSemanal.touched)">
+          <div *ngIf="horasTrabajoSemanal.errors.min" class="ui-message ui-messages-error">
+            El Total de horas debe ser superior a 0.
+          </div>
+        </div>
+
+        <!--lugarTrabajoDescripcion-->
+        <div class="ui-g-12 ui-lg-12">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb">{{'GENERALES.DATOS_PERSONA.DESCRIPCION_TRABAJO' | translate}}</label>
+
+            <div class="ui-g-12 md-inputfield">
+              <textarea [rows]="3" pInputTextarea placeholder="Descripción" autoResize="true" maxlength="450"
+                        formControlName="lugarTrabajoDescripcion"
+                        title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_DESCRIPCION_TRABAJO' | translate}}"
+                        (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','tipoCondicionesVinculacion','lugarTrabajoDescripcion'])"></textarea>
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_lugarTrabajoDescripcion']">
+                {{ validations['autorizacionTrabajoAdolescente_tipoCondicionesVinculacion_lugarTrabajoDescripcion'] |
+                translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </p-fieldset>
+    </p-fieldset>
+
+    <p-fieldset formGroupName="busquedaEmpresa" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                [hidden]="!visibility.autorizacionEmpresasTemporales"
+                legend=" {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.CONSULTAR_INFO_EMPRESA' | translate}}"
+                [toggleable]="true">
+
+      <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+        <div class="ui-g form-group">
+          <label class="lb" for="nit">{{'GENERALES.DATOS_PERSONA.NIT' | translate}}</label>
+          <div class="ui-g-12">
+            <span class="md-inputfield">
+              <input type="text" pInputText #nitInput class="large-input" id="nit" formControlName="nit"
+                     (keypress)="this.restrictNumbers($event)"
+                     (keyup.enter)="searchByNit(nitInput.value)"
+                     title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_NIT_EMPRESA' | translate}}"
+                     (blur)="listenForBlurEvents(['busquedaEmpresa','nit'])">
+              <div class="ui-message ui-messages-error" *ngIf="validations['busquedaEmpresa_nit']">
+                {{ validations['busquedaEmpresa_nit'] | translate }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="ui-sm-12 ui-md-6 ui-g-6 ui-lg-6">
+          <button pButton type="button" label="{{'GENERALES.BUTTONS.BUSCAR' | translate}}" [disabled]="!nitInput.value"
+                  (click)="searchByNit(nitInput.value)"
+                  style="float: right; width: auto; margin-left: 12px; margin-bottom: 10px"></button>
+        </div>
+      </div>
+    </p-fieldset>
+
+    <p-fieldset formGroupName="autorizacionEmpresasTemporales" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                [hidden]="!visibility.autorizacionEmpresasTemporales || (ocultaDatoEmpresa && tipoTramite.value?.id === 1)"
+                legend=" {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.AUTORIZACION_FUNCIONAMIENTO_EMPRESA_SERV_TEMP' | translate}}"
+                [toggleable]="true">
+
+      <p-fieldset formGroupName="informacionEscrituraPublica" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                  legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.INFORMACION_ESCRITURA_PUBLICA' | translate}}"
+                  [toggleable]="true" [hidden]="ocultaDatoEmpresa">
+
+        <!--nroEscritura-->
+        <div class="ui-sm-12 ui-md-8 ui-g-8 ui-lg-8">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="nroEscritura">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.NUMERO_ESCRITURA' |
+              translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="nroEscritura"
+                       (keypress)="this.restrictNumbers($event)" [readOnly]="isReadOnly"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       formControlName="nroEscritura" maxlength="20"
+                       title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.INTRODUZCA_NUMERO_ESCRITURA' | translate}}"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionEscrituraPublica','nroEscritura'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_nroEscritura']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_nroEscritura'] | translate
+                  }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <!--fechaExpedicion-->
+        <div class="ui-sm-12 ui-md-4 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.FECHA_EXPEDICION' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <p-calendar [locale]="es" dateFormat="dd/mm/yy" formControlName="fechaExpedicion" [readonlyInput]="isReadOnly"
+                            title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_FECHA_EXPEDICION' | translate}}"
+                            (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionEscrituraPublica','fechaExpedicion'])">
+
+                </p-calendar>
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_fechaExpedicion']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_fechaExpedicion'] |
+                  translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--divisionActvidadEconomica-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DIVISION_ACTIVIDAD_ECONOMICA' | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="divisionActividadEconomica$ | async | dropdownItemActividadEconomica" filter="true"
+                          formControlName="divisionActividadEconomica" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_DIVISION_ACTIVIDAD_ECONOMICA' | translate}}"
+                          (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales', 'informacionEscrituraPublica', 'divisionActividadEconomica'])"
+                          [autoWidth]="false">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_divisionActividadEconomica']">
+                {{ validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_divisionActividadEconomica'] | translate
+                }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!--grupo actividad economica-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.GRUPO_ACTIVIDAD_ECONOMICA' | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="grupoActividadEconomica$ | async | dropdownItemActividadEconomica" filter="true"
+                          formControlName="grupoActividadEconomica" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                          title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_GRUPO_ACTIVIDAD_ECONOMICA' | translate}}"
+                          (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales', 'informacionEscrituraPublica', 'grupoActividadEconomica'])"
+                          [autoWidth]="false">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_grupoActividadEconomica']">
+                {{ validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_grupoActividadEconomica'] | translate
+                }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <p-fieldset class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                    legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.LUGAR_EXPEDICION' | translate}}"
+                    [toggleable]="true">
+
+          <!--departamento-->
+          <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+            <div class="ui-g form-group">
+              <span class="mandatory">*</span>
+              <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.DEPARTAMENTO' | translate}}</label>
+
+              <div class="ui-g-12 md-dropdownfield">
+                <p-dropdown [options]="departamentoColombiaOptions$ | async | dropdownItemId" filter="true" [readonly]="isReadOnly"
+                            formControlName="departamento" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                            title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_DEPARTAMENTO' | translate}}"
+                            (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales', 'informacionEscrituraPublica', 'departamento'])"
+                            [autoWidth]="false">
+                </p-dropdown>
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_departamento']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_departamento'] | translate
+                  }}
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!--municipio-->
+          <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+            <div class="ui-g form-group">
+              <span class="mandatory">*</span>
+              <label class="lb"
+                     for="autorizacionEmpresasTemporales_informacionEscrituraPublica_municipio">{{'GENERALES.DATOS_LUGAR.MUNICIPIO'
+                | translate}}</label>
+
+              <div class="ui-g-12 md-dropdownfield">
+                <p-dropdown [options]="municipioOptions$ | async | dropdownItemId" filter="true"
+                            id="autorizacionEmpresasTemporales_informacionEscrituraPublica_municipio"
+                            formControlName="municipio" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                            [autoWidth]="false" [readonly]="isReadOnly"
+                            (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionEscrituraPublica','municipio'])"
+                            title="{{'GENERALES.DATOS_LUGAR.SELECCIONE_MUNICIPIO' | translate}}">
+                </p-dropdown>
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_municipio']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_municipio'] | translate }}
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!--notaria-->
+          <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+            <div class="ui-g form-group">
+              <span class="mandatory">*</span>
+              <label class="lb"
+                     for="autorizacionEmpresasTemporales_informacionEscrituraPublica_notaria">{{'GENERALES.DATOS_LUGAR.NOTARIA'
+                | translate}}</label>
+
+              <div class="ui-g-12 md-dropdownfield">
+                <p-dropdown [options]="notariaOptions$ | async | dropdownItemId" filter="true"
+                            id="autorizacionEmpresasTemporales_informacionEscrituraPublica_notaria"
+                            formControlName="notaria" placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}"
+                            [autoWidth]="false" [readonly]="isReadOnly"
+                            (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales', 'informacionEscrituraPublica', 'notaria'])"
+                            title="{{'GENERALES.DATOS_LUGAR.SELECCIONE_NOTARIA' | translate}}">
+                </p-dropdown>
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_notaria']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionEscrituraPublica_notaria'] | translate }}
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </p-fieldset>
+
+      </p-fieldset>
+
+      <p-fieldset formGroupName="informacionPolizaGarantia" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                  legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.INFORMACION_POLIZA_GARANTIA' | translate}}"
+                  [toggleable]="true" [hidden]="ocultaDatoEmpresa">
+        <!--nroPoliza-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="nroPoliza">{{'GENERALES.DATOS_POLIZA.NUMERO_POLIZA' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="nroPoliza"
+                       (keypress)="this.restrictNumbers($event)" [readOnly]="isReadOnly"
+                       maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false"
+                       onPaste="return false"
+                       formControlName="nroPoliza"
+                       title="{{'GENERALES.DATOS_POLIZA.INTRODUZCA_NUMERO_POLIZA' | translate}}"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionPolizaGarantia','nroPoliza'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_nroPoliza']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_nroPoliza'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <!--valorPoliza-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="valorPoliza">{{'GENERALES.DATOS_POLIZA.VALOR_POLIZA' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="valorPoliza"
+                       (keypress)="this.restrictNumbers($event)" [readOnly]="isReadOnly"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       maxlength="20"
+                       formControlName="valorPoliza"
+                       title="{{'GENERALES.DATOS_POLIZA.INTRODUZCA_VALOR_POLIZA' | translate}}"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionPolizaGarantia','valorPoliza'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_valorPoliza']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_valorPoliza'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--nombreAseguradora-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb"
+                   for="nombreAseguradora">{{'GENERALES.DATOS_POLIZA.NOMBRE_ASEGURADORA' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="nombreAseguradora"
+                       (keypress)="this.restrictAlphaNames($event)"  [readOnly]="isReadOnly"
+                       maxlength="50" onCopy="return false" onDrag="return false" onDrop="return false"
+                       onPaste="return false"
+                       formControlName="nombreAseguradora"
+                       title="{{'GENERALES.DATOS_POLIZA.INTRODUZCA_NOMBRE_ASEGURADORA' | translate}}"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionPolizaGarantia','nombreAseguradora'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_nombreAseguradora']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_nombreAseguradora'] |
+                  translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--fechaInicioVigencia-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb"
+                   for="fechaInicioVigencia">{{'GENERALES.DATOS_POLIZA.FECHA_INICIO_VIGENCIA' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <p-calendar [locale]="es" dateFormat="dd/mm/yy" formControlName="fechaInicioVigencia" [readonlyInput]="isReadOnly"
+                            (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionPolizaGarantia','fechaInicioVigencia'])"
+                            id="fechaInicioVigencia"
+                            title="{{'GENERALES.DATOS_POLIZA.SELECCIONE_FECHA_INICIO_VIGENCIA' | translate}}">
+                </p-calendar>
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_fechaInicioVigencia']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_fechaInicioVigencia'] |
+                  translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--fechaFinVigencia-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="fechaFinVigencia">{{'GENERALES.DATOS_POLIZA.FECHA_FIN_VIGENCIA' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <p-calendar [locale]="es" dateFormat="dd/mm/yy" formControlName="fechaFinVigencia" [readonlyInput]="isReadOnly"
+                            (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionPolizaGarantia','fechaFinVigencia'])"
+                            id="fechaFinVigencia"
+                            title="{{'GENERALES.DATOS_POLIZA.SELECCIONE_FECHA_VIGENCIA_FIN' | translate}}">
+                </p-calendar>
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_fechaFinVigencia']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionPolizaGarantia_fechaFinVigencia'] |
+                  translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
+
+      <p-fieldset formGroupName="informacionRepresentanteLegal" class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12"
+                  legend="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.INFORMACION_REPRESENTANTE_LEGAL' | translate}}"
+                  [toggleable]="true" [hidden]="ocultaDatoEmpresa">
+
+        <!--tipoSolicitante-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="tipoSolicitante">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_SOLICITANTE'
+              | translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoSolicitanteOptions$ | async | dropdownItemId" formControlName="tipoSolicitante"
+                          placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}" [autoWidth]="false"
+                          (onChange)="onChangeTipoSolicitante($event.value)" [readonly]="isReadOnly"
+                          title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_SOLICITANTE' | translate}}">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_tipoSolicitante']">
+                {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_tipoSolicitante'] |
+                translate }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!--tipoDocumento-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="tipoDocumento">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.TIPO_DOCUMENTO' |
+              translate}}</label>
+
+            <div class="ui-g-12 md-dropdownfield">
+              <p-dropdown [options]="tipoDocumentoOptions$ | async | dropdownItemId" filter="true"
+                          formControlName="tipoDocumento" [readonly]="isReadOnly"
+                          placeholder="{{'GENERALES.DROPDOWN_SELECCIONE' | translate}}" [autoWidth]="false"
+                          (onChange)="onChangeTipoDocumento2($event.value)"
+                          (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','tipoDocumento'])"
+                          title="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SELECCIONE_TIPO_DOCUMENTO' | translate}}">
+              </p-dropdown>
+
+              <div class="ui-message ui-messages-error"
+                   *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_tipoDocumento']">
+                {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_tipoDocumento'] |
+                translate }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!--nroDocumentoIdentidad-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb"> {{'GENERALES.DATOS_PERSONA.NO_DOCUMENTO_IDENTIDAD' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" formControlName="nroDocumentoIdentidad"
+                       (keypress)="this.restrictNumbers($event)" [readonly]="isReadOnly"
+                       validateEqual="verificacionNroDocumento" onCopy="return false" onDrag="return false"
+                       onDrop="return false"
+                       onPaste="return false" maxlength="20" *ngIf="this.isTxtNumeric_2"
+                       title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_NO_DOCUMENTO_IDENTIDAD' | translate}}"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales', 'informacionRepresentanteLegal', 'nroDocumentoIdentidad'])">
+                <input type="text" pInputText class="large-input" formControlName="nroDocumentoIdentidad"
+                       (keypress)="this.restrictAlphaNum($event)" [readonly]="isReadOnly"
+                       (blur)="listenForBlurEvents(['autorizacionTrabajoAdolescente','representanteLegal','nroDocumentoIdentidad'])"
+                       validateEqual="verificacionNroDocumento" onCopy="return false" onDrag="return false"
+                       onDrop="return false"
+                       onPaste="return false" maxlength="20" *ngIf="!this.isTxtNumeric_2"
+                       title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_NO_DOCUMENTO_IDENTIDAD' | translate}}">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_nroDocumentoIdentidad']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_nroDocumentoIdentidad']
+                  | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--verificacionNroDocumento-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb">Verificación Número de Documento</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" validateEqual="nroDocumentoIdentidad"
+                       (keypress)="this.restrictNumbers($event)"
+                       maxlength="20" *ngIf="this.isTxtNumeric_2" onCopy="return false" onDrag="return false"
+                       onDrop="return false" [readonly]="isReadOnly"
+                       onPaste="return false"
+                       title="{{'GENERALES.DATOS_PERSONA.VERIFICACION_NO_DOCUMENTO_IDENTIDAD' | translate}}"
+                       formControlName="verificacionNroDocumento"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','verificacionNroDocumento'])">
+                <input type="text" pInputText class="large-input" validateEqual="nroDocumentoIdentidad"
+                       (keypress)="this.restrictAlphaNum($event)"
+                       maxlength="20" onCopy="return false" onDrag="return false" onDrop="return false"
+                       onPaste="return false" [readonly]="isReadOnly"
+                       title="{{'GENERALES.DATOS_PERSONA.VERIFICACION_NO_DOCUMENTO_IDENTIDAD' | translate}}"
+                       formControlName="verificacionNroDocumento"
+                       *ngIf="!this.isTxtNumeric_2"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','verificacionNroDocumento'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_verificacionNroDocumento']">
+                  {{
+                  validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_verificacionNroDocumento']
+                    | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="ui-sm-12 ui-md-6 ui-g-8 ui-lg-8">
+
+          <!--primerNombre-->
+          <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+            <div class="ui-g form-group">
+              <label class="lb"><span class="text-danger">*</span>
+                {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRIMER_NOMBRE' | translate}}</label>
+              <div class="ui-g-12">
+                <span class="md-inputfield">
+                  <input type="text" pInputText class="large-input" formControlName="primerNombre" maxlength="20"
+                         onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                         (keypress)="this.restrictAlphaNames($event)" [readonly]="isReadOnly"
+                         (change)="onNameChange('autorizacionEmpresasTemporales.informacionRepresentanteLegal.')"
+                         (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','primerNombre'])">
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_primerNombre']">
+                    {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_primerNombre'] |
+                    translate }}
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!--segundoNombre-->
+          <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+            <div class="ui-g form-group">
+              <label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SEGUNDO_NOMBRE' | translate}}</label>
+              <div class="ui-g-12">
+                <span class="md-inputfield">
+                  <input type="text" pInputText class="large-input" formControlName="segundoNombre" maxlength="20"
+                         onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                         (keypress)="this.restrictAlphaNames($event)" [readonly]="isReadOnly"
+                         (change)="onNameChange('autorizacionEmpresasTemporales.informacionRepresentanteLegal.')"
+                         (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','segundoNombre'])">
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_segundoNombre']">
+                    {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_segundoNombre'] |
+                    translate }}
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!--primerApellido-->
+          <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+            <div class="ui-g form-group">
+              <label class="lb"><span class="text-danger">*</span>
+                {{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRIMER_APELLIDO' | translate}}</label>
+              <div class="ui-g-12">
+                <span class="md-inputfield">
+                  <input type="text" pInputText class="large-input" formControlName="primerApellido" maxlength="20"
+                         onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                         (keypress)="this.restrictAlphaNames($event)" [readonly]="isReadOnly"
+                         (change)="onNameChange('autorizacionEmpresasTemporales.informacionRepresentanteLegal.')"
+                         (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','primerApellido'])">
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_primerApellido']">
+                    {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_primerApellido'] |
+                    translate }}
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!--segundoApellido-->
+          <div class="ui-sm-12 ui-md-6 ui-g-3 ui-lg-3">
+            <div class="ui-g form-group">
+              <label
+                class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.SEGUNDO_APELLIDO' | translate}}</label>
+              <div class="ui-g-12">
+                <span class="md-inputfield">
+                  <input type="text" pInputText class="large-input" formControlName="segundoApellido" maxlength="20"
+                         onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                         (keypress)="this.restrictAlphaNames($event)" [readonly]="isReadOnly"
+                         (change)="onNameChange('autorizacionEmpresasTemporales.informacionRepresentanteLegal.')"
+                         (onBlur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','segundoApellido'])">
+                  <div class="ui-message ui-messages-error"
+                       *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_segundoApellido']">
+                    {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_segundoApellido'] |
+                    translate }}
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--email-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <span class="mandatory">*</span>
+            <label class="lb" for="email">{{'GENERALES.DATOS_PERSONA.CORREO_ELECTRONICO' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="email" formControlName="email" maxlength="50"
+                       pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+                       title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_CORREO_ELECTRONICO' | translate}}"
+                       onCopy="return false" [readonly]="isReadOnly"
+                       onDrag="return false" onDrop="return false" onPaste="return false"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','email'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_email']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_email'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--indicativo-->
+        <div class="ui-sm-12 ui-md-6 ui-g-2 ui-lg-2">
+          <div class="ui-g form-group">
+            <label class="lb">{{'GENERALES.DATOS_PERSONA.INDICATIVO' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="au-rele-indicativo"
+                       (keypress)="this.restrictNumbers($event)" [readonly]="isReadOnly"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       maxlength="4"
+                       title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_INDICATIVO' | translate}}"
+                       formControlName="indicativo"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','indicativo'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_indicativo']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_indicativo'] | translate
+                  }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--telefono-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb">{{'GENERALES.DATOS_PERSONA.NO_TELF' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="telefono" formControlName="telefono"
+                       maxlength="14" [readonly]="isReadOnly"
+                       minlength="7" (keypress)="this.restrictNumbers($event)"
+                       title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_NUMERO_TELF' | translate}}"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','telefono'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_telefono']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_telefono'] | translate
+                  }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--extension-->
+        <div class="ui-sm-12 ui-md-6 ui-g-2 ui-lg-2">
+          <div class="ui-g form-group">
+            <label class="lb">{{'GENERALES.DATOS_PERSONA.EXTENSION' | translate}}</label>
+
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="extension"
+                       (keypress)="this.restrictNumbers($event)" [readonly]="isReadOnly"
+                       formControlName="extension" maxlength="6"
+                       title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_EXTENSION' | translate}}"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','extension'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_extension']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_extension'] | translate
+                  }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!--celular-->
+        <div class="ui-sm-12 ui-md-6 ui-g-4 ui-lg-4">
+          <div class="ui-g form-group">
+            <label class="lb">{{'GENERALES.DATOS_PERSONA.CELULAR' | translate}}</label>
+            <div class="ui-g-12">
+              <span class="md-inputfield">
+                <input type="text" pInputText class="large-input" id="celular" (keypress)="this.restrictNumbers($event)"
+                       formControlName="celular" maxlength="14" [readonly]="isReadOnly"
+                       title="{{'GENERALES.DATOS_PERSONA.INTRODUZCA_CELULAR' | translate}}"
+                       onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                       (blur)="listenForBlurEvents(['autorizacionEmpresasTemporales','informacionRepresentanteLegal','celular'])">
+
+                <div class="ui-message ui-messages-error"
+                     *ngIf="validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_celular']">
+                  {{ validations['autorizacionEmpresasTemporales_informacionRepresentanteLegal_celular'] | translate }}
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </p-fieldset>
+
+      <!--Datos Socios-->
+      <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" [hidden]="ocultaDatoEmpresa || isHiddenDatosSocios">
+        <app-datos-socios #datosSocios [tipoDocumentoOptions]="tipoDocumentoOptions$ | async"
+                          [ngClass]="{'mandatory': validations['autorizacionEmpresasTemporales_tieneSocios']}"
+                          (onAdd)="onSocioListChange()" (onRemove)="onSocioListChange()"></app-datos-socios>
+      </div>
+
+      <div class="ui-sm-12 ui-md-12 ui-g-12 ui-lg-12" [hidden]="!renderPanelSucursales()">
+        <!--Direcciones de sucursales-->
+        <app-datos-direccion [single]="!isCreacionEmpresa" [headerTitle]="'Información de la sucursal'"
+                             (onValid)="onDireccionesSucursalesValid()"
+                             [ngClass]="{'mandatory': validations['autorizacionEmpresasTemporales_informacionSucursal_tieneSucursales']}"
+                             (onInvalid)="onDireccionesSucursalesInvalid()"
+                             #direccionesSucursales></app-datos-direccion>
+        <div class="ui-g-12 md-inputfield" style="padding-bottom: 16px;height: 30px;"
+             *ngIf="validations['autorizacionEmpresasTemporales_informacionSucursal_tieneSucursales']">
+          <div class="ui-message ui-messages-error">
+            {{ validations['autorizacionEmpresasTemporales_informacionSucursal_tieneSucursales'] | translate }}
+          </div>
+        </div>
+      </div>
+
+    </p-fieldset>
+  </div>
+  <app-datos-practica-adolecentes  [hidden]="!visibility.datosPracticaAdolecente"
+                                   [validEvent]="validationSubject.asObservable()"
+                                   (onClickVisualizarPdf)="onClickPrevisualizarPdf()"
+                                   [parentForm]="form"
+                                   [tipoDocumentoOptions$]="tipoDocumentoOptions$"
+                                   [edadOptions$]="edadOptions$"
+  >
+  </app-datos-practica-adolecentes>
+
+  <div *ngIf="isVisibleShowLoading" class="ui-blockui ui-widget-overlay ui-blockui-document"
+       ng-reflect-klass="ui-blockui ui-widget-overlay"
+       style="display: block; z-index: 1006;">
+    <p-progressSpinner ></p-progressSpinner>
+  </div>
+
+  <!--Pop up de notificacion para practicas laborales-->
+
+  <p-dialog class="style-aviso" header="{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.AVISO' | translate}}" [contentStyle]="{'overflow':'visible'}"
+    [(visible)]="isPopUpDownloadDocx" [modal]="true" [responsive]="true" [positionTop]="150" [blockScroll]="true"
+    [width]="800" [draggable]="false" [closeOnEscape]="true" [resizable]="false">
+    <p-panel custom-panel no-borders>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+              <div>
+                <!--<label class="lb">{{'FORMS.RADICAR_TRAMITES_SERVICIOS.DATOS_TRAMITE.PRACTICAS_ADOLECENTES.LEYENDA' | translate}}</label>-->
+                <label class="lblb">Para la radicación del trámite</label>
+                <label class="lblb-blod"> "Autorización  de prácticas laborales para adolescentes"</label>
+                <label class="lblb">es obligatorio</label>
+                <br>
+                <label class="lblb">adjuntar los siguientes documentos:</label>
+                <br>
+                <br>
+                <label class="lblb-oblique">1. CARTA DE INTENCIÓN PARA LA REALIZACIÓN DE PRÁCTICA LABORAL </label>
+                <br>
+                <br>
+                <label class="lblb-oblique">2. CARTA DE AUTORIZACIÓN DE LA INSTITUCIÓN DE EDUCACIÓN O FORMACIÓN PARA PRÁCTICAS LABORALES</label>
+                <br>
+                <br>
+                <label class="lblb">El formato sugerido para presentar cada uno de los documentos lo puede encontrar en el formulario de</label>
+                <br>
+                <label class="lblb">radicación a continuación</label>
+              </div>
+
+                <button pButton type="button" style="width: auto; margin-right: 12px; float: right; margin-top: 2%;"
+                    label="Aceptar" class="ui-button-raised" (click)="hide()"></button>
+            </div>
+        </div>
+    </p-panel>
+</p-dialog>
+
+
+</form>

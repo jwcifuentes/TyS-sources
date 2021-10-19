@@ -1,0 +1,17 @@
+/.gradle/
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.iml
+/build/
+/bin/

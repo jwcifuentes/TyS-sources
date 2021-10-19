@@ -1,0 +1,36 @@
+buildscript {
+	ext {
+		SPRING_BOOT_VERSION = '1.5.9.RELEASE'
+		LOG4J2   		= "2.3"
+		LOMBOK          = "1.16.18"
+		JWT_VERSION     = "3.3.0"
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group = 'co.com.mintrabajo.infrastructure.security'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: LOG4J2
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: LOG4J2
+	compile group: 'org.projectlombok', name: 'lombok', version: LOMBOK
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	compile group: 'com.auth0', name: 'java-jwt', version: JWT_VERSION
+}

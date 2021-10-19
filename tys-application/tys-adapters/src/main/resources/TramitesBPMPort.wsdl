@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!--File TramitesBPM.wsdl, application TramitesBPM--><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="TramitesBPM" targetNamespace="http://soaint.com/Servicios/Negocio/wsdl/TramitesBPM" xmlns:obj="http://soaint.com/Servicios/Negocio/xsd/TramitesBPM" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soaint.com/Servicios/Negocio/wsdl/TramitesBPM" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="TramitesBPMBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="TramitesBPMBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema>
+		<xsd:import namespace="http://soaint.com/Servicios/Negocio/xsd/TramitesBPM" schemaLocation="http://172.20.43.66:7800/TramitesBPMService/TramitesBPMPort?xsd=xsd0"/>
+	</xsd:schema>
+    </wsdl:types>
+  
+  <wsdl:message name="actualizarDocumentoWeb">
+    <wsdl:part element="obj:actualizarDocumentoWeb" name="input"/>
+  </wsdl:message>
+  <wsdl:message name="actualizarDocumentoWebResponse">
+    <wsdl:part element="obj:actualizarDocumentoWebResponse" name="output"/>
+  </wsdl:message>
+
+  <wsdl:message name="IniciarProcesoTyS">
+    <wsdl:part element="obj:IniciarProcesoTyS" name="input"/>
+  </wsdl:message>
+  <wsdl:message name="IniciarProcesoTySResponse">
+    <wsdl:part element="obj:IniciarProcesoTySResponse" name="output"/>
+  </wsdl:message>
+  
+  <wsdl:message name="obtenerDatosSeccional">
+    <wsdl:part element="obj:obtenerDatosSeccional" name="input"/>
+  </wsdl:message>
+  <wsdl:message name="obtenerDatosSeccionalResponse">
+    <wsdl:part element="obj:obtenerDatosSeccionalResponse" name="output"/>
+  </wsdl:message>
+
+  <wsdl:portType name="TramitesBPMPortType">
+  
+    <wsdl:operation name="actualizarDocumentoWeb">
+      <wsdl:input message="tns:actualizarDocumentoWeb" name="actualizarDocumentoWebRq"/>
+      <wsdl:output message="tns:actualizarDocumentoWebResponse" name="actualizarDocumentoWebRs"/>
+    </wsdl:operation>
+	
+	<wsdl:operation name="iniciarProcesoTyS">
+      <wsdl:input message="tns:IniciarProcesoTyS" name="IniciarProcesoTySRq"/>
+      <wsdl:output message="tns:IniciarProcesoTySResponse" name="IniciarProcesoTySRs"/>
+    </wsdl:operation>
+
+	<wsdl:operation name="obtenerDatosSeccional">
+      <wsdl:input message="tns:obtenerDatosSeccional" name="obtenerDatosSeccionalRq"/>
+      <wsdl:output message="tns:obtenerDatosSeccionalResponse" name="obtenerDatosSeccionalRs"/>
+    </wsdl:operation>
+
+  </wsdl:portType>
+  
+  <wsdl:binding name="TramitesBPMBinding" type="tns:TramitesBPMPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    
+	<wsdl:operation name="actualizarDocumentoWeb">
+      <soap:operation soapAction="http://soaint.com/Servicios/Negocio/Administracion/wsdl/TramitesBPM/actualizarDocumentoWeb"/>
+      <wsdl:input name="actualizarDocumentoWebRq">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="actualizarDocumentoWebRs">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+	
+    <wsdl:operation name="iniciarProcesoTyS">
+      <soap:operation soapAction="http://soaint.com/Servicios/Negocio/Administracion/wsdl/TramitesBPM/iniciarProcesoTyS"/>
+      <wsdl:input name="IniciarProcesoTySRq">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="IniciarProcesoTySRs">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+
+	<wsdl:operation name="obtenerDatosSeccional">
+      <soap:operation soapAction="http://soaint.com/Servicios/Negocio/Administracion/wsdl/TramitesBPM/obtenerDatosSeccional"/>
+      <wsdl:input name="obtenerDatosSeccionalRq">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="obtenerDatosSeccionalRs">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+	
+  </wsdl:binding>
+  <wsdl:service name="TramitesBPMService">
+    <wsdl:port binding="tns:TramitesBPMBinding" name="TramitesBPMSOAP">
+      <soap:address location="http://172.20.43.66:7800/TramitesBPMService/TramitesBPMPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

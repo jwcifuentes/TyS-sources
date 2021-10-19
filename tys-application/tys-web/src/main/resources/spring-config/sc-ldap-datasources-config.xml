@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+<!-- MINTRAB107 = 172.20.22.22  -->
+
+	<bean id="ldap_source" class="org.springframework.ldap.core.support.LdapContextSource">
+		<property name="url" value="ldap://MINTRAB107:389" />
+		<property name="userDn" value="CN=Tramites Produccion,OU=Cuentas de Servicios,OU=Mintrabajo,DC=mintrabajo,DC=loc"/>                                                                                   
+		<property name="password" value="AdminTRAPROD2018"/>
+		
+			
+	    <!-- <property name="userDn" value="CN=Tramites,OU=Cuentas de Servicios,OU=Mintrabajo,DC=mintrabajo,DC=loc" />
+		<property name="password" value="AdminTRA2018" />--> 
+		 
+	</bean>
+
+	<util:map id="configurationData">
+		<entry key="user.base.dn" value="OU=Funcionarios,OU=Mintrabajo,DC=mintrabajo,DC=loc"/>
+		<!-- <entry key="user.base.dn" value="OU=Funcionarios,OU=Mintrabajo,DC=mintrabajo,DC=loc" /> -->
+		<entry key="user.unique.identifier" value="sAMAccountName" />
+		<entry key="mapper.email" value="userPrincipalName" />
+		<entry key="mapper.user" value="sAMAccountName" />
+		<entry key="mapper.password" value="password" />
+		<entry key="mapper.roles.finder" value="cn" />
+		<entry key="roles.group.criteria.name" value="objectCategory" />
+		<entry key="roles.group.criteria.value" value="" />
+		<entry key="roles.group.member.name" value="member" />
+		<entry key="group.base.dn" value="" />
+	</util:map>
+	
+</beans>

@@ -1,0 +1,42 @@
+<span #spacer1></span>
+<p-growl [(value)]="msgs" life="6000"></p-growl>
+
+<div class="centerPoint">
+  <div class="loginDivHeader"><span class="bold">TYS</span> Tramites y Servicios Login</div>
+  <div class="loginDiv">
+
+    <form class="loginForm" [formGroup]="form">
+      <div class="loginFields md-dropdownfield" style="padding-bottom: 16px">
+        <span class="login-label">Usuario</span>
+        <br>
+        <input type="text" pInputText class="form-input" [formControl]="form.controls['login']"/>
+        <div class="ui-message ui-messages-error"
+             *ngIf="isInvalid('login')">
+          {{ getErrorMessage('login') }}
+        </div>
+        <br>
+      </div>
+      <div class="loginFields md-dropdownfield">
+        <span class="login-label">Password</span>
+        <br>
+        <input type="password" pInputText class="form-input" [formControl]="form.controls['password']"/>
+        <div class="ui-message ui-messages-error"
+             *ngIf="isInvalid('password')">
+          {{ getErrorMessage('password') }}
+        </div>
+        <br>
+      </div>
+
+      <div class="loginButtons">
+        <a class="forgotButton" href="#">Olvido el password?</a>
+        <input class="submitButton" value="Enviar" type="button" (click)="login()"/>
+      </div>
+    </form>
+  </div>
+
+  <div class="alternateLoginDiv">
+    <a href="#">Tramites publicados<i class="fa fa-chevron-right" style="font-size: 0.8em;"></i></a>
+    <br/>
+  </div>
+
+</div>
